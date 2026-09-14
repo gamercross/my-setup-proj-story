@@ -607,6 +607,23 @@
           </tbody>
         </table>
       </div>
+
+      <h3>2-5. 유사 서비스와의 차별점</h3>
+      <p>Notion 을 버린 이유(§1)만으로는 "왜 직접 만들었나"가 다 설명되지 않는다. Notion·Sunsama·Akiflow·Linear 를 §1 재정의 기준으로 대조하면, 넷 다 <b>할일·일정을 정리하는 도구</b>이지 <b>경험을 지식으로, 지식을 역량으로 연결하는 도구</b>는 아니라는 공백이 드러난다.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>특성</th><th>Notion</th><th>Sunsama</th><th>Akiflow</th><th>Linear</th><th>이 프로젝트</th></tr></thead>
+          <tbody>
+            <tr><td>데이터 저장</td><td>클라우드</td><td>클라우드</td><td>클라우드</td><td>클라우드</td><td>로컬 SQLite, 오프라인</td></tr>
+            <tr><td>대규모 자료 정리</td><td>구조 붕괴됨</td><td>약함</td><td>약함</td><td>이슈 중심</td><td>앱 안 트리 열람(P9)</td></tr>
+            <tr><td>지식→역량 연결</td><td>없음</td><td>없음</td><td>없음</td><td>없음</td><td>OKR + 기대정렬</td></tr>
+            <tr><td>자기 점검 방법론</td><td>없음</td><td>없음</td><td>없음</td><td>없음</td><td>기대정렬 1급 기능</td></tr>
+            <tr><td>AI 자동화</td><td>서드파티</td><td>없음</td><td>없음</td><td>없음</td><td>에이전트, 태그 비침범</td></tr>
+            <tr><td>비용</td><td>유료</td><td>월 구독</td><td>월 구독</td><td>팀 유료</td><td>0원 목표(C-4)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="color:var(--faint); font-family:var(--sans); font-size:13px">함의는 "더 많은 기능"이 아니라 "다른 대상" — 기존 도구는 <b>일</b>을 관리하고, 이 프로젝트는 <b>일에서 나온 지식</b>을 관리한다.</p>
     </section>
 
     <!-- 3 -->
@@ -777,6 +794,19 @@ flowchart TB
           </dl>
         </div>
       </div>
+
+      <h4>4-6. 위험 관리</h4>
+      <p>§4-5가 "이미 구조에 있는 약점"이라면, 리스크 레지스터(<span class="m">RISKS.md</span>)는 "앞으로 터질 수 있는 문제"다. 등급이 가장 높은 항목:</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>ID</th><th>리스크</th><th>등급</th><th>완화책</th></tr></thead>
+          <tbody>
+            <tr><td class="id">R-1</td><td>1인 개발 + 시험 기간 겹침으로 시간 부족</td><td><span class="pill open">🔴 높음</span></td><td>P0 우선 완성, 빠듯한 구간 앞당김, 큰 항목은 착수 전에 자름</td></tr>
+            <tr><td class="id">R-5</td><td>Google OAuth 앱 검토·승인 지연</td><td><span class="pill open">🔴 높음</span></td><td>"테스트 사용자" 모드로 본인 계정만 사용, 검토 절차 우회</td></tr>
+            <tr><td class="id">R-13</td><td>시크릿·토큰이 공개 저장소에 커밋됨</td><td><span class="pill wait">🟠 중간</span></td><td><span class="m">.gitignore</span> + 커밋 전 diff 육안 확인. S5 의 pre-commit 스캔 부재가 남은 구멍</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- 5 -->
@@ -884,6 +914,22 @@ flowchart TB
         <li><b>보안 보완</b> — <b>§4-5 S1~S5</b>: 루프백 바인딩 · CORS 환경 분기 · 태그 불변식 트리거 · 토큰 키 회전 런북 · pre-commit 시크릿 스캔</li>
         <li><b>미결 결정</b> — §2-4 참조 (제안 ADR 0015·0016 2~4항·0017·0019·0033 + PO-10)</li>
       </ul>
+
+      <h4>6-3. 평가 기준과 향후 활용</h4>
+      <p>3개 강의에 같은 산출물을 제출하되 보는 층이 다르다.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>강의</th><th>평가 배점</th><th>대응</th></tr></thead>
+          <tbody>
+            <tr><td>A. AI 컴퓨터 운영체제 실습</td><td class="id">출석20·정기30·수시20·실습성과30</td><td>실습성과=verify.sh 통과 로그, 수시=중간 발표</td></tr>
+            <tr><td>B. AI시대소프트웨어공학</td><td class="id">수시30·정기30·출석20·실습20</td><td>수시=/feature 파이프라인 실행 녹화</td></tr>
+            <tr><td>C. AITool기반소프트웨어공학</td><td class="id">수시30·정기30·출석20·주별리포트20</td><td>수시=본 문서 포함 설계 산출물</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><b>프로젝트 자체의 성공 지표</b> — 검증 게이트 통과율(§3) · 결정의 추적 가능성(ADR 35건) · 약점의 정직한 기록률(§4-5·4-6) · <b>목적 정합성</b>(새 기능이 §1 목적에 답하는지, 추가 전에 확인).</p>
+      <p><b>향후 활용</b> — 코드·문서·쇼케이스는 포트폴리오 자료로, ADR·요구사항·C4 문서 체계는 후속 프로젝트의 방법론 템플릿으로 의도했다.</p>
+      <p><b>개인정보 처리</b> — 이 문서와 공개 사본엔 작성자 실명·개인 경험이 원문 그대로 있다. 실수 노출이 아니라 강의 제출·발표 목적에 맞춰 작성자가 명시적으로 공개를 확인한 상태다(2026-09-14). 이메일 등 추가 식별 정보는 마스킹해 게시했다.</p>
     </section>
 
     <footer class="doc">
@@ -895,7 +941,8 @@ flowchart TB
         <a href="#s4">ARCHITECTURE · DESIGN · adr/README</a>
         <a href="#s6">NEXT_SESSION · ROADMAP · TEST_PLAN · COURSE_MAPPING</a>
       </div>
-      <p style="margin-top:18px; color: var(--faint)">작성 2026-09-09 · 개정 2026-09-10 (§4-5 약점 추가) · 2026-09-14 (§1-0 중심 줄기 재정의) · my-setup-proj 회고 기획서</p>
+      <p style="margin-top:14px; color: var(--faint); font-size:12px">외부 문헌 — Google re:Work "Set goals with OKRs" · Doerr, <i>Measure What Matters</i> · Nygard, "Documenting Architecture Decisions" · Brown, <a href="https://c4model.com" target="_blank" rel="noopener">C4 model</a> · <a href="https://arc42.org" target="_blank" rel="noopener">arc42</a></p>
+      <p style="margin-top:18px; color: var(--faint)">작성 2026-09-09 · 개정 2026-09-10 (§4-5 약점 추가) · 2026-09-14 (§1-0 중심 줄기 재정의, §2-5·§4-6·§6-3 신설) · my-setup-proj 회고 기획서</p>
     </footer>
   </main>
 </div>

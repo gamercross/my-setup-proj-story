@@ -212,6 +212,24 @@ ADR 표에서는 한 줄이지만, 실제로 가장 오래 붙잡은 갈림길�
 - [0033](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/architecture/adr/ADR-0033-standalone-widget-windows.md) 독립 위젯 창 — 방향만 유지, 구현 보류
 - PO-10 — 개인 OS 방향(P8~P9)과 Phase E(다중 사용자·Supabase)의 순서
 
+### 2-5. 유사 서비스와의 차별점
+
+Notion 을 버린 이유(§1-0)만으로는 "왜 직접 만들었나"가 다 설명되지 않는다. Notion·Sunsama·
+Akiflow·Linear 를 §1-0 재정의 기준으로 대조하면, 넷 다 **할일·일정을 정리하는 도구**이지
+**경험을 지식으로, 지식을 역량으로 연결하는 도구**는 아니라는 공백이 드러난다.
+
+| 특성 | Notion | Sunsama | Akiflow | Linear | 이 프로젝트 |
+|---|---|---|---|---|---|
+| 데이터 저장 | 클라우드(자사 서버) | 클라우드 | 클라우드 | 클라우드 | 로컬 SQLite, 오프라인 동작 |
+| 대규모 자료 정리 | 페이지 계층 구조 — 자료가 늘면 구조가 무너짐 | 할일 중심, 약함 | 할일 중심, 약함 | 이슈 추적 중심 | 프로젝트 구조를 앱 안에서 트리로 열람(§5 P9) |
+| 지식→역량 연결 | 없음 | 없음 | 없음 | 없음 | OKR + 기대정렬 체크인으로 연결 |
+| 자기 점검 방법론 내장 | 없음 | 없음 | 없음 | 없음 | 기대정렬 7질문이 1급 기능(ADR-0035) |
+| AI 자동화 | 서드파티 애드온 | 없음 | 없음 | 없음 | 에이전트가 자동화, 사용자 태그는 침범 안 함(§2-3) |
+| 비용 | 유료 플랜 필요 | 월 구독 | 월 구독 | 팀 단위 유료 | 인프라 비용 0원 목표(C-4) |
+
+함의는 "더 많은 기능"이 아니라 "다른 대상" — 기존 도구는 **일**을 관리하고, 이 프로젝트는
+**일에서 나온 지식**을 관리한다.
+
 ---
 
 ## 3. 문제해결방법 — 어떤 절차로 일했나
@@ -401,6 +419,20 @@ flowchart TB
 - *영향:* P3~P9 기능이 자동 테스트는 통과하나, 통합된 앱에서 동작을 눈으로 확인한 기록이 없다.
 - *설계 보완:* §6-2 로컬 수동 검증 백로그 — 통합 실행 스크립트(`scripts/dev.sh`) 위에서 일괄 소화.
 
+### 4-6. 위험 관리
+
+§4-5 가 "이미 구조에 있는 약점"이라면, 리스크 레지스터([RISKS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/RISKS.md))는
+"앞으로 터질 수 있는 문제"다. 등급이 가장 높은 항목:
+
+| ID | 리스크 | 등급 | 완화책 |
+|---|---|---|---|
+| R-1 | 1인 개발 + 시험 기간 겹침으로 Phase D 이후 시간 부족 | 🔴 높음 | P0 우선 완성, 일정이 빠듯한 구간을 앞당겨 배치, 큰 항목은 착수 전에 자름 |
+| R-5 | Google OAuth 앱 검토·승인 지연(Gmail/Calendar 스코프) | 🔴 높음 | "테스트 사용자" 모드로 본인 계정만 사용해 검토 절차를 우회 |
+| R-13 | 시크릿·토큰이 공개 저장소에 커밋됨 | 🟠 중간 | `.gitignore` + 커밋 전 diff 육안 확인. §4-5 S5 의 pre-commit 스캔 부재가 이 리스크의 남은 구멍이다 |
+
+`better-sqlite3` 네이티브 빌드 실패(R-4, 3-OS CI 매트릭스로 완화), Claude API 스펙 변경(R-8,
+모델 상수 1곳 관리로 완화) 등 기술 리스크도 등급별로 관리한다. 전체 목록은 `RISKS.md`.
+
 ---
 
 ## 5. 서비스 — 무엇을 만들었나
@@ -502,6 +534,29 @@ Phase A (환경·자동화 인프라)
 - **보안 보완** — §4-5 S1~S5: 루프백 바인딩·CORS 환경 분기·태그 불변식 DB 제약·토큰 키 회전 런북·pre-commit 시크릿 스캔
 - **미결 결정** — §2-4 참조 (제안 ADR 0015·0016 2~4항·0017·0019·0033 + PO-10)
 
+### 6-3. 평가 기준과 향후 활용
+
+**강의별 평가 대응.** 3개 강의에 같은 산출물을 제출하되 보는 층이 다르다(상세는
+[COURSE_MAPPING.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/progress/COURSE_MAPPING.md)).
+
+| 강의 | 평가 배점 | 대응 |
+|---|---|---|
+| A. AI 컴퓨터 운영체제 실습 | 출석20·정기30·수시20·실습성과30 | 실습성과 = `verify.sh` 통과 로그, 수시 = 중간 발표 |
+| B. AI시대소프트웨어공학 | 수시30·정기30·출석20·실습20 | 수시 = `/feature` 파이프라인 실행 녹화 |
+| C. AITool기반소프트웨어공학 | 수시30(Term Project)·정기30(필기)·출석20·주별리포트20 | 수시 = 본 문서를 포함한 설계 산출물 |
+
+**프로젝트 자체의 성공 지표** — 강의 배점과 별개로: 검증 게이트 통과율(§3-4) · 결정의
+추적 가능성(ADR 35건) · 약점의 정직한 기록률(§4-5·4-6) · **목적 정합성**(새 기능이
+§1-0 목적에 답하는지, 추가 전에 확인).
+
+**향후 활용.** 코드·문서·쇼케이스는 포트폴리오 자료로, ADR·요구사항·C4 문서 체계는
+후속 프로젝트에서 재사용할 방법론 템플릿으로 의도했다 — "지금까지의 공부에 대한
+지식들을 모아 성장할 발판을 만든다"(§6-0 "어떤 목표")는 도전이 이 활용 방안으로 이어진다.
+
+**개인정보 처리.** 이 문서와 공개 사본에는 작성자 실명·개인 경험이 원문 그대로 있다.
+실수 노출이 아니라 강의 제출·발표 목적에 맞춰 **작성자가 명시적으로 공개를 확인한
+상태**다(2026-09-14). 이메일 등 추가 식별 정보는 마스킹해 게시했다.
+
 ---
 
 ## 7. 관련 문서
@@ -514,7 +569,16 @@ Phase A (환경·자동화 인프라)
 - [progress/NEXT_SESSION.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/progress/NEXT_SESSION.md) · [product/ROADMAP.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/ROADMAP.md) · [progress/COURSE_MAPPING.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/progress/COURSE_MAPPING.md) — 다음 작업·일정·강의 대응
 - [product/testing/TEST_PLAN.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/testing/TEST_PLAN.md) — 테스트 계획 (수동 검증 백로그 포함)
 
+**외부 문헌 — 채택한 방법론의 원출처**
+
+- Google re:Work, *"Set goals with OKRs"* — https://rework.withgoogle.com/en/guides/set-goals-with-okrs (§2-4)
+- Doerr, J. (2018). *Measure What Matters.* Portfolio/Penguin.
+- Nygard, M. (2011). *"Documenting Architecture Decisions."* — https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions (§2, ADR 관행)
+- Brown, S. *The C4 model for visualising software architecture* — https://c4model.com (§3-6)
+- arc42 — https://arc42.org (§3-6)
+
 ---
 
 **작성:** 2026-09-09 · **개정:** 2026-09-10 (§4-5 알려진 약점·보완 과제 추가) ·
-2026-09-14 (§1-0 중심 줄기 재정의 — 진척 가시성 → 경험의 지식화·역량 방향 가시화)
+2026-09-14 (§1-0 중심 줄기 재정의, §6-0 기대정렬로 보는 프로젝트, §2-5 유사 서비스 비교,
+§4-6 위험 관리, §6-3 평가 기준·향후 활용·개인정보 처리, 외부 문헌 추가)
