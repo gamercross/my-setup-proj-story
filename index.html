@@ -336,7 +336,7 @@
         <div class="qa"><span class="q">언제까지?</span><span class="a">고정 마감은 있지만, 진짜 종료 조건은 날짜가 아니라 상태다 — <b>"작업하는 모든 내용이 정리될 때까지."</b></span></div>
         <div class="qa"><span class="q">어떤 목표?</span><span class="a">진척률이 아니라 <b>지식</b> — 경험에서 나온 지식을 시각화해 가치를 올리고, 그 지식이 역량으로 이어지는 방향을 한눈에 보이게 하는 것.</span></div>
         <div class="qa"><span class="q">어떤 전략?</span><span class="a">로컬 우선 + 위젯 셸 · 결정 1건 = ADR 1건 · 4역할 에이전트 파이프라인 · OKR·기대정렬 체크인으로 자기 진단을 구조화.</span></div>
-        <div class="qa"><span class="q">구체적으로 뭘?</span><span class="a">아래 <a href="#product">7개 위젯</a> 각각이 원초적 고민(Q1~Q8) 중 하나에 대한 답이다 — 할일 CRUD, 위젯 셸, 자동 분류, 에이전트 활동, OKR 등급, 진행 현황 뷰, 기대정렬 체크인.</span></div>
+        <div class="qa"><span class="q">구체적으로 뭘?</span><span class="a">아래 <a href="#product">10개 위젯</a> 각각이 원초적 고민(Q1~Q8) 중 하나에 대한 답이다 — 할일 CRUD, 프로젝트, 일정, 다이어그램 뷰어, 위젯 셸, 자동 분류, 에이전트 활동, OKR 등급, 진행 현황 뷰, 기대정렬 체크인.</span></div>
         <div class="qa"><span class="q">어떤 상태?</span><span class="a">1주차 프로토타입 → 2주차 역량 피드백 수용 → 3주차(지금) 기획서·보고서·이 페이지로 소개하는 중.</span></div>
       </div>
     </div>
@@ -345,7 +345,7 @@
   <!-- PRODUCT -->
   <section class="tint" id="product">
     <div class="shell">
-      <div class="sec-kicker"><span class="eyebrow">무엇을 만들었나</span><h2 class="h">7개 위젯, 하나의 셸</h2></div>
+      <div class="sec-kicker"><span class="eyebrow">무엇을 만들었나</span><h2 class="h">10개 위젯, 하나의 셸</h2></div>
       <p class="sec-note">각 기능은 원초적 고민(Q1~Q8) 중 하나에 대한 구체적인 답이다. 표시된 태그를 따라가면 "왜 이걸 만들었는지"로 이어진다.</p>
 
       <div class="bento">
@@ -385,6 +385,21 @@
           <h3>진행 현황 · 파일 탐색</h3>
           <p>저장소를 열지 않고도 앱 안에서 프로젝트 구조와 진행 문서를 그대로 읽는다.</p>
         </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q3</span></div>
+          <h3>프로젝트 · 일정</h3>
+          <p>프로젝트는 기대정렬 답변에서 시작해, 연결된 OKR 키 리절트로 진행을 추적한다. 캘린더는 강의·과제 일정을 한 뷰에 모은다.</p>
+        </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q7</span></div>
+          <h3>다이어그램 뷰어</h3>
+          <p>앱 안에서 문서의 mermaid 구조도를 그대로 그려 읽는다 — 저장소를 열지 않아도 설계가 보인다.</p>
+        </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q2</span></div>
+          <h3>기대정렬 체크인</h3>
+          <p>뭘·왜·언제까지·목표·전략·구체적으로·상태 — 7질문으로 스스로 점검한 기록을 시간순으로 남긴다. 키워드는 카테고리로 분류되어 플래너·할 일까지 이어진다.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -395,9 +410,9 @@
       <div class="sec-kicker"><span class="eyebrow">어떻게 지었나</span><h2 class="h">결정 하나, ADR 파일 하나</h2></div>
       <p class="sec-note">모든 아키텍처 결정을 ADR로 남기고, 4역할 에이전트 파이프라인(planner → developer → supervisor → finisher) 한 번으로 기능 하나를 완성했다. 혼자서 못 내는 속도를 자동화로 보완한 결과.</p>
       <div class="stats">
-        <div class="stat"><div class="n">33</div><div class="l">채택된 ADR — 결정 1개 = 파일 1개</div></div>
-        <div class="stat"><div class="n">10<small>/ 10</small></div><div class="l">완료된 빌드 페이즈 (P0–P9)</div></div>
-        <div class="stat"><div class="n">328</div><div class="l">자동 테스트 — backend 142 · frontend 106 · agent 80</div></div>
+        <div class="stat"><div class="n">35</div><div class="l">채택된 ADR — 결정 1개 = 파일 1개</div></div>
+        <div class="stat"><div class="n">10<small>/ 10</small></div><div class="l">완료된 빌드 페이즈 (P0–P9) + OKR·기대정렬 추가</div></div>
+        <div class="stat"><div class="n">351</div><div class="l">자동 테스트 — backend 157 · frontend 115 · agent 79</div></div>
         <div class="stat"><div class="n">1</div><div class="l">인 개발 — 파이프라인이 리뷰·게이트를 대신함</div></div>
         <div class="stat"><div class="n">3</div><div class="l">강의 공통 산출물 — OS 실습 · AI SW공학 · AITool SW공학</div></div>
         <div class="stat"><div class="n">0<small>원</small></div><div class="l">인프라 비용 목표 — 로컬 우선 + 무료 계층만</div></div>
@@ -451,6 +466,8 @@
         <span class="phase">P7 에이전트 활동</span>
         <span class="phase">P8 OKR·플래너</span>
         <span class="phase">P9 진행 현황·탐색</span>
+        <span class="phase meta">P10 · OKR 구글식 등급</span>
+        <span class="phase">P10 · 기대정렬 체크인</span>
       </div>
     </div>
   </section>
