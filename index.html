@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="우송대 2026-2학기 3개 강의 공통 산출물 — 1인 개발 개인 생산성 대시보드 OS 쇼케이스 페이지.">
+<title>대시보드 OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#f6f7f9; --paper-2:#eceff4; --paper-3:#e3e7ee;
+    --line:#dde1e8; --line-strong:#c7cdd8;
+    --ink:#14171f; --muted:#5b6270; --faint:#8991a1;
+    --accent:#2f6feb; --accent-deep:#1d4fc4; --accent-soft:#e7edfc;
+    --warn:#a5641c; --warn-soft:#f4e8d7;
+    --ok:#237a56; --ok-soft:#dff1e8;
+    --display:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --shadow: 0 1px 2px rgba(20,23,31,.04), 0 10px 24px -14px rgba(20,23,31,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0e1116; --paper-2:#161b23; --paper-3:#1d232d;
+      --line:#262c37; --line-strong:#333a47;
+      --ink:#edeff3; --muted:#a4abb8; --faint:#6c7381;
+      --accent:#729cf6; --accent-deep:#9bb9f8; --accent-soft:#1c2740;
+      --warn:#dba05a; --warn-soft:#2b2115;
+      --ok:#5fbb90; --ok-soft:#152720;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 34px -18px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0e1116; --paper-2:#161b23; --paper-3:#1d232d;
+    --line:#262c37; --line-strong:#333a47;
+    --ink:#edeff3; --muted:#a4abb8; --faint:#6c7381;
+    --accent:#729cf6; --accent-deep:#9bb9f8; --accent-soft:#1c2740;
+    --warn:#dba05a; --warn-soft:#2b2115;
+    --ok:#5fbb90; --ok-soft:#152720;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 34px -18px rgba(0,0,0,.55);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation-duration:.001ms!important; transition-duration:.001ms!important} }
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img,svg{display:block;max-width:100%}
+  a{color:inherit}
+  ::selection{background:var(--accent-soft);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+  .shell{max-width:1180px;margin:0 auto;padding:0 24px}
+  @media (min-width:900px){ .shell{padding:0 40px} }
+
+  h1,h2,h3{font-family:var(--display);letter-spacing:-0.02em;text-wrap:balance;margin:0}
+  p{margin:0}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:9px}
+  .eyebrow::before{content:"";width:16px;height:1px;background:var(--accent)}
+
+  /* ---- nav ---- */
+  header.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb, var(--paper) 86%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  header.top .row{display:flex;align-items:center;justify-content:space-between;height:60px;gap:20px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:-0.01em;text-decoration:none;color:var(--ink)}
+  .brand .mark{width:22px;height:22px;border-radius:6px;background:
+      linear-gradient(155deg, var(--accent), var(--accent-deep));
+      position:relative;flex:none}
+  .brand .mark::before,.brand .mark::after{content:"";position:absolute;background:color-mix(in srgb, white 55%, var(--accent-soft));border-radius:1.5px}
+  .brand .mark::before{width:8px;height:8px;top:4px;left:4px}
+  .brand .mark::after{width:6px;height:3px;bottom:4px;right:3.5px}
+  nav.links{display:none;gap:28px;font-size:13.5px;color:var(--muted)}
+  nav.links a{text-decoration:none;transition:color .15s}
+  nav.links a:hover{color:var(--ink)}
+  @media (min-width:760px){ nav.links{display:flex} }
+  .cta-row{display:flex;align-items:center;gap:10px}
+
+  .btn{font-family:var(--body);font-weight:600;font-size:13.5px;padding:9px 16px;border-radius:8px;border:1px solid transparent;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:transform .12s, background .15s, border-color .15s}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:var(--accent-deep);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.sm{padding:6px 12px;font-size:12.5px}
+
+  /* ---- hero ---- */
+  section.hero{padding:76px 0 64px;border-bottom:1px solid var(--line)}
+  .hero-grid{display:grid;gap:52px}
+  @media (min-width:980px){ .hero-grid{grid-template-columns:1.05fr .95fr;align-items:center} }
+  .hero h1{font-size:clamp(2.05rem, 1.3rem + 3vw, 3.15rem);line-height:1.12;font-weight:800;margin:18px 0 20px}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero .lede{font-size:1.06rem;color:var(--muted);max-width:52ch;margin:0 0 26px;line-height:1.6}
+  .chiprow{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
+  .chip{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--paper-2);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+  .hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
+
+  /* ---- widget cluster mock ---- */
+  .cluster{position:relative;display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:52px;gap:12px}
+  .wcard{background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:13px 15px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(10px) scale(.985);animation:settle .5s cubic-bezier(.2,.7,.3,1) forwards}
+  @media (prefers-reduced-motion: reduce){ .wcard{opacity:1;transform:none;animation:none} }
+  @keyframes settle{to{opacity:1;transform:translateY(0) scale(1)}}
+  .wcard:nth-child(1){animation-delay:.02s}
+  .wcard:nth-child(2){animation-delay:.10s}
+  .wcard:nth-child(3){animation-delay:.18s}
+  .wcard:nth-child(4){animation-delay:.26s}
+  .wcard .whead{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.03em}
+  .wcard .dots{display:flex;gap:2.5px}
+  .wcard .dots i{width:3px;height:3px;border-radius:50%;background:var(--line-strong)}
+  .wcard .wtitle{font-family:var(--body);font-weight:700;font-size:12.5px;color:var(--ink);margin-left:auto}
+
+  .w-brief{grid-column:1/6;grid-row:1/5}
+  .w-brief .skel{height:7px;border-radius:4px;background:var(--paper-3)}
+  .w-brief .skel.w1{width:92%}.w-brief .skel.w2{width:74%}.w-brief .skel.w3{width:83%}
+  .w-brief .src{display:flex;gap:6px;margin-top:auto;flex-wrap:wrap}
+  .w-brief .src span{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:3px 7px}
+
+  .w-kanban{grid-column:6/8;grid-row:1/5}
+  .w-kanban .cols{display:flex;gap:6px;flex:1}
+  .w-kanban .col{flex:1;display:flex;flex-direction:column;gap:5px}
+  .w-kanban .col b{font-family:var(--mono);font-size:8.5px;color:var(--faint);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+  .w-kanban .col i{display:block;height:14px;border-radius:4px;background:var(--paper-3);font-style:normal}
+  .w-kanban .col.done i{background:var(--ok-soft)}
+
+  .w-okr{grid-column:1/4;grid-row:5/9}
+  .w-okr .big{font-family:var(--display);font-weight:800;font-size:20px;color:var(--ink)}
+  .w-okr .sub{font-family:var(--mono);font-size:10px;color:var(--faint)}
+
+  .w-tree{grid-column:4/8;grid-row:5/9}
+  .w-tree .line{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+  .w-tree .line b{width:9px;height:9px;border-radius:2.5px;background:var(--paper-3);flex:none}
+  .w-tree .line.on b{background:var(--accent)}
+  .w-tree .line.i1{padding-left:12px}
+  .w-tree .line.i2{padding-left:24px}
+
+  @media (max-width:640px){
+    .cluster{grid-template-columns:repeat(4,1fr)}
+    .w-brief{grid-column:1/5}
+    .w-kanban{grid-column:1/3;grid-row:5/9}
+    .w-okr{grid-column:3/5;grid-row:5/9}
+    .w-tree{grid-column:1/5;grid-row:9/13}
+  }
+
+  /* ---- section rhythm ---- */
+  section{padding:76px 0}
+  section.tint{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .sec-kicker{display:flex;align-items:baseline;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+  h2.h{font-size:clamp(1.5rem,1.2rem+1.2vw,2.05rem);font-weight:800;line-height:1.18}
+  .sec-note{color:var(--muted);font-size:15px;max-width:62ch;margin:14px 0 44px;line-height:1.6}
+
+  /* ---- spine quote ---- */
+  .quote-block{display:grid;gap:36px;align-items:start}
+  @media (min-width:860px){ .quote-block{grid-template-columns:1.1fr .9fr} }
+  .quote-block blockquote{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,1.1rem+1.6vw,2.15rem);line-height:1.28;letter-spacing:-0.015em;color:var(--ink)}
+  .quote-block blockquote::before{content:"“";color:var(--accent)}
+  .quote-block blockquote::after{content:"”";color:var(--accent)}
+  .quote-src{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:16px}
+
+  .domain-list{display:grid;gap:10px}
+  .domain{display:flex;gap:14px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .domain .mk{flex:none;width:26px;height:26px;border-radius:7px;margin-top:2px;position:relative}
+  .domain .mk.m1{background:conic-gradient(from 210deg, var(--accent), var(--accent-soft) 300deg)}
+  .domain .mk.m2{border:2px solid var(--accent);background:var(--accent-soft)}
+  .domain .mk.m3{background:var(--accent-soft)}
+  .domain .mk.m3::before{content:"";position:absolute;inset:6px;border:2px solid var(--accent);border-radius:2px;transform:rotate(45deg)}
+  .domain b{display:block;font-family:var(--body);font-weight:700;font-size:14.5px;margin-bottom:3px}
+  .domain span{color:var(--muted);font-size:13.5px;line-height:1.5}
+
+  /* ---- feature bento ---- */
+  .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+  @media (max-width:760px){ .bento{grid-template-columns:repeat(2,1fr)} }
+  .feat{grid-column:span 2;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:12px;transition:border-color .15s, transform .15s}
+  .feat:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+  .feat.big{grid-column:span 3}
+  @media (max-width:760px){ .feat,.feat.big{grid-column:span 2} }
+  .feat .fhead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .feat .ficon{width:30px;height:30px;border-radius:8px;background:var(--accent-soft);position:relative;flex:none}
+  .feat .qtag{font-family:var(--mono);font-size:10px;color:var(--faint);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+  .feat h3{font-size:15.5px;font-weight:700}
+  .feat p{color:var(--muted);font-size:13.5px;line-height:1.55}
+  .feat .mini{height:46px;border-radius:8px;background:var(--paper-2);border:1px solid var(--line);position:relative;overflow:hidden}
+
+  /* mini visuals per card via nth-child accents */
+  .mini.spark{padding:8px 10px}
+  .mini svg{width:100%;height:100%}
+
+  /* ---- stats ---- */
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  @media (min-width:760px){ .stats{grid-template-columns:repeat(3,1fr)} }
+  .stat{background:var(--paper);padding:26px 24px}
+  .stat .n{font-family:var(--display);font-weight:800;font-size:2rem;font-variant-numeric:tabular-nums;letter-spacing:-0.01em}
+  .stat .n small{font-family:var(--body);font-weight:600;font-size:14px;color:var(--muted);margin-left:3px}
+  .stat .l{font-size:12.5px;color:var(--muted);margin-top:5px}
+
+  /* ---- weak points ---- */
+  .weak-list{display:grid;gap:12px}
+  @media (min-width:760px){ .weak-list{grid-template-columns:1fr 1fr} }
+  .weak{display:flex;gap:12px;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:0 10px 10px 0;padding:14px 16px}
+  .weak .id{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--warn);background:var(--warn-soft);border-radius:4px;padding:1px 7px;height:fit-content;flex:none}
+  .weak b{display:block;font-size:13.5px;font-weight:700;margin-bottom:3px}
+  .weak span{font-size:12.5px;color:var(--muted);line-height:1.5}
+  .weak-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+  .weak-foot p{color:var(--muted);font-size:13.5px;max-width:52ch}
+
+  /* ---- build strip ---- */
+  .buildstrip{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .buildstrip span{background:var(--paper);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
+  .buildstrip span b{color:var(--ink);font-weight:600}
+
+  /* ---- timeline ---- */
+  .phases{display:flex;flex-wrap:wrap;gap:8px}
+  .phase{font-family:var(--mono);font-size:11.5px;padding:7px 12px;border-radius:7px;background:var(--ok-soft);color:var(--ok);border:1px solid transparent}
+  .phase.meta{background:var(--paper);color:var(--faint);border-color:var(--line)}
+
+  /* ---- final cta ---- */
+  section.final{text-align:left;padding:88px 0 96px}
+  .final-box{background:var(--ink);color:var(--paper);border-radius:18px;padding:56px clamp(24px,5vw,64px);display:grid;gap:28px}
+  @media (min-width:900px){ .final-box{grid-template-columns:1.2fr .8fr;align-items:center} }
+  .final-box h2{color:var(--paper);font-size:clamp(1.6rem,1.2rem+1.6vw,2.3rem)}
+  .final-box p{color:color-mix(in srgb, var(--paper) 70%, transparent);margin-top:14px;font-size:15px;max-width:46ch;line-height:1.6}
+  .final-box .ctas{display:flex;flex-wrap:wrap;gap:12px}
+  .final-box .btn.primary{background:var(--accent)}
+  .final-box .btn.ghost{border-color:color-mix(in srgb, var(--paper) 35%, transparent);color:var(--paper)}
+  .final-box .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  footer.site{border-top:1px solid var(--line);padding:36px 0 60px;font-size:12.5px;color:var(--faint)}
+  footer.site .frow{display:flex;flex-wrap:wrap;gap:16px 24px;justify-content:space-between;align-items:flex-start}
+  footer.site a{color:var(--muted);text-decoration:none}
+  footer.site a:hover{color:var(--accent)}
+  footer.site .flinks{display:flex;flex-wrap:wrap;gap:14px 20px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell row">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>대시보드 OS</a>
+    <nav class="links">
+      <a href="#product">기능</a>
+      <a href="#build">만든 방식</a>
+      <a href="#honesty">약점 공개</a>
+      <a href="#timeline">타임라인</a>
+    </nav>
+    <div class="cta-row">
+      <a class="btn ghost sm" href="https://github.com/gamercross/my-setup-proj" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn primary sm" href="https://gamercross.github.io/my-setup-proj/" target="_blank" rel="noopener">라이브 데모</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <p class="eyebrow">우송대학교 2026-2학기 · 3개 강의 공통 산출물</p>
+        <h1>내가 뭐가 진척되는지,<br>감이 안 왔다. <em>그래서 지었다.</em></h1>
+        <p class="lede">할일·프로젝트·일정·메일·브리핑이 각각 위젯처럼 움직이고, 위젯마다 사용자가 배치·디자인을 꾸미는 개인용 데스크톱 셸. 매일 아침 Claude 에이전트가 우선순위를 대신 정리해 준다 — 이 저장소의 <code style="font-family:var(--mono);font-size:.85em;background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:.1em .4em">PROGRESS.md</code>가 프로젝트에 해 주는 일을, 앱이 사용자에게 해 주는 셈이다.</p>
+        <div class="chiprow">
+          <span class="chip">Electron · Win / mac / Linux</span>
+          <span class="chip">로컬 우선 · SQLite</span>
+          <span class="chip">Python 에이전트 · Claude API</span>
+          <span class="chip">1인 개발 · 마감 2026-11-30</span>
+        </div>
+        <div class="ctas">
+          <a class="btn primary" href="https://gamercross.github.io/my-setup-proj/" target="_blank" rel="noopener">라이브 데모 열기 ↗</a>
+          <a class="btn ghost" href="https://github.com/gamercross/my-setup-proj" target="_blank" rel="noopener">GitHub 저장소</a>
+          <a class="btn ghost" href="./reverse-plan.html">역 계획서 읽기</a>
+        </div>
+      </div>
+
+      <div class="cluster" role="img" aria-label="위젯 셸 미리보기 — Daily Brief, 할일 칸반, OKR 추이, 진행 현황 위젯이 그리드에 배치된 모습">
+        <div class="wcard w-brief">
+          <div class="whead"><span class="dots"><i></i><i></i><i></i></span> 07:30 · 매일<span class="wtitle">Daily Brief</span></div>
+          <div class="skel w1"></div><div class="skel w2"></div><div class="skel w3"></div>
+          <div class="src"><span>Gmail</span><span>Calendar</span><span>Notion</span></div>
+        </div>
+        <div class="wcard w-kanban">
+          <div class="whead"><span class="dots"><i></i><i></i><i></i></span><span class="wtitle">할일</span></div>
+          <div class="cols">
+            <div class="col"><b>할일</b><i></i><i></i></div>
+            <div class="col"><b>진행</b><i></i></div>
+            <div class="col done"><b>완료</b><i></i><i></i></div>
+          </div>
+        </div>
+        <div class="wcard w-okr">
+          <div class="whead"><span class="dots"><i></i><i></i><i></i></span><span class="wtitle">OKR</span></div>
+          <svg viewBox="0 0 100 28" preserveAspectRatio="none" style="height:24px"><polyline points="2,24 26,17 50,19 74,7 98,4" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="big">62%</div><div class="sub">이번 주 KR 진행률</div>
+        </div>
+        <div class="wcard w-tree">
+          <div class="whead"><span class="dots"><i></i><i></i><i></i></span><span class="wtitle">진행 현황</span></div>
+          <div class="line on"><b></b>docs/</div>
+          <div class="line i1"><b></b>product/</div>
+          <div class="line i2 on"><b></b>REVERSE_PLAN.md</div>
+          <div class="line i1"><b></b>progress/</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section>
+    <div class="shell">
+      <div class="sec-kicker"><span class="eyebrow">원초적 고민</span></div>
+      <div class="quote-block">
+        <div>
+          <blockquote>내가 뭐가 진척되는지 감이 안 와서.</blockquote>
+          <p class="quote-src">사용자 인터뷰, 2026-09-09</p>
+          <p style="margin-top:22px;color:var(--muted);font-size:14.5px;line-height:1.65;max-width:50ch">이 감각은 세 영역에서 동시에 나타났다 — 흩어진 도구를 한 앱으로 모으는 문제가 아니라, <b style="color:var(--ink)">뭔가 앞으로 나아가고 있다는 게 눈에 보이지 않는 문제</b>였다.</p>
+        </div>
+        <div class="domain-list">
+          <div class="domain"><span class="mk m1"></span><div><b>개인 삶·일</b><span>이번 주에 뭘 했고, 목표에 얼마나 가까워졌는지</span></div></div>
+          <div class="domain"><span class="mk m2"></span><div><b>공부·강의 진도</b><span>3개 강의의 주차와 과제 마감을 따라가는 감각</span></div></div>
+          <div class="domain"><span class="mk m3"></span><div><b>프로젝트 개발 진도</b><span>P0~P9 중 어디까지 왔고, 다음이 뭔지</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT -->
+  <section class="tint" id="product">
+    <div class="shell">
+      <div class="sec-kicker"><span class="eyebrow">무엇을 만들었나</span><h2 class="h">7개 위젯, 하나의 셸</h2></div>
+      <p class="sec-note">각 기능은 원초적 고민(Q1~Q8) 중 하나에 대한 구체적인 답이다. 표시된 태그를 따라가면 "왜 이걸 만들었는지"로 이어진다.</p>
+
+      <div class="bento">
+        <div class="feat big">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q1 · Q2</span></div>
+          <h3>Daily Brief 에이전트</h3>
+          <p>Python 에이전트가 매일 아침 07:30 메일·일정·할일을 모아 Claude로 요약하고, 브리핑을 Notion에도 남긴다. 사람이 우선순위를 매번 짜지 않아도 된다.</p>
+          <div class="mini spark"><svg viewBox="0 0 200 40" preserveAspectRatio="none"><polyline points="4,30 30,26 56,32 82,18 108,22 134,10 160,14 196,4" fill="none" stroke="var(--accent)" stroke-width="2.2"/></svg></div>
+        </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q3</span></div>
+          <h3>칸반 + 단일 완료</h3>
+          <p>한 곳에서 체크하면 모든 뷰가 따라온다. 단일 클라이언트 캐시로 리스트·보드가 항상 같은 상태를 본다.</p>
+        </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q4</span></div>
+          <h3>자동 태그 분류</h3>
+          <p>에이전트는 태그 없는 할 일만 채운다. 사용자가 한 번이라도 손댄 태그는 절대 건드리지 않는다.</p>
+        </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q4</span></div>
+          <h3>OKR · 주간 플래너</h3>
+          <p>지난주·이번주·다음주 버킷과 KR 진행률을 순수 SQL 집계로 계산해 라인차트로 보여준다.</p>
+        </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q5</span></div>
+          <h3>에이전트 활동 위젯</h3>
+          <p>sync·분류·브리핑이 언제 돌았는지 항상 보인다. "지금 실행" 버튼으로 즉시 트리거도 가능.</p>
+        </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q6</span></div>
+          <h3>위젯 셸</h3>
+          <p>창처럼 옮기고 늘이고, 위젯마다 테마를 다르게 입히고, 레이아웃은 그대로 저장된다.</p>
+        </div>
+        <div class="feat">
+          <div class="fhead"><span class="ficon"></span><span class="qtag">Q7</span></div>
+          <h3>진행 현황 · 파일 탐색</h3>
+          <p>저장소를 열지 않고도 앱 안에서 프로젝트 구조와 진행 문서를 그대로 읽는다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILD -->
+  <section id="build">
+    <div class="shell">
+      <div class="sec-kicker"><span class="eyebrow">어떻게 지었나</span><h2 class="h">결정 하나, ADR 파일 하나</h2></div>
+      <p class="sec-note">모든 아키텍처 결정을 ADR로 남기고, 4역할 에이전트 파이프라인(planner → developer → supervisor → finisher) 한 번으로 기능 하나를 완성했다. 혼자서 못 내는 속도를 자동화로 보완한 결과.</p>
+      <div class="stats">
+        <div class="stat"><div class="n">33</div><div class="l">채택된 ADR — 결정 1개 = 파일 1개</div></div>
+        <div class="stat"><div class="n">10<small>/ 10</small></div><div class="l">완료된 빌드 페이즈 (P0–P9)</div></div>
+        <div class="stat"><div class="n">328</div><div class="l">자동 테스트 — backend 142 · frontend 106 · agent 80</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">인 개발 — 파이프라인이 리뷰·게이트를 대신함</div></div>
+        <div class="stat"><div class="n">3</div><div class="l">강의 공통 산출물 — OS 실습 · AI SW공학 · AITool SW공학</div></div>
+        <div class="stat"><div class="n">0<small>원</small></div><div class="l">인프라 비용 목표 — 로컬 우선 + 무료 계층만</div></div>
+      </div>
+      <div class="buildstrip" style="margin-top:22px">
+        <span>검증 <b>verify.sh 49/0/0</b></span>
+        <span>문서 정합 <b>check-docs.sh 11/0/0</b></span>
+        <span>CI <b>GitHub Actions</b></span>
+        <span>스케줄 <b>launchd / cron</b></span>
+        <span>커밋 규칙 <b>FAIL 있으면 커밋 금지</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HONESTY -->
+  <section class="tint" id="honesty">
+    <div class="shell">
+      <div class="sec-kicker"><span class="eyebrow">약점 공개</span><h2 class="h">아직 감당 못 하는 지점도 남긴다</h2></div>
+      <p class="sec-note">역 계획서는 "만들었지만 다시 봐야 할 것"도 정면으로 적는다. 대부분 로컬 단일 사용자·1인 개발·마감이라는 같은 원인에서 나왔고, 다중 사용자·패키징 배포로 가면 되짚을 항목이다.</p>
+      <div class="weak-list">
+        <div class="weak"><span class="id">S1</span><div><b>백엔드가 로컬 네트워크에 열려 있다</b><span>인증 없이 전 인터페이스 바인딩 — 같은 Wi-Fi 기기가 데이터를 CRUD 할 수 있다</span></div></div>
+        <div class="weak"><span class="id">S2</span><div><b>CORS가 Origin: null을 모든 빌드에 허용</b><span>패키징 앱의 file:// 로딩용 예외가 데모·개발 빌드까지 상속됐다</span></div></div>
+        <div class="weak"><span class="id">S3</span><div><b>태그 비침범이 트리거가 아닌 코드로만 지켜진다</b><span>값 자체는 DB CHECK로 강제되지만, 행 단위 불변식은 애플리케이션 층 책임</span></div></div>
+        <div class="weak"><span class="id">S4</span><div><b>OAuth 토큰 키에 회전 절차가 없다</b><span>키 1개가 Gmail·Calendar 읽기 토큰 전부를 푼다</span></div></div>
+        <div class="weak"><span class="id">D1</span><div><b>웹 데모 패리티가 "경로 존재"까지만 자동화</b><span>응답 스키마·상태코드 드리프트는 아직 CI가 못 잡는다</span></div></div>
+        <div class="weak"><span class="id">D2</span><div><b>REST 오류가 단일 봉투다</b><span>클라이언트가 오류 종류를 코드로 구분하지 못한다 — RFC 9457 제안 중</span></div></div>
+      </div>
+      <div class="weak-foot">
+        <p>파일 트리·문서 경로만은 예외다 — 심링크 스킵·이중 인코딩 우회 차단·상한까지, 같은 마감 압박 아래서도 미루지 않았다.</p>
+        <a class="btn ghost sm" href="./reverse-plan.html#s4">전체 검토 읽기 (§4-5) ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <div class="shell">
+      <div class="sec-kicker"><span class="eyebrow">타임라인</span><h2 class="h">문제 → 결정 → 설계 → 빌드, 순서대로</h2></div>
+      <p class="sec-note">각 역량 테마는 문서(P0) → ADR·요구사항(P1) → 디자인 캔버스(P2) → 빌드(P3~P9) 순서를 지켰다. 2026-09-02 착수, 2026-11-30 마감 전 완료가 목표.</p>
+      <div class="phases">
+        <span class="phase meta">Phase A · 자동화 인프라</span>
+        <span class="phase">Phase B · React + SQLite 배선</span>
+        <span class="phase">Phase C · 위젯 셸 · 대시보드 OS</span>
+        <span class="phase">Phase D · Gmail·Calendar·Daily Brief</span>
+        <span class="phase meta">웹 데모 배포</span>
+        <span class="phase">P3 라이트 테마</span>
+        <span class="phase">P4 공통 컴포넌트</span>
+        <span class="phase">P4.5 사이드바 셸</span>
+        <span class="phase">P5 단일 캐시·칸반</span>
+        <span class="phase">P6 자동 분류</span>
+        <span class="phase">P7 에이전트 활동</span>
+        <span class="phase">P8 OKR·플래너</span>
+        <span class="phase">P9 진행 현황·탐색</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final">
+    <div class="shell">
+      <div class="final-box">
+        <div>
+          <h2>직접 눌러보는 게 제일 빠르다.</h2>
+          <p>웹 데모는 인메모리 목 데이터로 백엔드를 대체한 미리보기다 — 진짜 산출물은 Electron 앱이지만, 위젯 셸·칸반·OKR·에이전트 활동 화면은 그대로 다 있다.</p>
+        </div>
+        <div class="ctas">
+          <a class="btn primary" href="https://gamercross.github.io/my-setup-proj/" target="_blank" rel="noopener">라이브 데모 열기 ↗</a>
+          <a class="btn ghost" href="https://github.com/gamercross/my-setup-proj" target="_blank" rel="noopener">코드 보기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="shell frow">
+    <p>대시보드 OS · my-setup-proj — 우송대학교 2026-2학기 3개 강의 공통 산출물.<br>이 페이지는 <code style="font-family:var(--mono)">docs/REVERSE_PLAN.md</code> 등 프로젝트 문서를 바탕으로 만든 쇼케이스입니다.</p>
+    <div class="flinks">
+      <a href="https://gamercross.github.io/my-setup-proj/" target="_blank" rel="noopener">라이브 데모</a>
+      <a href="https://github.com/gamercross/my-setup-proj" target="_blank" rel="noopener">GitHub</a>
+      <a href="./reverse-plan.html">역 계획서</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

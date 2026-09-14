@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="왜 만들었고, 어떻게 지었고, 무엇을 썼는가 — my-setup-proj 회고 기획서.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.1/mermaid.min.js"></script>
+<title>역 계획서 · my-setup-proj</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap">
+<style>
+  :root {
+    --ground: #f7f7f5;
+    --surface: #ffffff;
+    --surface-2: #f1f0ec;
+    --border: #e4e2dc;
+    --border-strong: #d3d0c8;
+    --ink: #1c1b19;
+    --muted: #6d6a63;
+    --faint: #97938a;
+    --accent: #2f6feb;
+    --accent-soft: #e8effc;
+    --ok: #2e7d5b;
+    --warn: #b6612f;
+    --bad: #c23b3b;
+    --ok-soft: #e4f0ea;
+    --warn-soft: #f6e9df;
+    --bad-soft: #f7e4e4;
+
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #131318;
+      --surface: #1b1b21;
+      --surface-2: #23232b;
+      --border: #2f2f38;
+      --border-strong: #3d3d47;
+      --ink: #e7e6e1;
+      --muted: #a5a29a;
+      --faint: #78756d;
+      --accent: #6b9bf2;
+      --accent-soft: #1e2a42;
+      --ok: #5cb98d;
+      --warn: #d98a55;
+      --bad: #e26a6a;
+      --ok-soft: #17281f;
+      --warn-soft: #2c2118;
+      --bad-soft: #2c1a1a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #131318;
+    --surface: #1b1b21;
+    --surface-2: #23232b;
+    --border: #2f2f38;
+    --border-strong: #3d3d47;
+    --ink: #e7e6e1;
+    --muted: #a5a29a;
+    --faint: #78756d;
+    --accent: #6b9bf2;
+    --accent-soft: #1e2a42;
+    --ok: #5cb98d;
+    --warn: #d98a55;
+    --bad: #e26a6a;
+    --ok-soft: #17281f;
+    --warn-soft: #2c2118;
+    --bad-soft: #2c1a1a;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 24px 120px;
+  }
+  @media (min-width: 1000px) {
+    .wrap { grid-template-columns: 220px minmax(0, 1fr); gap: 56px; padding: 0 40px 140px; }
+  }
+
+  /* ---- nav rail ---- */
+  nav.rail {
+    display: none;
+    font-family: var(--sans);
+  }
+  @media (min-width: 1000px) {
+    nav.rail { display: block; }
+    nav.rail ol {
+      position: sticky;
+      top: 40px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-left: 1px solid var(--border);
+    }
+  }
+  nav.rail li { margin: 0; }
+  nav.rail a {
+    display: flex;
+    gap: 10px;
+    padding: 7px 0 7px 16px;
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  nav.rail a:hover { color: var(--ink); }
+  nav.rail a.active { color: var(--ink); border-left-color: var(--accent); }
+  nav.rail a .n {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+    padding-top: 1px;
+  }
+  nav.rail a.active .n { color: var(--accent); }
+
+  /* ---- header ---- */
+  header.doc {
+    padding: 72px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    margin: 0 0 20px;
+  }
+  header.doc .lede {
+    max-width: 60ch;
+    font-size: 1.12rem;
+    color: var(--muted);
+    margin: 0 0 28px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    font-family: var(--sans);
+    font-size: 12.5px;
+  }
+  .meta span {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 11px;
+    color: var(--muted);
+  }
+  .meta span b { color: var(--ink); font-weight: 500; }
+
+  /* ---- sections ---- */
+  main { min-width: 0; }
+  section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin: 0 0 8px; }
+  .sec-head .num {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    padding-top: 4px;
+  }
+  h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.62rem;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .sec-sub {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    margin: 2px 0 30px 0;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.06rem;
+    letter-spacing: -0.01em;
+    margin: 36px 0 12px;
+  }
+  h3:first-of-type { margin-top: 8px; }
+  h4 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 26px 0 10px;
+  }
+  p { margin: 0 0 16px; max-width: 66ch; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  strong { font-weight: 600; }
+  code, .m {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.08em 0.36em;
+    white-space: nowrap;
+  }
+  ul, ol { max-width: 66ch; padding-left: 1.15em; margin: 0 0 16px; }
+  li { margin: 0 0 7px; }
+
+  /* ---- pull quote / spine callout ---- */
+  .spine {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 24px 26px;
+    margin: 8px 0 28px;
+  }
+  .spine .q {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 1.28rem;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    margin: 0 0 14px;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .spine p:last-child { margin-bottom: 0; }
+  .spine .src {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--faint);
+  }
+
+  .note {
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 4px 0 24px;
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .note p { max-width: none; margin: 0; }
+  .note .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .note.good { background: var(--ok-soft); }
+  .note.good .tag { color: var(--ok); }
+
+  /* ---- tables ---- */
+  .tbl-scroll { overflow-x: auto; margin: 4px 0 28px; border: 1px solid var(--border); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 13.5px; }
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface-2);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-strong);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr { background: var(--surface); }
+  tbody tr:nth-child(even) { background: color-mix(in srgb, var(--surface) 60%, var(--ground)); }
+  td .id { font-family: var(--mono); font-size: 12px; color: var(--faint); white-space: nowrap; }
+  td b { font-weight: 600; }
+
+  .pill {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); }
+  .pill.wait { background: var(--warn-soft); color: var(--warn); }
+  .pill.open { background: var(--bad-soft); color: var(--bad); }
+  .tag-spine { color: var(--accent); font-weight: 600; }
+
+  /* ---- gap list (§4-5) ---- */
+  .gap-list { display: grid; gap: 14px; margin: 6px 0 26px; }
+  .gap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--warn);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .gap.debt { border-left-color: var(--faint); }
+  .gap-claim {
+    font-weight: 600;
+    font-size: 14.5px;
+    line-height: 1.4;
+    margin: 0 0 11px;
+    color: var(--ink);
+    max-width: none;
+    display: flex;
+    gap: 9px;
+    align-items: baseline;
+  }
+  .gap-claim .id {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--warn);
+    background: var(--warn-soft);
+    border-radius: 4px;
+    padding: 1px 6px;
+    flex: none;
+  }
+  .gap.debt .gap-claim .id { color: var(--muted); background: var(--surface-2); }
+  .gap dl {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 5px 14px;
+    margin: 0;
+    max-width: none;
+  }
+  .gap dt {
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    padding-top: 3px;
+  }
+  .gap dd { margin: 0; line-height: 1.5; }
+
+  /* ---- diagram ---- */
+  .diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 8px 0 26px;
+    overflow-x: auto;
+  }
+  .mermaid { font-family: var(--sans) !important; }
+
+  /* ---- code block ---- */
+  pre.block {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 4px 0 24px;
+    color: var(--muted);
+    white-space: pre;
+  }
+
+  footer.doc {
+    padding: 44px 0 0;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  footer.doc a { color: var(--muted); }
+  footer.doc .links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="rail" aria-label="문서 차례">
+    <ol>
+      <li><a href="#s1"><span class="n">01</span><span>원초적 고민</span></a></li>
+      <li><a href="#s2"><span class="n">02</span><span>의사결정 문제</span></a></li>
+      <li><a href="#s3"><span class="n">03</span><span>문제해결방법</span></a></li>
+      <li><a href="#s4"><span class="n">04</span><span>설계 · 약점</span></a></li>
+      <li><a href="#s5"><span class="n">05</span><span>서비스</span></a></li>
+      <li><a href="#s6"><span class="n">06</span><span>타임라인 · 다음</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="doc">
+      <p class="eyebrow">Reverse Plan · 회고 기획서</p>
+      <h1>왜 만들었고, 어떻게 지었고,<br>무엇을 썼는가</h1>
+      <p class="lede">이미 만들어진 <b>my-setup-proj</b>(개인 생산성 OS)를 거꾸로 되짚어 기반을 세운다. 원초적 고민에서 출발해 의사결정·방법·설계를 지나 실제 서비스까지, 순서대로 읽는 문서.</p>
+      <div class="meta">
+        <span>작성 <b>2026-09-09</b></span>
+        <span>개정 <b>2026-09-10</b> · §4-5 약점 추가</span>
+        <span>범위 <b>P0–P9 완료</b> · 전부 병합</span>
+        <span>배경 <b>우송대 2026-2 · 3개 강의 공통 산출물</b></span>
+        <span>단일 원천 <b>PROGRESS.md · TRACEABILITY.md · git log · ADR</b></span>
+      </div>
+    </header>
+
+    <!-- 1 -->
+    <section id="s1">
+      <div class="sec-head"><span class="num">01</span><h2>원초적 고민 — 무엇이 문제였나</h2></div>
+      <p class="sec-sub">문서를 역추론하면 "도구가 흩어져 있다"가 먼저지만, 사용자에게 직접 물으니 발단은 달랐다.</p>
+
+      <h3>중심 줄기: "내가 뭐가 진척되는지 감이 안 온다"</h3>
+      <div class="spine">
+        <p class="q">"내가 뭐가 진척되는지 감이 안 와서."</p>
+        <p>이 감각은 <b>세 영역에서 같이</b> 나타났다 — 같은 불편의 여러 얼굴이다.</p>
+        <ol style="margin-bottom:0">
+          <li><b>개인 삶·일 전반</b> — 이번 주에 내가 뭘 했는지, 목표에 얼마나 가까워졌는지.</li>
+          <li><b>공부·강의 진도</b> — 3개 강의의 주차와 과제 마감을 따라가는 감각.</li>
+          <li><b>이 프로젝트 자체의 개발 진도</b> — P0–P9 중 어디까지 왔고 다음이 뭔지.</li>
+        </ol>
+        <p style="margin-top:14px"><span class="src">사용자 인터뷰, 2026-09-09</span></p>
+      </div>
+      <p>그래서 이 프로젝트의 메타 문장이 성립한다: <b>"이 저장소의 <span class="m">PROGRESS.md</span>가 프로젝트에 해 주는 일을, 앱이 사용자에게 해 준다."</b> OKR·주간 플래너는 삶의 진척을, 진행 현황·파일 탐색 뷰는 프로젝트 자신의 진척을 같은 방식으로 보여 준다.</p>
+
+      <h3>파생 고민 (Q1–Q8)</h3>
+      <p><code>VISION.md</code>의 최종 그림 — "흩어진 도구를 한 앱으로 통합하고, 매일 아침 AI 에이전트가 우선순위를 정리하는 데스크톱 셸" — 은 아래 불편들에서 나왔다. 사용자 확인 결과 <b>8개 모두 실제 고민과 부합</b>하며, 중심 줄기(진척 가시성) 아래로 Q3·Q4·Q5·Q7이 묶인다.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>#</th><th>원초적 고민</th><th>구체적 증상</th><th>묶임</th><th>출처</th></tr></thead>
+          <tbody>
+            <tr><td class="id">Q1</td><td>생산성 도구가 흩어져 있다</td><td>할일·프로젝트·일정·메일·브리핑을 앱마다 따로 확인</td><td>통합</td><td class="id">VISION §목표</td></tr>
+            <tr><td class="id">Q2</td><td>아침마다 우선순위 정리를 수동으로 한다</td><td>"오늘 뭐부터?"를 매번 사람이 판단</td><td>자동 정리</td><td class="id">VISION 핵심기능 1</td></tr>
+            <tr><td class="id">Q3</td><td>같은 할 일이 여러 뷰에 중복되고 따로 논다</td><td>한 곳에서 완료해도 나머지 뷰가 안 따라옴</td><td><span class="tag-spine">진척 가시성</span></td><td class="id">PERSONAL_OS §1 배경 1</td></tr>
+            <tr><td class="id">Q4</td><td>정리가 전부 수동이다</td><td>카테고리·주간 버킷·OKR 대비 진행률을 손으로 만들어야 보임</td><td><span class="tag-spine">진척 가시성</span></td><td class="id">PERSONAL_OS §1 배경 2</td></tr>
+            <tr><td class="id">Q5</td><td>에이전트가 일하는 게 안 보인다</td><td>sync·브리핑·저장이 <span class="m">sync_logs</span>·로그 파일에만 남음</td><td><span class="tag-spine">진척 가시성</span></td><td class="id">PERSONAL_OS §1 배경 3</td></tr>
+            <tr><td class="id">Q6</td><td>화면 배치가 고정이다</td><td>사용자마다 중요한 정보가 다른데 <span class="m">Dashboard.jsx</span>에 하드코딩</td><td>개인화</td><td class="id">DASHBOARD_OS §1</td></tr>
+            <tr><td class="id">Q7</td><td>프로젝트 구조·진행을 앱 안에서 못 본다</td><td>다이어그램·진행 본문이 저장소에만 있어 IDE를 열어야 확인</td><td><span class="tag-spine">진척 가시성</span></td><td class="id">AS_IS G9</td></tr>
+            <tr><td class="id">Q8</td><td>룩이 임시다</td><td>인라인 스타일 + 슬레이트 다크. 참조 틀이 있었으나 구현이 못 따라감</td><td>완성도</td><td class="id">PERSONAL_OS §1 배경 4</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <span class="tag">갈망 신호 · 사용자 진술</span>
+        <p>"실제로 쓰면 가장 갈망할 기능"으로 고른 넷 — <b>Daily Brief · 칸반+단일 완료 · OKR·주간 플래너 · 진행 현황·파일 탐색 뷰</b> — 은 전부 "정리·진척을 대신 보여 주는" 축에 있다. 위젯 커스터마이즈·태그·캘린더는 갈망 목록에 없었다. 즉 개인화(Q6)·완성도(Q8)는 필요조건이지 목적이 아니다.</p>
+      </div>
+
+      <h4>원하는 최종 느낌 · 사용자 진술</h4>
+      <p>Sunsama / Akiflow / 개인용 Linear 계열 — 차분하고 다듬어진, "내가 아무것도 안 해도 정리돼 있는" 생산성 도구.</p>
+
+      <h4>출발점의 현실 (AS-IS, 2026-09-02)</h4>
+      <p>한 줄 요약: <em>"자동화 인프라(에이전트 팀·작업로그·CI)는 동작하지만, 제품 기능(프론트·백엔드·DB·에이전트)은 전부 골격 단계이며 서로 연결돼 있지 않다."</em> 이때 정리한 갭 G1(React 미연결)–G9(앱 내 구조 확인 불가)를 §5가 하나씩 메운 기록이다.</p>
+
+      <h4>제약 조건 (CONSTRAINTS.md)</h4>
+      <p>개발자 1인(C-1), 마감 2026-11-30(C-2), 강의 A 진도 종속(C-3), 비용 0 목표(C-4), 학습·발표 산출물(C-5), GitHub 공개라 시크릿·개인정보 커밋 금지(C-6). 개발 머신 macOS(Apple Silicon), 배포 목표 Win/mac/Linux 3-OS, 오프라인 조회 필수. 이 제약들이 아래 모든 결정의 배경이며, §4-5 약점의 공통 원인이기도 하다.</p>
+    </section>
+
+    <!-- 2 -->
+    <section id="s2">
+      <div class="sec-head"><span class="num">02</span><h2>의사결정 문제 — 어떤 갈림길을 어떻게 골랐나</h2></div>
+      <p class="sec-sub">모든 아키텍처 결정 = 하나의 ADR 파일 (현재 33건). 각 ADR은 맥락 / 결정 / 근거 / 대안 / 결과·트레이드오프 5필드.</p>
+
+      <h3>2-1. 기반 스택 — "무엇으로 짓나" <span class="id">ADR-0001–0009 · 0011 · 0012 · 0018</span></h3>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>결정</th><th>선택</th><th>대안 (기각)</th><th>ADR</th></tr></thead>
+          <tbody>
+            <tr><td>프론트 렌더링</td><td><b>React + Vite</b>로 통일</td><td>바닐라 <span class="m">renderer.js</span> 유지</td><td class="id">0001</td></tr>
+            <tr><td>로컬 DB</td><td><b>better-sqlite3</b> (동기 API, WAL)</td><td><span class="m">node:sqlite</span>, 순수 JS, 인메모리</td><td class="id">0002</td></tr>
+            <tr><td>스키마 관리</td><td><span class="m">schema.sql</span> 1파일 + <span class="m">IF NOT EXISTS</span></td><td>마이그레이션 도구, ORM</td><td class="id">0003</td></tr>
+            <tr><td>프론트 ↔ 백엔드</td><td>로컬 <b>HTTP REST</b> (<span class="m">:3000/api</span>)</td><td>Electron IPC 직결, GraphQL</td><td class="id">0004</td></tr>
+            <tr><td>상태관리</td><td><b>zustand</b>, 도메인별 스토어 분리</td><td>Redux, Context</td><td class="id">0005</td></tr>
+            <tr><td>외부 API 소유</td><td><b>Python 에이전트</b>가 전담 (읽기 전용)</td><td>백엔드가 직접 호출</td><td class="id">0006</td></tr>
+            <tr><td>스케줄러</td><td><b>launchd</b>(mac) / cron(Linux)</td><td>APScheduler 상주, 백엔드 타이머</td><td class="id">0007</td></tr>
+            <tr><td>클라우드 동기화</td><td><b>Week 10 이후로 연기</b></td><td>처음부터 Supabase 우선</td><td class="id">0008</td></tr>
+            <tr><td>DB 파일 위치</td><td><span class="m">DATABASE_PATH</span> 주입</td><td>코드 상수</td><td class="id">0009</td></tr>
+            <tr><td>에이전트–백엔드 DB</td><td>같은 SQLite + WAL, <b>쓰기 주체 분리</b></td><td>에이전트가 백엔드 API 경유</td><td class="id">0011</td></tr>
+            <tr><td>할일–프로젝트 링크</td><td><span class="m">tasks.project_id</span> FK <span class="m">SET NULL</span></td><td>조인 테이블, 링크 없음</td><td class="id">0012</td></tr>
+            <tr><td>스키마 마이그레이션</td><td>최소안: <span class="m">PRAGMA user_version</span> + 인라인 러너</td><td>별도 마이그레이션 프레임워크</td><td class="id">0018</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <span class="tag">툴 애착 · 사용자 진술</span>
+        <p>스택 대부분은 강의 A 진도와 무난한 기본값을 따랐지만, <b>Electron</b>(데스크톱 크로스플랫폼)은 사용자가 의식적으로 고른 지점이다 — 산출물은 <b>웹이 아니라 "앱"</b>이어야 한다. 웹 데모(ADR-0026)는 어디까지나 미리보기이며, 이 구분은 <span class="m">NEXT_SESSION.md §4-3</span> "웹 데모 ≠ 앱"으로 이어진다.</p>
+      </div>
+      <p>핵심 원칙은 <b>로컬 우선 + 프로세스 분리</b>(제안 0015, 아직 미명문화): 로컬 SQLite가 진실의 원천이고, 외부 API는 그 위에 얹는 캐시이며, 렌더러는 시크릿·Node에 접근하지 못하고(<span class="m">contextIsolation</span>) 모든 데이터는 REST로만 흐른다.</p>
+
+      <h3>2-2. 대시보드 OS 전환 — "고정 패널을 왜 버렸나" <span class="id">ADR-0020–0022, DO-1–6</span></h3>
+      <p>Q6에 대한 답. <span class="m">Dashboard.jsx</span> 한 컴포넌트가 모든 패널을 하드코딩하며 비대해졌고, 사용자별 배치도 불가능했다.</p>
+      <ul>
+        <li><b>위젯 셸 아키텍처</b> — <span class="m">react-grid-layout</span> 그리드에 위젯 인스턴스를 배치·이동·리사이즈. 새 기능 = <span class="m">widgets/registry.js</span>에 항목 추가(플러그인 유사). <span class="id">0020</span></li>
+        <li><b>레이아웃 영속화</b> — <span class="m">localStorage</span>(300ms 디바운스) → SQLite → 사용자별. <span class="id">0021</span></li>
+        <li><b>위젯별 테마</b> — 스코프된 CSS 커스텀 프로퍼티(<span class="m">--w-*</span>) + 화이트리스트 config. 외부 코드 실행 없음. <span class="id">0022</span></li>
+        <li>착수 전 6개 질문(DO-1–6): 그리드 스냅 · 타입당 1인스턴스 · <span class="m">localStorage</span> 1차 · config 검증은 프론트만 · 편집 토글 필요 · 다이어그램도 위젯화.</li>
+      </ul>
+      <p>강의 A 정합도 근거였다 — 과목명이 "AI <b>컴퓨터 운영체제</b> 실습"이고, 위젯 셸은 미니 윈도우 매니저(창 생명주기·z-order·포커스·레이아웃 영속화)의 실습 대상이 된다.</p>
+      <div class="note">
+        <span class="tag">결정 서사 — Q6와 강의의 관계 · 솔직한 기록</span>
+        <p>§1에서 개인화(Q6)는 "필요조건이지 목적이 아니다"라 적었다. 그런데 위젯 셸은 프로젝트에서 가장 큰 코드 덩어리 중 하나다(C5·C6·P4.5). 왜 목적도 아닌 것에 그만큼 썼나 — <b>강의 A 때문이다.</b> 커리큘럼에 창·프로세스·포커스·레이아웃 관리가 들어 있고, 고정 대시보드로는 그 주제를 실습 산출물로 보여 줄 수 없었다. 즉 위젯 셸은 <b>제품 필요와 강의 필요가 겹친 지점</b>이라 크게 투자했다 — 커스터마이즈가 갈망 목록에 없다는 사실(§1)은 이 투자가 제품 관점에선 과했을 수 있음을 인정하는 신호이며, §5-2 재검토 노트로 이어진다. 반대로 라이트 테마·OKR 모델·마크다운 렌더는 오래 고민하지 않았다. 유일하게 며칠 붙잡은 건 아래 PO-3이다.</p>
+      </div>
+
+      <h3>2-3. 개인 생산성 OS 방향 — "다듬기 단계에서 정한 것" <span class="id">ADR-0027–0032, PO-1–14</span></h3>
+      <p>Phase D 완료 후 사용자가 제시한 방향. 열린 질문 PO-1–14를 먼저 닫고 ADR로 못박은 뒤 빌드했다.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>결정</th><th>선택</th><th>대안 (기각)</th><th>ADR / PO</th></tr></thead>
+          <tbody>
+            <tr><td>기본 테마</td><td>라이트 오프화이트 기본, 다크는 <span class="m">[data-theme=dark]</span> 프리셋</td><td>다크 유지</td><td class="id">0027 / PO-1·2</td></tr>
+            <tr><td>강조색</td><td>차분한 파랑 <span class="m">#2f6feb</span></td><td>참조 화면의 보라</td><td class="id">0027 / PO-2</td></tr>
+            <tr><td>뷰 데이터 일관성</td><td><b>단일 클라이언트 캐시</b>(<span class="m">id</span> 키잉), 뷰는 파생만</td><td>뷰마다 재 fetch</td><td class="id">0028 / PO-7</td></tr>
+            <tr><td>칸반</td><td><span class="m">tasks</span> 위젯 안의 리스트/보드 토글</td><td>별도 위젯 타입</td><td class="id">0028 / PO-7</td></tr>
+            <tr><td>자동 분류 taxonomy</td><td><b>자유 태그·다중</b>(<span class="m">task_tags</span> 조인), <span class="m">category</span> 폐기</td><td>고정 카테고리 집합</td><td class="id">0029 / PO-3</td></tr>
+            <tr><td>분류 시점·주체</td><td><b>에이전트 배치</b>(일일 브리핑 시 1회 Claude 호출)</td><td>저장 시마다 분류</td><td class="id">0029 / PO-4</td></tr>
+            <tr><td>OKR 모델</td><td><b>1급 엔티티</b> 3테이블 (<span class="m">objectives / key_results / kr_snapshots</span>)</td><td><span class="m">projects</span> 재해석</td><td class="id">0030 / PO-5</td></tr>
+            <tr><td>주간 요약</td><td><b>순수 SQL 집계</b>(<span class="m">due_date</span> ISO 주 3버킷)</td><td>Claude "Weekly Brief"</td><td class="id">0030 / PO-6</td></tr>
+            <tr><td>차트 라이브러리</td><td><b>인라인 SVG</b> (<span class="m">dataviz</span> 스킬)</td><td>Recharts 도입</td><td class="id">PO-8</td></tr>
+            <tr><td>마크다운 렌더</td><td>서버에서 <b>의존성 0 토큰화</b> → JSON. 파서·<span class="m">dangerouslySetInnerHTML</span> 없음</td><td>마크다운 파서 + HTML 주입</td><td class="id">0031 / PO-11</td></tr>
+            <tr><td>파일 트리 범위</td><td>허용 루트 = <span class="m">docs/</span> + 루트 <span class="m">*.md</span>. <span class="m">.md</span>만, 소스 제외</td><td>전 소스 트리 노출</td><td class="id">0031 / PO-12</td></tr>
+            <tr><td>셸 형태</td><td>왼쪽 사이드바 + <b>주제별 위젯 레이아웃</b>(<span class="m">activeTopic</span>)</td><td>단일 그리드 유지</td><td class="id">0032 / PO-13·14</td></tr>
+            <tr><td>에이전트 "지금 실행"</td><td>전용 디렉터리 <b>파일 플래그 + launchd WatchPaths</b>. subprocess 없음</td><td>백엔드가 python 직접 spawn</td><td class="id">0013 부분 / PO-9</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>결정 서사 — PO-3: 자유 태그 vs 고정 카테고리</h3>
+      <p>ADR 표에서는 한 줄이지만, 실제로 가장 오래 붙잡은 갈림길이다. 표면 질문은 "분류 체계를 고정 집합으로 둘까, 자유 태그로 둘까"였지만, 사용자를 실제로 멈춰 세운 건 그 아래의 불안이었다.</p>
+      <div class="spine">
+        <p class="q">"에이전트가 내가 달아 둔 태그를 침범하면 어쩌지."</p>
+        <p style="margin-bottom:0">일일 브리핑 배치가 태그 없는 할 일을 Claude로 자동 분류하는데(PO-4), 이 배치가 사용자가 손으로 붙인 태그를 <b>덮어쓰거나 지울 가능성</b>이 걱정이었다. 자동화가 사용자의 의도를 조용히 훼손하는 건, 이 프로젝트가 피하려는 바로 그 패턴이다.</p>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>단계</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td><b>고민한 대안</b></td><td>① 고정 카테고리 집합 — 그래프·통계엔 깔끔하나 "정리된 느낌"이 사용자 생각과 안 맞음 · ② 자유 태그지만 에이전트 분류 금지(수동만) — 안전하나 Q4를 포기 · ③ 자유 태그 + 에이전트 배치 + <b>출처 구분</b></td></tr>
+            <tr><td><b>결정</b></td><td>③. <span class="m">task_tags</span> 조인에 <span class="m">source ∈ {user, agent}</span> 컬럼. 에이전트는 <span class="m">source='user'</span> 행을 <b>절대 건드리지 않고</b>, 태그 없는 할 일에만 <span class="m">source='agent'</span>로만 추가. 사용자가 한 번이라도 손댄 할 일은 배치 대상에서 제외</td></tr>
+            <tr><td><b>부수 결정</b></td><td>기존 <span class="m">tasks.category</span> 단일 컬럼을 <b>폐기</b>하고 조인으로 이동(다중 태그). ADR-0018 최소 마이그레이션(<span class="m">PRAGMA user_version</span> 인라인 러너)을 처음 실제로 쓴 사례</td></tr>
+            <tr><td><b>트레이드오프</b></td><td><span class="m">source</span> 값 자체는 스키마 CHECK로 강제되지만, "사용자 태그가 붙은 할 일은 에이전트가 안 건드린다"는 <b>행 단위 불변식</b>을 지키는 책임은 <span class="m">agent/db.py</span> + <span class="m">classify.py</span> 코드 가드에 있다 — 트리거가 아니라는 점은 <b>§4-5 S3</b>로 이어진다. 태그별 통계·자동완성은 아직 없음(후속)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><span class="id">ADR-0029 채택 · 2026-09-08 · P6 · FR-TASK-08</span></p>
+
+      <h4>2-4. 아직 안 정한 것 (제안 상태)</h4>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>ID</th><th>미결 사항</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td class="id">ADR-0013</td><td>전체 작업 큐 (FR-AGENT-09) — "지금 실행" 트리거만 채택</td><td><span class="pill open">제안</span></td></tr>
+            <tr><td class="id">ADR-0015</td><td>아키텍처 스타일(로컬 우선 + 프로세스 분리) 명문화</td><td><span class="pill open">제안</span></td></tr>
+            <tr><td class="id">ADR-0016</td><td>데스크톱 프로세스 토폴로지 — 1항(<span class="m">scripts/dev.sh</span>) 채택, 2~4항(백엔드 실행 주체·재기동·포트) 제안</td><td><span class="pill wait">부분</span></td></tr>
+            <tr><td class="id">ADR-0017</td><td>REST 오류 계약 (RFC 9457 스타일) — §4-5 D2</td><td><span class="pill open">제안</span></td></tr>
+            <tr><td class="id">ADR-0019</td><td>아키텍처 피트니스 함수 — §4-5 D3</td><td><span class="pill open">제안</span></td></tr>
+            <tr><td class="id">ADR-0033</td><td>독립 위젯 창 — 방향만 유지, 구현 보류</td><td><span class="pill open">보류</span></td></tr>
+            <tr><td class="id">PO-10</td><td>개인 OS 방향(P8–P9)과 Phase E(다중 사용자·Supabase)의 순서</td><td><span class="pill open">미결</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section id="s3">
+      <div class="sec-head"><span class="num">03</span><h2>문제해결방법 — 어떤 절차로 일했나</h2></div>
+      <p class="sec-sub">문서 우선, 에이전트 파이프라인, 가드레일, 검증 게이트, 브랜치 모델.</p>
+
+      <h3>문서 우선 순서</h3>
+      <p>각 역량 테마(개인 OS의 T1–T6)는 순서대로 진행했다:</p>
+      <pre class="block">P0 문서  →  P1 ADR·요구사항  →  P2 디자인 캔버스  →  P3–P9 빌드
+"왜·무엇"    "어떻게"              목표 화면 (6 아트보드)   /feature 1회 · 개별 PR</pre>
+
+      <h3>에이전트 파이프라인 <span class="id">/feature</span></h3>
+      <div class="note">
+        <span class="tag">의도 · 사용자 진술</span>
+        <p>개발자가 1인(C-1)이라 <b>혼자서 내지 못하는 속도를 보완</b>하려고 파이프라인을 세웠다. 부수 효과로 강의 B(AI 지원 개발 프로세스) 실습과 품질 게이트(자기검열 강제)를 겸한다.</p>
+      </div>
+      <pre class="block">planner  →  developer  →  supervisor (최대 2회)  →  finisher
+ 계획        구현          리뷰 + 테스트 PASS/FAIL     검증 · 커밋 · 푸시</pre>
+      <ul>
+        <li>명시적 <b>상태 그래프</b>로 정의: <span class="m">SELECT→GATE→PLAN→BUILD→REVIEW→FINISH→REPORT</span> + 정지 상태 6종.</li>
+        <li>불변 규칙: 한 번에 한 에이전트만 활성 · REVISE 최대 2회 · <b>커밋은 finisher만</b> · 실행돼 FAIL 난 검사가 있으면 커밋 금지 · 정지 상태에서 임의 진행 금지 · 각 전이마다 Slack 한 줄.</li>
+        <li><span class="m">/build-next</span>는 이 파이프라인을 로드맵 위에서 반복 실행(다음 스텝 자동 선택).</li>
+      </ul>
+
+      <h3>가드레일 — Claude Code 훅 <span class="id">.claude/settings.json</span></h3>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>훅</th><th>시점</th><th>동작</th><th>스크립트</th></tr></thead>
+          <tbody>
+            <tr><td>SessionStart</td><td>세션 시작</td><td>병합된 로컬 브랜치 자동 정리</td><td class="id">prune-merged-branches.sh</td></tr>
+            <tr><td>Stop</td><td>매 턴 종료</td><td><span class="m">작업로그.md</span> 오늘 커밋 섹션 재생성</td><td class="id">worklog.sh</td></tr>
+            <tr><td>PreToolUse (Edit·Write)</td><td>파일 편집 직전</td><td><span class="m">main</span>에서 코드 소스 편집 시 승인 프롬프트</td><td class="id">hook-code-branch-guard.sh</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>검증 게이트</h3>
+      <p><span class="m">verify.sh</span> (49/0/0) · <span class="m">verify.sh --code-only</span> (41/0/0) · <span class="m">check-docs.sh</span> (문서 정합 11/0/0) · backend <span class="m">npm test</span> (142) · frontend <span class="m">node --test</span> (106) · agent <span class="m">pytest -m "not network"</span> (80) · <span class="m">npm run build</span> / <span class="m">build:demo</span>. FAIL 하나라도 있으면 커밋하지 않고, SKIP은 커밋 메시지에 명시.</p>
+
+      <h3>브랜치 · PR · 설계 문서 방법론</h3>
+      <p><span class="m">feature/&lt;주제&gt; → PR → main</span>. Git Flow·<span class="m">develop</span> 미채택(0023, 1인 프로젝트라 오버헤드 대비 이득 없음). <span class="m">main</span> 직접 커밋·force push 금지. <b>PR 병합은 사람이</b> 한다. 설계 문서는 C4/arc42 방식으로 뷰를 나눈다 — 드라이버 / 컨테이너 / 컴포넌트 / 런타임 / 데이터 / 횡단 / 배포 / 진화 / 결정 이력.</p>
+    </section>
+
+    <!-- 4 -->
+    <section id="s4">
+      <div class="sec-head"><span class="num">04</span><h2>설계 — 결과 구조, 그리고 그 구조가 아직 감당 못 하는 지점</h2></div>
+      <p class="sec-sub">컨테이너 3개 + 로컬 SQLite. 레이어드, 프로세스 분리, 로컬 우선. 4-5는 같은 구조의 약점을 원인까지 되짚는다.</p>
+
+      <div class="diagram">
+        <pre class="mermaid">
+flowchart TB
+  U([사용자 · Win/mac/Linux])
+  U --> EL["Electron + React 셸<br/>위젯 셸 · 사이드바"]
+  EL -->|"HTTP REST :3000/api"| API["Node.js + Express<br/>routes → services → db"]
+  API --> SQLITE[("로컬 SQLite (WAL)<br/>진실의 원천")]
+  API -. 연결 배선만 .-> SUPA[("Supabase · Week 10+")]
+  AGENT["Python 에이전트<br/>sync · classify · daily_brief"] --> SQLITE
+  AGENT -. "OAuth · 읽기전용" .-> EXT["Gmail · Google Calendar"]
+  AGENT -. "Token" .-> NO["Notion REST"]
+  AGENT -. "API Key" .-> CL["Claude API"]
+  LAUNCHD["launchd · 07:30 · WatchPaths"] -. 트리거 .-> AGENT
+        </pre>
+      </div>
+
+      <h4>레이어</h4>
+      <ul>
+        <li><b>프론트</b> — <span class="m">widgets/views/*</span> → 도메인 store(zustand: <span class="m">useTaskStore · useOkrStore · useAgentStore · useLayoutStore · useUiStore …</span>) → <span class="m">api/client.js</span>. 셸: <span class="m">AppShell → Sidebar / TopicView → WidgetShell → WidgetHost → WidgetFrame → 뷰</span>.</li>
+        <li><b>백엔드</b> — <span class="m">server.js → routes/api.js → routes/* → services/* → db.js → db/index.js (싱글턴) → schema.sql</span>. 수명주기 핸들러(<span class="m">lifecycle.js</span>) — 미처리 예외 안전 종료, SIGTERM/SIGINT graceful shutdown + WAL 체크포인트.</li>
+        <li><b>에이전트</b> — <span class="m">trigger.py → sync.py → services/{gmail,calendar}.py → agent/db.py</span>, <span class="m">daily_brief.py → classify.py → services/{claude,notion}.py</span>.</li>
+      </ul>
+
+      <h4>데이터 모델</h4>
+      <p>초기 6테이블 — <span class="m">projects · tasks · calendar_events · emails · briefs · sync_logs</span> (날짜는 전부 <span class="m">TEXT</span> + ISO8601). 개인 OS 추가 — <span class="m">task_tags</span>(source ∈ {user, agent}) · <span class="m">objectives</span> · <span class="m">key_results</span> · <span class="m">kr_snapshots</span>. 마이그레이션은 <span class="m">PRAGMA user_version</span> 인라인 러너. 단일 원천은 <span class="m">backend/db/schema.sql</span>.</p>
+
+      <h4>경계 · 횡단 관심사</h4>
+      <ul>
+        <li><b>에이전트 경계</b> — 외부 API는 읽기 전용(ACL). 브리핑 저장만 Notion에 씀. 백엔드와 SQLite를 공유하되 에이전트는 <span class="m">task_tags</span> 쓰기만 예외(0029).</li>
+        <li><b>보안</b> — 렌더러에 시크릿·Node 노출 없음. OAuth 토큰은 Fernet 암호화 JSON(<span class="m">TOKEN_ENCRYPTION_KEY</span>, 0024). 마크다운은 서버 토큰화 후 렌더 — 파서·HTML 주입 없음(0031).</li>
+        <li><b>오류</b> — <span class="m">errors.js</span> → 400 / 404 / 500 한국어. <b>빈 결과</b> — 브리핑 없음은 404가 아니라 <span class="m">200 + { brief: null }</span>(0025).</li>
+        <li><b>웹 데모</b> — <span class="m">VITE_DEMO</span> 빌드에서 <span class="m">demoClient.js</span> 인메모리 목이 백엔드를 대체(0026), GitHub Pages 배포.</li>
+      </ul>
+
+      <h3>4-5. 구조가 아직 감당 못 하는 지점</h3>
+      <p>4-1~4-4는 지금 구조를 <b>있는 그대로</b> 그렸다. 이 절은 그 구조가 아직 감당하지 못하는 지점을 <b>원인 → 영향 → 설계 보완</b> 순으로 되짚는다. 공통 원인은 하나다: <b>로컬 단일 사용자 · 1인 개발 · 마감(C-1·C-2)</b> 가정 아래 "지금은 안 해도 되는 것"으로 미룬 것들이며, 다중 사용자(Phase E)·패키징 배포로 가면 되짚어야 한다. 이 절은 4-1~4-4 스냅샷에 대한 주석이고, 실행 항목은 §6이 추적한다. 2026-09-10 코드 리뷰 시점 판단.</p>
+
+      <div class="note good">
+        <span class="tag">대조군 — 잘 막힌 곳</span>
+        <p>외부에 노출되는 유일한 "경로를 받는" 표면인 파일 트리·문서 뷰(§5 P9)는 <span class="m">services/{tree,docs}.js</span>에서 심링크 스킵 · 세그먼트별 <span class="m">..</span> 검사 · route 레이어 재디코드 금지(<span class="m">%252e</span> 우회 차단) · <span class="m">realpathSync</span> 루트 이탈 재확인 · 깊이·항목·1MB 상한으로 다층 방어한다. 같은 마감 압박 아래에서도 여기는 미루지 않았다.</p>
+      </div>
+
+      <h4>보안 · 안전성</h4>
+      <div class="gap-list">
+        <div class="gap">
+          <p class="gap-claim"><span class="id">S1</span> 백엔드가 로컬 네트워크에 열려 있다</p>
+          <dl>
+            <dt>원인</dt><dd>로컬 HTTP REST(0004) + 인증 미도입은 로컬 단일 사용자 가정(0015) 아래 <b>의도한</b> 결정. 다만 <span class="m">server.js</span>의 <span class="m">app.listen(PORT, cb)</span>가 host 인자 없이 전 인터페이스(<span class="m">0.0.0.0</span>) 바인딩되는 건 Express 기본값을 그냥 둔 것이고, 되짚은 적 없다.</dd>
+            <dt>영향</dt><dd>같은 머신의 다른 프로세스뿐 아니라 <b>같은 Wi-Fi의 다른 기기</b>가 <span class="m">:3000/api</span>로 전체 데이터를 읽고 쓸 수 있다.</dd>
+            <dt>설계 보완</dt><dd><span class="m">app.listen(PORT, '127.0.0.1')</span>로 루프백 고정. 패키징 토폴로지에서 ADR-0016 2항으로 못박는다.</dd>
+          </dl>
+        </div>
+        <div class="gap">
+          <p class="gap-claim"><span class="id">S2</span> CORS가 <span class="m">Origin: null</span>을 모든 빌드에서 허용한다</p>
+          <dl>
+            <dt>원인</dt><dd>패키징된 Electron이 <span class="m">file://</span>에서 렌더러를 로드해(데스크톱 프로세스 토폴로지, 0016 영역) <span class="m">fetch</span>가 <span class="m">Origin: null</span>을 보낸다. 이 예외를 <span class="m">middleware/cors.js</span>에 환경 분기 없이 넣어서, 웹 데모(0026)·개발 빌드까지 그대로 상속했다.</dd>
+            <dt>영향</dt><dd>브라우저에서 열린 샌드박스 iframe·로컬 HTML 파일도 동일한 <span class="m">Access-Control-Allow-Origin</span>을 받는다.</dd>
+            <dt>설계 보완</dt><dd><span class="m">null</span> 허용을 prod 패키지 빌드로 한정하는 환경 분기.</dd>
+          </dl>
+        </div>
+        <div class="gap">
+          <p class="gap-claim"><span class="id">S3</span> 에이전트의 사용자 태그 비침범이 트리거가 아닌 코드로만 지켜진다</p>
+          <dl>
+            <dt>원인</dt><dd>PO-3(0029, §2-3 서사)에서 결정. <span class="m">source</span> 값은 스키마 CHECK로 강제되지만, "이미 사용자 태그가 붙은 할 일에는 에이전트가 손대지 않는다"는 <b>행 단위 불변식</b>은 최소 마이그레이션 전략(0018)이 트리거를 피하는 방향이라 애플리케이션 층에 남았다.</dd>
+            <dt>영향</dt><dd><span class="m">add_agent_tags</span>(태그 0개인 할 일만) + <span class="m">classify.py</span>(환각 id 방어) + <span class="m">get_untagged_tasks</span>(<span class="m">NOT EXISTS</span>)의 3중 가드가 뚫리거나 새 쓰기 경로가 생기면, §2-3이 우려하던 상황이 다시 열린다.</dd>
+            <dt>설계 보완</dt><dd>"이미 <span class="m">source='user'</span> 태그가 있으면 <span class="m">source='agent'</span> INSERT를 무시" 트리거를 마이그레이션으로 추가. 침범 시도 회귀 테스트를 <span class="m">agent</span> 스위트에 고정.</dd>
+          </dl>
+        </div>
+        <div class="gap">
+          <p class="gap-claim"><span class="id">S4</span> OAuth 토큰 암호화 키에 회전 절차가 없다</p>
+          <dl>
+            <dt>원인</dt><dd>비용 0 목표(C-4) 아래 토큰을 Fernet 대칭키 1개로 암호화한 파일에 뒀다(0024). 키 회전·유출 대응은 학습·발표 산출물 범위(C-5)에서 빠졌다.</dd>
+            <dt>영향</dt><dd><span class="m">TOKEN_ENCRYPTION_KEY</span> 하나가 유출되면 Gmail·Calendar 읽기 토큰 전부가 풀린다.</dd>
+            <dt>설계 보완</dt><dd>키 회전 런북, 유출 시 재인증 경로 문서화. (토큰 파일 권한 <span class="m">0600</span>은 이미 <span class="m">google_oauth.py</span>에서 <span class="m">chmod</span>로 설정 중 — 회전만 남았다.)</dd>
+          </dl>
+        </div>
+        <div class="gap">
+          <p class="gap-claim"><span class="id">S5</span> 시크릿 커밋 방지가 <span class="m">.gitignore</span> 한 겹뿐이다</p>
+          <dl>
+            <dt>원인</dt><dd>공개 저장소라 시크릿·개인정보 커밋 금지(C-6)인데, 실제 방어는 <span class="m">.gitignore</span>와 브랜치 가드 훅뿐이다. 훅은 <span class="m">main</span> 편집을 막는 용도지 시크릿 스캐너가 아니다.</dd>
+            <dt>영향</dt><dd><span class="m">.env</span>는 무시되지만, 패턴에서 벗어난 새 시크릿 파일은 그대로 커밋될 수 있다.</dd>
+            <dt>설계 보완</dt><dd>pre-commit 시크릿 스캔(gitleaks 등) 훅 추가.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <h4>기술 부채 · 품질</h4>
+      <div class="gap-list">
+        <div class="gap debt">
+          <p class="gap-claim"><span class="id">D1</span> 데모↔실서버 패리티가 "경로 존재"까지만 자동화됐다</p>
+          <dl>
+            <dt>원인</dt><dd>웹 데모가 인메모리 목으로 백엔드를 대체하고(0026) "새 엔드포인트마다 목도 같이 갱신"을 수작업 규율로 뒀다. 커밋 <span class="m">0a1435c</span>가 그중 라우트 목록 집합 비교만 자동화했다.</dd>
+            <dt>영향</dt><dd>응답 스키마·상태코드·에러 봉투가 목과 실서버 사이에서 드리프트해도 CI가 못 잡는다.</dd>
+            <dt>설계 보완</dt><dd>대표 엔드포인트 응답 형태를 스냅샷 비교하는 2단계를 <span class="m">check-demo-parity.mjs</span>에 추가.</dd>
+          </dl>
+        </div>
+        <div class="gap debt">
+          <p class="gap-claim"><span class="id">D2</span> REST 오류가 단일 봉투(<span class="m">{ error: "한국어" }</span>)다</p>
+          <dl>
+            <dt>원인</dt><dd>오류 계약(RFC 9457)을 ADR-0017로 제안만 하고, 마감(C-2) 앞에서 채택을 미뤘다.</dd>
+            <dt>영향</dt><dd>클라이언트가 검증 실패·미존재·서버 오류를 코드로 구분하지 못하고 메시지 문자열에 의존한다.</dd>
+            <dt>설계 보완</dt><dd>ADR-0017 채택 — problem+json으로 <span class="m">type</span>/<span class="m">status</span> 분리.</dd>
+          </dl>
+        </div>
+        <div class="gap debt">
+          <p class="gap-claim"><span class="id">D3</span> 레이어·경계 규칙에 자동 검사가 없다</p>
+          <dl>
+            <dt>원인</dt><dd>1인 개발(C-1)이라 "렌더러는 REST로만", "에이전트는 외부 API 읽기 전용", "쓰기 주체 분리"를 코드 리뷰로 갈음해 왔다.</dd>
+            <dt>영향</dt><dd>위 경계 중 하나가 리팩터링에서 깨져도 테스트가 통과할 수 있다 (S3이 그 구체 사례).</dd>
+            <dt>설계 보완</dt><dd>피트니스 함수(0019, 제안 상태) 채택 — import 방향·금지 의존성을 CI 검사로.</dd>
+          </dl>
+        </div>
+        <div class="gap debt">
+          <p class="gap-claim"><span class="id">D4</span> 수동 검증 백로그(TC-P3~P9-M)가 실행되지 않았다</p>
+          <dl>
+            <dt>원인</dt><dd>1인 개발(C-1)이라 수동 QA 시간이 빌드 시간과 경쟁한다. 자동 테스트는 유지했지만 실제 Electron 앱 확인은 밀렸다.</dd>
+            <dt>영향</dt><dd>P3~P9 기능이 자동 테스트는 통과하나, 통합된 앱에서 동작을 눈으로 확인한 기록이 없다.</dd>
+            <dt>설계 보완</dt><dd>§6 로컬 수동 검증 백로그 — 통합 실행 스크립트(<span class="m">scripts/dev.sh</span>) 위에서 일괄 소화.</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section id="s5">
+      <div class="sec-head"><span class="num">05</span><h2>서비스 — 무엇을 만들었나</h2></div>
+      <p class="sec-sub">각 기능을 왜(원초 고민) / 어떻게(핵심 구현) / 툴 / 상태로. 단계: B·C = 대시보드 OS, D = 에이전트, P = 개인 생산성 OS.</p>
+
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>기능</th><th>왜</th><th>핵심 구현</th><th>툴·플러그인</th><th>단계</th></tr></thead>
+          <tbody>
+            <tr><td><b>할일 CRUD + 프로젝트 링크</b></td><td class="id">Q1</td><td><span class="m">routes/services/tasks.js</span>, <span class="m">useTaskStore</span>, 낙관적 갱신+롤백</td><td>Express, better-sqlite3, zustand</td><td><span class="pill ok">B3·C2</span></td></tr>
+            <tr><td><b>프로젝트 추적 + 진행바</b></td><td class="id">Q1</td><td><span class="m">ProjectCard·ProjectForm</span>, 슬라이더 편집</td><td>zustand</td><td><span class="pill ok">C2</span></td></tr>
+            <tr><td><b>캘린더 위젯</b></td><td class="id">Q1</td><td><span class="m">CalendarWidget</span>, <span class="m">calendar_events</span> 캐시</td><td>—</td><td><span class="pill ok">C3</span></td></tr>
+            <tr><td><b>다이어그램 뷰어</b></td><td class="id">Q7</td><td><span class="m">DiagramPanel</span> + <span class="m">GET /api/diagrams</span> (읽기 전용 mermaid 파싱)</td><td>mermaid 11 (동적 import)</td><td><span class="pill ok">C4</span></td></tr>
+            <tr><td><b>위젯 셸</b> (배치·이동·리사이즈·저장)</td><td class="id">Q6</td><td><span class="m">WidgetShell/Host/Frame/Picker</span>, <span class="m">useLayoutStore</span>, 훼손 시 폴백, 위젯별 <span class="m">ErrorBoundary</span></td><td>react-grid-layout 2.2.4, react-resizable</td><td><span class="pill ok">C5</span></td></tr>
+            <tr><td><b>위젯별 테마·표시 옵션</b></td><td class="id">Q8</td><td><span class="m">WidgetSettings</span> 모달, <span class="m">themeToVars</span> 화이트리스트, <span class="m">configSchema</span> 자동 폼</td><td>스코프 CSS 변수</td><td><span class="pill wait">C6 · 재검토 §5-2</span></td></tr>
+            <tr><td><b>사이드바 셸 + 주제별 레이아웃</b></td><td class="id">Q6·Q8</td><td><span class="m">AppShell·Sidebar·TopicView</span>, <span class="m">useUiStore.activeTopic</span>, 레이아웃 v1→v2 마이그레이션</td><td>—</td><td><span class="pill ok">P4.5 · #45</span></td></tr>
+            <tr><td><b>라이트 비주얼 시스템</b></td><td class="id">Q8</td><td><span class="m">styles.css :root</span> 팔레트 다크→라이트, hex→<span class="m">var(--*)</span> 치환(10파일)</td><td>—</td><td><span class="pill ok">P3</span></td></tr>
+            <tr><td><b>공통 컴포넌트</b></td><td class="id">Q8</td><td><span class="m">StatTile·DotProgress·Chip</span> (+ 순수 <span class="m">dotFill.js</span>)</td><td>인라인 SVG</td><td><span class="pill ok">P4 · #42</span></td></tr>
+            <tr><td><b>단일 캐시 + 칸반 뷰</b></td><td class="id">Q3</td><td><span class="m">taskCache.js</span>, <span class="m">byId/order</span> 정본 + <span class="m">tasks</span> 파생 미러, 리스트/보드 토글</td><td>zustand</td><td><span class="pill ok">P5 · #47</span></td></tr>
+            <tr><td><b>할일 자동 분류</b> (자유 태그)</td><td class="id">Q4</td><td><span class="m">task_tags</span> (<span class="m">source ∈ {user,agent}</span>, 에이전트 불가침), <span class="m">POST/DELETE /api/tasks/:id/tags</span>, <span class="m">agent/classify.py</span> 배치, 칩 필터 · <b>서사 §2 · 약점 §4-5 S3</b></td><td>Claude API (배치 1회/일)</td><td><span class="pill ok">P6 · #52</span></td></tr>
+            <tr><td><b>에이전트 활동 위젯 + "지금 실행"</b></td><td class="id">Q5</td><td><span class="m">GET/POST /api/agent/*</span>, <span class="m">AgentActivityWidgetView</span>, <span class="m">agent/trigger.py</span>, <span class="m">.triggers/run-now</span> 플래그</td><td>launchd WatchPaths, 파일 플래그</td><td><span class="pill ok">P7 · #55</span></td></tr>
+            <tr><td><b>OKR + 주간 플래너 + 라인차트</b></td><td class="id">Q4</td><td><span class="m">objectives/key_results/kr_snapshots</span>, <span class="m">GET /api/okr · /api/planner/weekly</span>, 월별 적재는 백엔드 자체</td><td>인라인 SVG <span class="m">LineChart</span></td><td><span class="pill ok">P8 · #58</span></td></tr>
+            <tr><td><b>진행 현황 · 파일 탐색 뷰</b></td><td class="id">Q7</td><td><span class="m">GET /api/tree · /api/docs/:path</span> (의존성 0 토크나이저, <span class="m">.md</span>만, 상한 깊이 8·2000항목·1MB), <span class="m">progress</span> 위젯(좌 트리/우 본문) · <b>방어 §4-5</b></td><td>파서·<span class="m">dangerouslySetInnerHTML</span> 없음</td><td><span class="pill ok">P9 · #59</span></td></tr>
+            <tr><td><b>Daily Brief 에이전트</b></td><td class="id">Q1·Q2</td><td><span class="m">sync.py → daily_brief.py → Claude → briefs → Notion</span>, <span class="m">GET /api/brief/today</span></td><td>anthropic SDK (<span class="m">claude-sonnet-5</span>), launchd</td><td><span class="pill ok">D3</span></td></tr>
+            <tr><td><b>Gmail·Calendar 실 수집</b></td><td class="id">Q1</td><td><span class="m">agent/services/{gmail,calendar}.py</span>, OAuth → <span class="m">emails·calendar_events</span> upsert 캐시</td><td>google-api-python-client, google-auth-oauthlib, cryptography (Fernet)</td><td><span class="pill ok">D2-b</span></td></tr>
+            <tr><td><b>Notion 브리핑 저장</b></td><td class="id">Q1</td><td><span class="m">services/notion.py</span> REST 직접, 미설정 시 스킵</td><td>requests (<span class="m">Notion-Version: 2022-06-28</span>)</td><td><span class="pill ok">D3</span></td></tr>
+            <tr><td><b>웹 데모 모드</b></td><td class="id">C-5</td><td><span class="m">demoClient.js / demoData.js</span> 인메모리 목, 새 엔드포인트마다 목도 갱신 · <b>패리티 §4-5 D1</b></td><td>Vite <span class="m">VITE_DEMO</span>, GitHub Pages</td><td><span class="pill ok">ADR-0026</span></td></tr>
+            <tr><td><b>개발 파이프라인</b> (메타 기능)</td><td class="id">C-1</td><td><span class="m">.claude/agents/*</span>, <span class="m">/feature · /build-next</span>, 훅 3종, <span class="m">worklog · slack-notify</span></td><td>Claude Code, GitHub Actions CI, launchd, Slack webhook</td><td><span class="pill ok">Phase A</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>도구 · 플러그인 총목록</h3>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>영역</th><th>스택</th></tr></thead>
+          <tbody>
+            <tr><td><b>프론트</b></td><td>Electron 27 · React 18 · Vite 7 + <span class="m">@vitejs/plugin-react</span> · zustand 4 · react-grid-layout 2.2.4 · react-resizable 3.2 · mermaid 11 · concurrently · cross-env · wait-on · electron-builder</td></tr>
+            <tr><td><b>백엔드</b></td><td>Node (CI 22) · Express 4 · better-sqlite3 13 · <span class="m">@supabase/supabase-js</span> 2 (연결 배선만) · supertest · nodemon</td></tr>
+            <tr><td><b>에이전트</b></td><td>Python (CI 3.12 / 로컬 3.14) · anthropic SDK ≥0.49 · python-dotenv · google-api-python-client 2.200 · google-auth-oauthlib 1.4 · google-auth-httplib2 · cryptography 50 (Fernet) · requests (Notion REST) · apscheduler · pytest</td></tr>
+            <tr><td><b>자동화·운영</b></td><td>Claude Code (서브에이전트 팀 + slash commands + hooks) · GitHub Actions (<span class="m">test.yml</span>) · launchd plist 3종 (<span class="m">dailybrief · runnow · worklog</span>) · Slack incoming webhook · <span class="m">verify.sh · check-docs.sh</span></td></tr>
+            <tr><td><b>디자인</b></td><td>Claude Design 캔버스 — <span class="m">design-p2/*.dc.html</span> 6 아트보드 (개요·할일·OKR·에이전트 활동·진행 현황·공통 컴포넌트)</td></tr>
+            <tr><td><b>문서 방법론</b></td><td>C4/arc42 뷰 · ADR (결정 1개 = 파일 1개) · FR/NFR/TRACEABILITY/TEST_PLAN · COURSE_MAPPING</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>5-2. 재검토 노트</h3>
+      <p>역 계획서라면 "만들었지만 다시 볼 것"도 남긴다. 지금 시점의 판단이며, 바뀌면 갱신한다.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>기능</th><th>판단</th><th>근거 · 함의</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>위젯별 테마·표시 옵션 (C6)</b></td>
+              <td><span class="pill wait">유지 · 우선순위 낮음</span></td>
+              <td>사용자 진술: "유지는 되되 우선순위가 낮다." 방향이 틀린 건 아니다 — 인프라(<span class="m">themeToVars</span> 화이트리스트·<span class="m">configSchema</span> 자동 폼·프리셋)는 재사용되고, <b>표시 옵션</b>(정렬·완료 숨김)은 실제로 쓰인다. 다만 <b>위젯별 색·모서리 커스터마이즈</b>는 갈망 목록에 없었다(§1). 앞으로 다듬기 시간을 여기 더 쓰지 않는다 — 전역 테마 1벌(라이트/다크)로 충분. 새 위젯을 낼 때 <span class="m">theme</span> 탭 확장에 시간 쓰지 말 것.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="color:var(--faint); font-family:var(--sans); font-size:13px">이 노트가 커지면 별도 <span class="m">RETROSPECTIVE.md</span>로 분리한다.</p>
+    </section>
+
+    <!-- 6 -->
+    <section id="s6">
+      <div class="sec-head"><span class="num">06</span><h2>타임라인 · 다음 단계</h2></div>
+      <p class="sec-sub">진행 순서와 남은 일. §4-5 약점의 실행 항목은 여기서 추적한다.</p>
+
+      <pre class="block">Phase A  환경 · 자동화 인프라
+  → Phase B  Vite+React 마운트(B1) · better-sqlite3(B2) · 할일 배선(B3)
+  → Phase C  CORS·로깅(C1) · 프로젝트(C2) · 캘린더(C3) · 다이어그램(C4) · 위젯 셸(C5) · 커스터마이즈(C6)
+  → Phase D  Google OAuth·실 수집(D2-b) · Daily Brief·Notion(D3)
+  → 웹 데모 배포 (ADR-0026)
+  → 개인 생산성 OS
+       P0 문서 → P1 ADR → P2 디자인 → P3 라이트 테마 → P4 공통 컴포넌트
+       → P4.5 사이드바 셸 → P5 단일 캐시·칸반 → P6 자동 분류 → P7 에이전트 활동
+       → P8 OKR·주간 플래너 → P9 진행 현황·파일 탐색  (#59 병합)</pre>
+
+      <h4>남은 일</h4>
+      <ul>
+        <li><b>앱 통합</b> (<span class="m">NEXT_SESSION.md §4-3</span>) — 통합 실행 스크립트 <span class="m">bash scripts/dev.sh</span> ✅ (ADR-0016 1항 채택). 남은 것: ADR-0016 2~4항(백엔드 실행 주체·재기동·포트·<b>루프백 바인딩 §4-5 S1</b>)·다중 <span class="m">BrowserWindow</span></li>
+        <li><b>데모↔실서버 패리티</b> — 경로 집합 비교는 <span class="m">scripts/check-demo-parity.mjs</span>로 자동화됨(커밋 <span class="m">0a1435c</span>). 남은 것: 응답 스키마·상태코드 드리프트 검사(<b>§4-5 D1</b>)</li>
+        <li><b>로컬 수동 검증 백로그</b> — TC-P3~P9-M을 실제 Electron 앱에서 확인해 <span class="m">PROGRESS.md · TEST_PLAN.md</span> 반영(<b>§4-5 D4</b>)</li>
+        <li><b>보안 보완</b> — <b>§4-5 S1~S5</b>: 루프백 바인딩 · CORS 환경 분기 · 태그 불변식 트리거 · 토큰 키 회전 런북 · pre-commit 시크릿 스캔</li>
+        <li><b>미결 결정</b> — §2-4 참조 (제안 ADR 0015·0016 2~4항·0017·0019·0033 + PO-10)</li>
+      </ul>
+    </section>
+
+    <footer class="doc">
+      <p>단일 원천: <span class="m">PROGRESS.md · TRACEABILITY.md · git log · docs/product/architecture/adr/</span>. 이 문서는 그것들을 하나의 서사로 엮은 상위 뷰이며, 세부와 어긋나면 원천 문서가 맞다.</p>
+      <div class="links">
+        <a href="#s1">VISION · PERSONAL_OS · DASHBOARD_OS</a>
+        <a href="#s2">AS_IS · CONSTRAINTS · RISKS</a>
+        <a href="#s3">ORCHESTRATION · AUTOMATION</a>
+        <a href="#s4">ARCHITECTURE · DESIGN · adr/README</a>
+        <a href="#s6">NEXT_SESSION · ROADMAP · TEST_PLAN · COURSE_MAPPING</a>
+      </div>
+      <p style="margin-top:18px; color: var(--faint)">작성 2026-09-09 · 개정 2026-09-10 (§4-5 약점 추가) · my-setup-proj 회고 기획서</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('nav.rail a'));
+    if (!links.length) return;
+    var map = {};
+    links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (l) { l.classList.remove('active'); });
+          if (map[e.target.id]) map[e.target.id].classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function (s) { obs.observe(s); });
+  })();
+</script>
+<script>
+  (function () {
+    if (!window.mermaid) return;
+    var stamp = document.documentElement.getAttribute('data-theme');
+    var dark = stamp === 'dark' || (stamp !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: dark ? 'dark' : 'neutral',
+      themeVariables: { fontFamily: 'IBM Plex Sans, system-ui, sans-serif' }
+    });
+  })();
+</script>
+
+</body>
+</html>
