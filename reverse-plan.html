@@ -79,8 +79,8 @@
     background: var(--ground);
     color: var(--ink);
     font-family: var(--serif);
-    font-size: 17px;
-    line-height: 1.62;
+    font-size: 19px;
+    line-height: 1.72;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -192,22 +192,23 @@
   h2 {
     font-family: var(--sans);
     font-weight: 600;
-    font-size: 1.62rem;
+    font-size: 1.86rem;
     letter-spacing: -0.015em;
-    line-height: 1.2;
+    line-height: 1.22;
     text-wrap: balance;
     margin: 0;
   }
   .sec-sub {
     font-family: var(--sans);
-    font-size: 14px;
+    font-size: 15.5px;
     color: var(--muted);
-    margin: 2px 0 30px 0;
+    margin: 4px 0 32px 0;
+    line-height: 1.55;
   }
   h3 {
     font-family: var(--sans);
     font-weight: 600;
-    font-size: 1.06rem;
+    font-size: 1.22rem;
     letter-spacing: -0.01em;
     margin: 36px 0 12px;
   }
@@ -287,7 +288,7 @@
 
   /* ---- tables ---- */
   .tbl-scroll { overflow-x: auto; margin: 4px 0 28px; border: 1px solid var(--border); border-radius: 8px; }
-  table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 13.5px; }
+  table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 15px; }
   thead th {
     text-align: left;
     font-weight: 600;
@@ -492,6 +493,18 @@
         <a href="#s4b"><b>04b · 문제 한눈에 보기</b><span>§4-5 약점 9건을 원인 기준으로 도식화</span></a>
         <a href="#s6b"><b>06b · 성과 · 끝나면 남는 것</b><span>수치화된 완성도 + 프로젝트를 마치면 얻는 5가지</span></a>
       </div>
+    </div>
+
+    <div class="diagram" style="margin:30px 0 8px">
+      <p style="font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 14px">이 문서의 흐름 — 한눈에 보기</p>
+      <pre class="mermaid">
+flowchart LR
+  A["01 원초적 고민<br/>진척이 아니라 지식"] --> B["01b 고객과 니즈<br/>사용자 · 평가자 · 열람자"]
+  B --> C["02 의사결정<br/>ADR 35건"]
+  C --> D["04 설계<br/>구조 + 약점 9건"]
+  D --> E["05 서비스<br/>실제 기능 목록"]
+  E --> F["06b 성과 · 결과<br/>수치 8개 + 얻는 것 5가지"]
+      </pre>
     </div>
 
     <!-- 1 -->
