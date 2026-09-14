@@ -1,9 +1,6 @@
 # 🔄 역 계획서 — 왜 만들었고, 어떻게 지었고, 무엇을 썼는가
 
-> **이 문서는 [gamercross/my-setup-proj](https://github.com/gamercross/my-setup-proj) 의 `docs/REVERSE_PLAN.md` 를**
-> **이 저장소로 옮겨 보관한 사본이다.** 코드·ADR·나머지 문서의 원본은 여전히 원 저장소에 있으며,
-> 아래 링크는 전부 그쪽을 가리킨다. 정돈된 읽기용 페이지는 [reverse-plan.html](reverse-plan.html) ·
-> 쇼케이스는 [index.html](index.html).
+> **이 문서는 [gamercross/my-setup-proj](https://github.com/gamercross/my-setup-proj) 의 `docs/REVERSE_PLAN.md` 를 이 저장소로 옮겨 보관한 사본이다.** 코드·ADR·나머지 문서의 원본은 여전히 원 저장소에 있으며, 아래 링크는 전부 그쪽을 가리킨다. 정돈된 읽기용 페이지는 [reverse-plan.html](reverse-plan.html) · 쇼케이스는 [index.html](index.html).
 >
 > 이미 만들어진 시스템을 거꾸로 되짚어 기반을 세우는 문서.
 > **원초적 고민 → 의사결정 문제 → 문제해결방법 → 설계 → 서비스** 순서로 읽는다.
@@ -25,45 +22,64 @@
 
 ## 1. 원초적 고민 — 무엇이 문제였나
 
-### 1-0. 중심 줄기: "내가 뭐가 진척되는지 감이 안 온다"
+### 1-0. 중심 줄기: 경험을 지식으로, 지식을 역량으로 — 그 방향을 한눈에
 
-문서를 역추론하면 "도구가 흩어져 있다" 가 먼저 나오지만, 사용자에게 직접 물었을 때
-발단이 된 장면은 그게 아니었다 (2026-09-09 인터뷰):
+**2026-09-14 재정의.** 진척 가시성("내가 뭐가 진척되는지 감이 안 온다")은 이 프로젝트가
+붙잡고 있던 증상이었지 목적이 아니었다. 사용자가 직접 바로잡은 문장이 이 문서의 진짜
+중심 줄기다:
 
-> **"내가 뭐가 진척되는지 감이 안 와서."**
+> **"우리의 목적은 진척도를 보는 것이 아닌, 자신의 프로젝트나 경험들이 모인 지식을
+> 시각화하고 도식화해서 지식 가치를 올리는 것. 지식들이 모여서 자신의 역량을 증진시키고
+> 그 방향을 빠르게 한눈에 보이게 하는 것."**
+> **"목적의 근간은 자기계발을 더욱 효과적으로, 그리고 경험에 대한 지식을 구체화하고
+> 가치 형성을 위해서 이루어진다."**
+> — 사용자 진술, 2026-09-14
 
-그리고 이 감각은 **세 영역에서 같이** 나타났다 — 같은 불편의 여러 얼굴이다:
+즉 이 프로젝트가 다루는 대상은 **완료율이 아니라 지식**이다. 할일·프로젝트·OKR·에이전트
+활동·문서는 전부 "무엇을 겪었고 그로부터 무엇을 알게 됐는지"가 흩어지지 않고 쌓여
+보이게 하는 그릇이며, 그 축적이 역량으로 이어지는 방향을 한눈에 보여 주는 것이
+목적이다. "진척이 안 보인다"는 이 더 근본적인 결핍이 가장 먼저 만져진 표면이었을 뿐이다
+(2026-09-09 인터뷰):
 
-1. **개인 삶·일 전반** — 이번 주에 내가 뭘 했는지, 목표에 얼마나 가까워졌는지.
-2. **공부·강의 진도** — 3개 강의의 주차와 과제 마감을 따라가는 감각.
-3. **이 프로젝트 자체의 개발 진도** — P0~P9 중 어디까지 왔고 다음이 뭔지.
+> "내가 뭐가 진척되는지 감이 안 와서." — 최초 인터뷰, 2026-09-09 (§1-0 이전 판)
 
-그래서 이 프로젝트의 메타 문장이 성립한다:
-**"이 저장소의 `PROGRESS.md` 가 프로젝트에 해 주는 일을, 앱이 사용자에게 해 준다"**
-([PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) T3·T6 메타). OKR·주간 플래너는 삶의 진척을,
-진행 현황·파일 탐색 뷰는 프로젝트 자신의 진척을 같은 방식으로 보여 준다.
+이 감각은 **세 영역에서 같이** 나타났다 — 지식이 쌓이는 자리가 셋으로 흩어져 있다는
+뜻이기도 하다:
+
+1. **개인 삶·일 전반** — 이번 주에 내가 뭘 겪었고 거기서 뭘 배웠는지.
+2. **공부·강의 진도** — 3개 강의에서 쌓이는 지식이 어디로 가는지.
+3. **이 프로젝트 자체의 개발 진도** — P0~P9 를 지나며 쌓인 결정·경험이 무엇을 남겼는지.
+
+그래서 이 프로젝트의 메타 문장은 이렇게 다시 읽는다:
+**"이 저장소의 `PROGRESS.md` 가 프로젝트에 해 주는 일 — 흩어진 작업을 하나의 지식
+서사로 엮는 일 — 을, 앱이 사용자 자신의 경험에도 해 준다"**
+([PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) T3·T6 메타). OKR·주간 플래너·기대정렬 체크인은
+삶에서 쌓이는 지식과 역량의 방향을, 진행 현황·파일 탐색 뷰는 프로젝트 자신이 쌓은
+지식(결정·근거·트레이드오프)을 같은 방식으로 보여 준다.
 
 ### 1-1. 파생 고민
 
 `VISION.md` 의 최종 그림 — "흩어진 생산성 도구를 한 앱으로 통합하고, 매일 아침
 AI 에이전트가 우선순위를 정리해 주는 데스크톱 셸" — 은 아래 불편들에서 나왔다.
-사용자 확인 결과 **8개 모두 실제 고민과 부합**하며, 중심 줄기(진척 가시성) 아래로
-Q3·Q4·Q5·Q7 이 묶인다.
+사용자 확인 결과 **8개 모두 실제 고민과 부합**하며, 중심 줄기(경험의 지식화·역량 방향
+가시화) 아래로 Q3·Q4·Q5·Q7 이 묶인다 — 당초 "진척 가시성" 으로 불렀던 묶음과 겉보기는
+같지만, §1-0 재정의 이후로는 "완료율이 보이는가" 가 아니라 "쌓인 지식이 한곳에서
+보이는가" 로 읽는다.
 
 | # | 원초적 고민 | 구체적 증상 | 묶임 | 출처 |
 |---|---|---|---|---|
 | Q1 | 생산성 도구가 흩어져 있다 | 할일·프로젝트·일정·메일·브리핑을 앱마다 따로 확인한다 | 통합 | [VISION.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/VISION.md) §목표 |
 | Q2 | 아침마다 우선순위 정리를 수동으로 한다 | "오늘 뭐부터 하지?" 를 매번 사람이 판단한다 | 자동 정리 | [VISION.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/VISION.md) 핵심기능 1 |
-| Q3 | 같은 할 일이 여러 뷰에 중복되고 따로 논다 | 한 곳에서 완료해도 나머지 뷰가 안 따라온다 | **진척 가시성** | [PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) §1 배경 1 |
-| Q4 | 정리가 전부 수동이다 | 카테고리·주간 버킷·OKR 대비 진행률을 손으로 만들어야 보인다 | **진척 가시성** | [PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) §1 배경 2 |
-| Q5 | 에이전트가 일하는 게 안 보인다 | sync·브리핑·Notion 저장이 `sync_logs` 와 로그 파일에만 남는다 | **진척 가시성** | [PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) §1 배경 3 |
+| Q3 | 같은 할 일이 여러 뷰에 중복되고 따로 논다 | 한 곳에서 완료해도 나머지 뷰가 안 따라온다 | **지식 가시화** | [PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) §1 배경 1 |
+| Q4 | 정리가 전부 수동이다 | 카테고리·주간 버킷·OKR 대비 진행률을 손으로 만들어야 보인다 | **지식 가시화** | [PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) §1 배경 2 |
+| Q5 | 에이전트가 일하는 게 안 보인다 | sync·브리핑·Notion 저장이 `sync_logs` 와 로그 파일에만 남는다 | **지식 가시화** | [PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) §1 배경 3 |
 | Q6 | 화면 배치가 고정이다 | 사용자마다 중요한 정보가 다른데 `Dashboard.jsx` 에 하드코딩돼 있다 | 개인화 | [DASHBOARD_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/DASHBOARD_OS.md) §1 |
-| Q7 | 프로젝트 구조·진행을 앱 안에서 못 본다 | 다이어그램·진행 본문이 저장소에만 있어 IDE 를 열어야 확인된다 | **진척 가시성** | [AS_IS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/AS_IS.md) G9 |
+| Q7 | 프로젝트 구조·진행을 앱 안에서 못 본다 | 다이어그램·진행 본문이 저장소에만 있어 IDE 를 열어야 확인된다 | **지식 가시화** | [AS_IS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/AS_IS.md) G9 |
 | Q8 | 룩이 임시다 | 대부분 인라인 스타일 + 슬레이트 다크. 참조 틀이 있었지만 구현이 못 따라갔다 | 완성도 | [PERSONAL_OS.md](https://github.com/gamercross/my-setup-proj/blob/main/docs/product/vision/PERSONAL_OS.md) §1 배경 4 |
 
 **갈망 신호 (사용자 진술).** "실제로 쓰면 가장 갈망할 기능" 을 물었을 때 고른 넷 —
 **Daily Brief · 칸반+단일 완료 · OKR·주간 플래너 · 진행 현황·파일 탐색 뷰** — 은
-전부 "정리·진척을 대신 보여 주는" 축에 있다. 위젯 커스터마이즈·태그·캘린더는
+전부 "쌓인 지식·경험을 대신 정리해 보여 주는" 축에 있다. 위젯 커스터마이즈·태그·캘린더는
 갈망 목록에 없었다. 즉 개인화(Q6)·완성도(Q8)는 필요조건이지 목적이 아니다.
 
 **원하는 최종 느낌 (사용자 진술).** Sunsama / Akiflow / 개인용 Linear 계열 —
@@ -406,8 +422,9 @@ flowchart TB
 | 단일 캐시 + 칸반 뷰 | Q3 | `taskCache.js`, `useTaskStore` `byId`/`order` 정본 + `tasks` 파생 미러, `TaskBoard` 리스트/보드 토글 | zustand | P5 ✅ (#47) |
 | 할일 자동 분류 (자유 태그) | Q4 | `task_tags` 테이블(`source ∈ {user,agent}`), `POST/DELETE /api/tasks/:id/tags`, `agent/classify.py` 배치, 태그 칩 + 필터 바 | Claude API (배치 1회/일) | P6 ✅ (#52) · 서사 §2-3 |
 | 에이전트 활동 위젯 + "지금 실행" | Q5 | `GET/POST /api/agent/*`, `AgentActivityWidgetView`, `useAgentStore`, `agent/trigger.py`, `agent/.triggers/run-now` 플래그 | launchd WatchPaths, 파일 플래그 | P7 ✅ (#55) |
-| OKR + 주간 플래너 + 라인차트 | Q4 | `objectives`/`key_results`/`kr_snapshots`, `GET /api/okr`·`/api/okr/trend`·CRUD·`GET /api/planner/weekly`, `kr_snapshots` 월별 적재는 백엔드 자체 | 인라인 SVG `LineChart`(`linePath.js`) | P8 ✅ (#58) |
+| OKR + 주간 플래너 + 라인차트 | Q4 | `objectives`/`key_results`/`kr_snapshots`, `GET /api/okr`·`/api/okr/trend`·CRUD·`GET /api/planner/weekly`, `kr_snapshots` 월별 적재는 백엔드 자체, 구글식 등급(`key_results.kind` committed/aspirational + `krGrade`/`objectiveGrade` 색상 밴드, ADR-0034) | 인라인 SVG `LineChart`(`linePath.js`) | P8 ✅ (#58) · 등급 ✅ (ADR-0034) |
 | 진행 현황 · 파일 탐색 뷰 | Q7 | `GET /api/tree` + `GET /api/docs/:path`(의존성 0 토크나이저, `.md` 만, 상한 깊이 8·항목 2000·1MB, 심링크 스킵), `progress` 위젯(좌 트리/우 본문, 분할선 드래그·패널 접기·섹션 접기) | 파서·`dangerouslySetInnerHTML` 없음 | P9 ✅ (#59) |
+| 기대정렬 체크인 (7질문 자기 점검) | Q4 | `expectation_checkins` 전용 테이블(자유 서술 7질문, 최소 1개 필수), `GET/POST/PUT/DELETE /api/checkins`, `CheckinWidgetView`·`useCheckinStore`(낙관적 갱신+롤백), 프로젝트/목표 선택 연결(느슨 FK) | zustand, better-sqlite3 | P10 ✅ (ADR-0035) |
 | Daily Brief 에이전트 | Q1, Q2 | `sync.py`(수집) → `daily_brief.py`(생성) → Claude → `briefs`(date upsert) → Notion, `GET /api/brief/today` | anthropic SDK(`claude-sonnet-5`, thinking adaptive), launchd | D3 ✅ |
 | Gmail·Calendar 실 수집 | Q1 | `agent/services/{gmail,calendar}.py`, OAuth 최초 로그인 → `emails`·`calendar_events` upsert 캐시 | google-api-python-client 2.200, google-auth-oauthlib 1.4, cryptography 50 (Fernet) | D2-b ✅ |
 | Notion 브리핑 저장 | Q1 | `services/notion.py` REST 직접 호출, 미설정 시 스킵 | requests (`Notion-Version: 2022-06-28`) | D3 ✅ |
@@ -478,4 +495,5 @@ Phase A (환경·자동화 인프라)
 
 ---
 
-**작성:** 2026-09-09 · **개정:** 2026-09-10 (§4-5 알려진 약점·보완 과제 추가)
+**작성:** 2026-09-09 · **개정:** 2026-09-10 (§4-5 알려진 약점·보완 과제 추가) ·
+2026-09-14 (§1-0 중심 줄기 재정의 — 진척 가시성 → 경험의 지식화·역량 방향 가시화)
