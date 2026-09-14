@@ -144,14 +144,19 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--accent);
-    margin: 0 0 18px;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
+  .eyebrow::before { content: "//"; opacity: .55; }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--border-strong); }
   h1 {
     font-family: var(--sans);
-    font-weight: 600;
+    font-weight: 800;
     font-size: clamp(2rem, 1.4rem + 2.6vw, 3rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
     text-wrap: balance;
     margin: 0 0 20px;
   }
@@ -164,18 +169,19 @@
   .meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 10px;
-    font-family: var(--sans);
-    font-size: 12.5px;
+    gap: 1px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    background: var(--border);
+    border: 1px solid var(--border-strong);
+    width: fit-content;
   }
   .meta span {
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 4px 11px;
+    padding: 6px 12px;
     color: var(--muted);
   }
-  .meta span b { color: var(--ink); font-weight: 500; }
+  .meta span b { color: var(--ink); font-weight: 600; }
 
   /* ---- sections ---- */
   main { min-width: 0; }
@@ -185,8 +191,9 @@
   .sec-head .icon {
     flex: none;
     width: 44px; height: 44px;
-    border-radius: 12px;
+    border-radius: 3px;
     background: var(--accent-soft);
+    border: 1px solid var(--accent);
     display: flex; align-items: center; justify-content: center;
     font-size: 22px;
     line-height: 1;
@@ -195,9 +202,12 @@
     display: block;
     font-family: var(--mono);
     font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .03em;
     color: var(--accent);
     margin-bottom: 2px;
   }
+  .sec-head .num::before { content: "/"; opacity: .6; }
   h2 {
     font-family: var(--sans);
     font-weight: 600;
@@ -250,7 +260,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-left: 3px solid var(--accent);
-    border-radius: 8px;
+    border-radius: 2px;
     padding: 24px 26px;
     margin: 8px 0 28px;
   }
@@ -274,7 +284,7 @@
   .note {
     background: var(--accent-soft);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 2px;
     padding: 16px 20px;
     margin: 4px 0 24px;
     font-family: var(--sans);
@@ -295,7 +305,7 @@
   .note.good .tag { color: var(--ok); }
 
   /* ---- tables ---- */
-  .tbl-scroll { overflow-x: auto; margin: 4px 0 28px; border: 1px solid var(--border); border-radius: 8px; }
+  .tbl-scroll { overflow-x: auto; margin: 4px 0 28px; border: 1px solid var(--border-strong); border-radius: 2px; }
   table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 13.5px; }
   thead th {
     text-align: left;
@@ -342,7 +352,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-left: 3px solid var(--warn);
-    border-radius: 8px;
+    border-radius: 2px;
     padding: 16px 20px;
     font-family: var(--sans);
     font-size: 14px;
@@ -377,6 +387,23 @@
     margin: 0;
     max-width: none;
   }
+  /* ---- 결정 카드 그리드 (표 대체) ---- */
+  .decision-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 6px 0 26px; font-family: var(--sans); }
+  .dcard { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 13px 15px; }
+  .dcard .dk { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 7px; }
+  .dcard .dv { font-size: 13px; color: var(--ink); line-height: 1.5; margin-bottom: 8px; }
+  .dcard .dalt { font-size: 11.5px; color: var(--faint); line-height: 1.4; margin-bottom: 8px; }
+  .dcard .dalt::before { content: "✕ "; }
+  .dcard .did { font-family: var(--mono); font-size: 10.5px; color: var(--faint); border-top: 1px dashed var(--border); padding-top: 7px; display: block; }
+
+  /* ---- 서비스 카드 그리드 (표 대체) ---- */
+  .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; margin: 6px 0 26px; font-family: var(--sans); }
+  .scard { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 14px 16px; }
+  .scard .stop { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .scard .sname { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+  .scard .sq { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--accent); }
+  .scard .simpl { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 9px; }
+
   .gap dt {
     font-size: 10.5px;
     font-weight: 600;
@@ -390,14 +417,14 @@
   /* ---- diagram ---- */
   /* ---- 카드형 흐름도 (mermaid 대신 — 항상 그려짐) ---- */
   .flow-row { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; font-family: var(--sans); }
-  .flow-row .fbox { flex: 1; min-width: 130px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; }
+  .flow-row .fbox { flex: 1; min-width: 130px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 2px; padding: 12px 14px; }
   .flow-row .fbox b { display: block; font-size: 12.5px; color: var(--ink); margin-bottom: 3px; }
   .flow-row .fbox span { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
   .flow-row .farrow { flex: none; display: flex; align-items: center; color: var(--accent); font-size: 16px; padding: 0 2px; }
   @media (max-width: 700px) { .flow-row { flex-direction: column; } .flow-row .farrow { transform: rotate(90deg); align-self: center; } }
 
   .tree-diagram { font-family: var(--sans); }
-  .tree-diagram .troot { background: var(--ink); color: var(--ground); border-radius: 8px; padding: 12px 16px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 4px; }
+  .tree-diagram .troot { background: var(--ink); color: var(--ground); border-radius: 2px; padding: 12px 16px; font-size: 13px; font-weight: 700; text-align: center; margin-bottom: 4px; font-family: var(--mono); letter-spacing: .02em; }
   .tree-diagram .tbranches { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
   @media (max-width: 700px) { .tree-diagram .tbranches { grid-template-columns: 1fr; } }
   .tree-diagram .tgroup { border-top: 2px solid var(--accent); padding-top: 10px; }
@@ -407,8 +434,8 @@
 
   .diagram {
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
     padding: 20px;
     margin: 8px 0 26px;
     overflow-x: auto;
@@ -442,12 +469,12 @@
   nav.rail a.new .n { color: var(--ok); }
 
   /* ---- 최근 업데이트 배너 (가시성) ---- */
-  .updated-banner { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 10px; padding: 18px 22px; margin: 28px 0 8px; font-family: var(--sans); }
+  .updated-banner { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 2px; padding: 18px 22px; margin: 28px 0 8px; font-family: var(--sans); }
   .updated-banner .ub-head { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
   .updated-banner .ub-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
   .updated-list { display: grid; gap: 10px; }
   @media (min-width: 760px) { .updated-list { grid-template-columns: repeat(3,1fr); } }
-  .updated-list a { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-decoration: none; color: var(--ink); font-size: 13.5px; line-height: 1.45; transition: border-color .12s, transform .12s; }
+  .updated-list a { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 12px 14px; text-decoration: none; color: var(--ink); font-size: 13.5px; line-height: 1.45; transition: border-color .12s, transform .12s; }
   .updated-list a:hover { border-color: var(--accent); transform: translateY(-1px); }
   .updated-list a b { display: block; font-size: 14px; margin-bottom: 3px; color: var(--ink); }
   .updated-list a span { color: var(--muted); font-size: 12.5px; }
@@ -455,7 +482,7 @@
   /* ---- 고객/니즈 페르소나 ---- */
   .persona-list { display: grid; gap: 14px; margin: 6px 0 26px; }
   @media (min-width: 760px) { .persona-list { grid-template-columns: 1fr 1fr 1fr; } }
-  .persona { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; font-family: var(--sans); }
+  .persona { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 18px 20px; font-family: var(--sans); }
   .persona .who { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
   .persona h4 { margin: 0 0 8px; font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--ink); }
   .persona dl { display: grid; gap: 4px 0; margin: 0; max-width: none; font-size: 13px; }
@@ -464,7 +491,7 @@
   .persona dd { margin: 2px 0 0; color: var(--ink); line-height: 1.5; }
 
   /* ---- 성과 수치 ---- */
-  .stat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 6px 0 26px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border-strong); border: 1px solid var(--border-strong); border-radius: 2px; overflow: hidden; margin: 6px 0 26px; }
   @media (min-width: 760px) { .stat-grid { grid-template-columns: repeat(4,1fr); } }
   .stat-grid .cell { background: var(--surface); padding: 18px 16px; font-family: var(--sans); }
   .stat-grid .cell .n { font-size: 1.7rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.01em; color: var(--ink); }
@@ -472,7 +499,7 @@
 
   /* ---- 결과/경험 ---- */
   .outcome-list { display: grid; gap: 12px; margin: 6px 0 26px; }
-  .outcome { display: flex; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px 18px; font-family: var(--sans); }
+  .outcome { display: flex; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; padding: 15px 18px; font-family: var(--sans); }
   .outcome .oi { flex: none; width: 26px; height: 26px; border-radius: 7px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
   .outcome b { display: block; font-size: 14px; margin-bottom: 3px; }
   .outcome span { font-size: 13px; color: var(--muted); line-height: 1.5; }
@@ -684,25 +711,20 @@
 
       <h3>2-3. 개인 생산성 OS 방향 — "다듬기 단계에서 정한 것" <span class="id">ADR-0027–0032, PO-1–14</span></h3>
       <p>Phase D 완료 후 사용자가 제시한 방향. 열린 질문 PO-1–14를 먼저 닫고 ADR로 못박은 뒤 빌드했다.</p>
-      <div class="tbl-scroll">
-        <table>
-          <thead><tr><th>결정</th><th>선택</th><th>대안 (기각)</th><th>ADR / PO</th></tr></thead>
-          <tbody>
-            <tr><td>기본 테마</td><td>라이트 오프화이트 기본, 다크는 <span class="m">[data-theme=dark]</span> 프리셋</td><td>다크 유지</td><td class="id">0027 / PO-1·2</td></tr>
-            <tr><td>강조색</td><td>차분한 파랑 <span class="m">#2f6feb</span></td><td>참조 화면의 보라</td><td class="id">0027 / PO-2</td></tr>
-            <tr><td>뷰 데이터 일관성</td><td><b>단일 클라이언트 캐시</b>(<span class="m">id</span> 키잉), 뷰는 파생만</td><td>뷰마다 재 fetch</td><td class="id">0028 / PO-7</td></tr>
-            <tr><td>칸반</td><td><span class="m">tasks</span> 위젯 안의 리스트/보드 토글</td><td>별도 위젯 타입</td><td class="id">0028 / PO-7</td></tr>
-            <tr><td>자동 분류 taxonomy</td><td><b>자유 태그·다중</b>(<span class="m">task_tags</span> 조인), <span class="m">category</span> 폐기</td><td>고정 카테고리 집합</td><td class="id">0029 / PO-3</td></tr>
-            <tr><td>분류 시점·주체</td><td><b>에이전트 배치</b>(일일 브리핑 시 1회 Claude 호출)</td><td>저장 시마다 분류</td><td class="id">0029 / PO-4</td></tr>
-            <tr><td>OKR 모델</td><td><b>1급 엔티티</b> 3테이블 (<span class="m">objectives / key_results / kr_snapshots</span>)</td><td><span class="m">projects</span> 재해석</td><td class="id">0030 / PO-5</td></tr>
-            <tr><td>주간 요약</td><td><b>순수 SQL 집계</b>(<span class="m">due_date</span> ISO 주 3버킷)</td><td>Claude "Weekly Brief"</td><td class="id">0030 / PO-6</td></tr>
-            <tr><td>차트 라이브러리</td><td><b>인라인 SVG</b> (<span class="m">dataviz</span> 스킬)</td><td>Recharts 도입</td><td class="id">PO-8</td></tr>
-            <tr><td>마크다운 렌더</td><td>서버에서 <b>의존성 0 토큰화</b> → JSON. 파서·<span class="m">dangerouslySetInnerHTML</span> 없음</td><td>마크다운 파서 + HTML 주입</td><td class="id">0031 / PO-11</td></tr>
-            <tr><td>파일 트리 범위</td><td>허용 루트 = <span class="m">docs/</span> + 루트 <span class="m">*.md</span>. <span class="m">.md</span>만, 소스 제외</td><td>전 소스 트리 노출</td><td class="id">0031 / PO-12</td></tr>
-            <tr><td>셸 형태</td><td>왼쪽 사이드바 + <b>주제별 위젯 레이아웃</b>(<span class="m">activeTopic</span>)</td><td>단일 그리드 유지</td><td class="id">0032 / PO-13·14</td></tr>
-            <tr><td>에이전트 "지금 실행"</td><td>전용 디렉터리 <b>파일 플래그 + launchd WatchPaths</b>. subprocess 없음</td><td>백엔드가 python 직접 spawn</td><td class="id">0013 부분 / PO-9</td></tr>
-          </tbody>
-        </table>
+      <div class="decision-grid">
+        <div class="dcard"><div class="dk">기본 테마</div><div class="dv">라이트 오프화이트 기본, 다크는 <span class="m">[data-theme=dark]</span> 프리셋</div><div class="dalt">다크 유지</div><span class="did">0027 / PO-1·2</span></div>
+        <div class="dcard"><div class="dk">강조색</div><div class="dv">차분한 파랑 <span class="m">#2f6feb</span></div><div class="dalt">참조 화면의 보라</div><span class="did">0027 / PO-2</span></div>
+        <div class="dcard"><div class="dk">뷰 데이터 일관성</div><div class="dv"><b>단일 클라이언트 캐시</b>(<span class="m">id</span> 키잉), 뷰는 파생만</div><div class="dalt">뷰마다 재 fetch</div><span class="did">0028 / PO-7</span></div>
+        <div class="dcard"><div class="dk">칸반</div><div class="dv"><span class="m">tasks</span> 위젯 안의 리스트/보드 토글</div><div class="dalt">별도 위젯 타입</div><span class="did">0028 / PO-7</span></div>
+        <div class="dcard"><div class="dk">자동 분류 taxonomy</div><div class="dv"><b>자유 태그·다중</b>(<span class="m">task_tags</span> 조인), <span class="m">category</span> 폐기</div><div class="dalt">고정 카테고리 집합</div><span class="did">0029 / PO-3</span></div>
+        <div class="dcard"><div class="dk">분류 시점·주체</div><div class="dv"><b>에이전트 배치</b>(일일 브리핑 시 1회 Claude 호출)</div><div class="dalt">저장 시마다 분류</div><span class="did">0029 / PO-4</span></div>
+        <div class="dcard"><div class="dk">OKR 모델</div><div class="dv"><b>1급 엔티티</b> 3테이블(<span class="m">objectives/key_results/kr_snapshots</span>)</div><div class="dalt"><span class="m">projects</span> 재해석</div><span class="did">0030 / PO-5</span></div>
+        <div class="dcard"><div class="dk">주간 요약</div><div class="dv"><b>순수 SQL 집계</b>(<span class="m">due_date</span> ISO 주 3버킷)</div><div class="dalt">Claude "Weekly Brief"</div><span class="did">0030 / PO-6</span></div>
+        <div class="dcard"><div class="dk">차트 라이브러리</div><div class="dv"><b>인라인 SVG</b>(<span class="m">dataviz</span> 스킬)</div><div class="dalt">Recharts 도입</div><span class="did">PO-8</span></div>
+        <div class="dcard"><div class="dk">마크다운 렌더</div><div class="dv">서버에서 <b>의존성 0 토큰화</b> → JSON. 파서 없음</div><div class="dalt">마크다운 파서 + HTML 주입</div><span class="did">0031 / PO-11</span></div>
+        <div class="dcard"><div class="dk">파일 트리 범위</div><div class="dv">허용 루트 = <span class="m">docs/</span> + 루트 <span class="m">*.md</span>만</div><div class="dalt">전 소스 트리 노출</div><span class="did">0031 / PO-12</span></div>
+        <div class="dcard"><div class="dk">셸 형태</div><div class="dv">왼쪽 사이드바 + <b>주제별 위젯 레이아웃</b></div><div class="dalt">단일 그리드 유지</div><span class="did">0032 / PO-13·14</span></div>
+        <div class="dcard"><div class="dk">에이전트 "지금 실행"</div><div class="dv">전용 디렉터리 <b>파일 플래그 + launchd</b></div><div class="dalt">백엔드가 python 직접 spawn</div><span class="did">0013 부분 / PO-9</span></div>
       </div>
 
       <h3>결정 서사 — PO-3: 자유 태그 vs 고정 카테고리</h3>
@@ -981,31 +1003,26 @@
       <div class="sec-head"><span class="icon">📦</span><div><span class="num">05</span><h2>서비스 — 무엇을 만들었나</h2></div></div>
       <p class="sec-sub">각 기능을 왜(원초 고민) / 어떻게(핵심 구현) / 툴 / 상태로. 단계: B·C = 대시보드 OS, D = 에이전트, P = 개인 생산성 OS.</p>
 
-      <div class="tbl-scroll">
-        <table>
-          <thead><tr><th>기능</th><th>왜</th><th>핵심 구현</th><th>툴·플러그인</th><th>단계</th></tr></thead>
-          <tbody>
-            <tr><td><b>할일 CRUD + 프로젝트 링크</b></td><td class="id">Q1</td><td><span class="m">routes/services/tasks.js</span>, <span class="m">useTaskStore</span>, 낙관적 갱신+롤백</td><td>Express, better-sqlite3, zustand</td><td><span class="pill ok">B3·C2</span></td></tr>
-            <tr><td><b>프로젝트 추적 + 진행바</b></td><td class="id">Q1</td><td><span class="m">ProjectCard·ProjectForm</span>, 슬라이더 편집</td><td>zustand</td><td><span class="pill ok">C2</span></td></tr>
-            <tr><td><b>캘린더 위젯</b></td><td class="id">Q1</td><td><span class="m">CalendarWidget</span>, <span class="m">calendar_events</span> 캐시</td><td>—</td><td><span class="pill ok">C3</span></td></tr>
-            <tr><td><b>다이어그램 뷰어</b></td><td class="id">Q7</td><td><span class="m">DiagramPanel</span> + <span class="m">GET /api/diagrams</span> (읽기 전용 mermaid 파싱)</td><td>mermaid 11 (동적 import)</td><td><span class="pill ok">C4</span></td></tr>
-            <tr><td><b>위젯 셸</b> (배치·이동·리사이즈·저장)</td><td class="id">Q6</td><td><span class="m">WidgetShell/Host/Frame/Picker</span>, <span class="m">useLayoutStore</span>, 훼손 시 폴백, 위젯별 <span class="m">ErrorBoundary</span></td><td>react-grid-layout 2.2.4, react-resizable</td><td><span class="pill ok">C5</span></td></tr>
-            <tr><td><b>위젯별 테마·표시 옵션</b></td><td class="id">Q8</td><td><span class="m">WidgetSettings</span> 모달, <span class="m">themeToVars</span> 화이트리스트, <span class="m">configSchema</span> 자동 폼</td><td>스코프 CSS 변수</td><td><span class="pill wait">C6 · 재검토 §5-2</span></td></tr>
-            <tr><td><b>사이드바 셸 + 주제별 레이아웃</b></td><td class="id">Q6·Q8</td><td><span class="m">AppShell·Sidebar·TopicView</span>, <span class="m">useUiStore.activeTopic</span>, 레이아웃 v1→v2 마이그레이션</td><td>—</td><td><span class="pill ok">P4.5 · #45</span></td></tr>
-            <tr><td><b>라이트 비주얼 시스템</b></td><td class="id">Q8</td><td><span class="m">styles.css :root</span> 팔레트 다크→라이트, hex→<span class="m">var(--*)</span> 치환(10파일)</td><td>—</td><td><span class="pill ok">P3</span></td></tr>
-            <tr><td><b>공통 컴포넌트</b></td><td class="id">Q8</td><td><span class="m">StatTile·DotProgress·Chip</span> (+ 순수 <span class="m">dotFill.js</span>)</td><td>인라인 SVG</td><td><span class="pill ok">P4 · #42</span></td></tr>
-            <tr><td><b>단일 캐시 + 칸반 뷰</b></td><td class="id">Q3</td><td><span class="m">taskCache.js</span>, <span class="m">byId/order</span> 정본 + <span class="m">tasks</span> 파생 미러, 리스트/보드 토글</td><td>zustand</td><td><span class="pill ok">P5 · #47</span></td></tr>
-            <tr><td><b>할일 자동 분류</b> (자유 태그)</td><td class="id">Q4</td><td><span class="m">task_tags</span> (<span class="m">source ∈ {user,agent}</span>, 에이전트 불가침), <span class="m">POST/DELETE /api/tasks/:id/tags</span>, <span class="m">agent/classify.py</span> 배치, 칩 필터 · <b>서사 §2 · 약점 §4-5 S3</b></td><td>Claude API (배치 1회/일)</td><td><span class="pill ok">P6 · #52</span></td></tr>
-            <tr><td><b>에이전트 활동 위젯 + "지금 실행"</b></td><td class="id">Q5</td><td><span class="m">GET/POST /api/agent/*</span>, <span class="m">AgentActivityWidgetView</span>, <span class="m">agent/trigger.py</span>, <span class="m">.triggers/run-now</span> 플래그</td><td>launchd WatchPaths, 파일 플래그</td><td><span class="pill ok">P7 · #55</span></td></tr>
-            <tr><td><b>OKR + 주간 플래너 + 라인차트</b></td><td class="id">Q4</td><td><span class="m">objectives/key_results/kr_snapshots</span>, <span class="m">GET /api/okr · /api/planner/weekly</span>, 월별 적재는 백엔드 자체</td><td>인라인 SVG <span class="m">LineChart</span></td><td><span class="pill ok">P8 · #58</span></td></tr>
-            <tr><td><b>진행 현황 · 파일 탐색 뷰</b></td><td class="id">Q7</td><td><span class="m">GET /api/tree · /api/docs/:path</span> (의존성 0 토크나이저, <span class="m">.md</span>만, 상한 깊이 8·2000항목·1MB), <span class="m">progress</span> 위젯(좌 트리/우 본문) · <b>방어 §4-5</b></td><td>파서·<span class="m">dangerouslySetInnerHTML</span> 없음</td><td><span class="pill ok">P9 · #59</span></td></tr>
-            <tr><td><b>Daily Brief 에이전트</b></td><td class="id">Q1·Q2</td><td><span class="m">sync.py → daily_brief.py → Claude → briefs → Notion</span>, <span class="m">GET /api/brief/today</span></td><td>anthropic SDK (<span class="m">claude-sonnet-5</span>), launchd</td><td><span class="pill ok">D3</span></td></tr>
-            <tr><td><b>Gmail·Calendar 실 수집</b></td><td class="id">Q1</td><td><span class="m">agent/services/{gmail,calendar}.py</span>, OAuth → <span class="m">emails·calendar_events</span> upsert 캐시</td><td>google-api-python-client, google-auth-oauthlib, cryptography (Fernet)</td><td><span class="pill ok">D2-b</span></td></tr>
-            <tr><td><b>Notion 브리핑 저장</b></td><td class="id">Q1</td><td><span class="m">services/notion.py</span> REST 직접, 미설정 시 스킵</td><td>requests (<span class="m">Notion-Version: 2022-06-28</span>)</td><td><span class="pill ok">D3</span></td></tr>
-            <tr><td><b>웹 데모 모드</b></td><td class="id">C-5</td><td><span class="m">demoClient.js / demoData.js</span> 인메모리 목, 새 엔드포인트마다 목도 갱신 · <b>패리티 §4-5 D1</b></td><td>Vite <span class="m">VITE_DEMO</span>, GitHub Pages</td><td><span class="pill ok">ADR-0026</span></td></tr>
-            <tr><td><b>개발 파이프라인</b> (메타 기능)</td><td class="id">C-1</td><td><span class="m">.claude/agents/*</span>, <span class="m">/feature · /build-next</span>, 훅 3종, <span class="m">worklog · slack-notify</span></td><td>Claude Code, GitHub Actions CI, launchd, Slack webhook</td><td><span class="pill ok">Phase A</span></td></tr>
-          </tbody>
-        </table>
+      <div class="service-grid">
+        <div class="scard"><div class="stop"><span class="sname">할일 CRUD + 프로젝트 링크</span><span class="sq">Q1</span></div><div class="simpl"><span class="m">tasks.js</span>·<span class="m">useTaskStore</span>, 낙관적 갱신+롤백</div><span class="pill ok">B3·C2</span></div>
+        <div class="scard"><div class="stop"><span class="sname">프로젝트 추적 + 진행바</span><span class="sq">Q1</span></div><div class="simpl"><span class="m">ProjectCard·ProjectForm</span>, 슬라이더 편집</div><span class="pill ok">C2</span></div>
+        <div class="scard"><div class="stop"><span class="sname">캘린더 위젯</span><span class="sq">Q1</span></div><div class="simpl"><span class="m">CalendarWidget</span>, <span class="m">calendar_events</span> 캐시</div><span class="pill ok">C3</span></div>
+        <div class="scard"><div class="stop"><span class="sname">다이어그램 뷰어</span><span class="sq">Q7</span></div><div class="simpl"><span class="m">DiagramPanel</span> + <span class="m">/api/diagrams</span>(읽기 전용)</div><span class="pill ok">C4</span></div>
+        <div class="scard"><div class="stop"><span class="sname">위젯 셸</span><span class="sq">Q6</span></div><div class="simpl">배치·이동·리사이즈, <span class="m">useLayoutStore</span>, 위젯별 ErrorBoundary</div><span class="pill ok">C5</span></div>
+        <div class="scard"><div class="stop"><span class="sname">위젯별 테마·표시 옵션</span><span class="sq">Q8</span></div><div class="simpl"><span class="m">themeToVars</span> 화이트리스트, <span class="m">configSchema</span> 자동 폼</div><span class="pill wait">C6 · 재검토 §5-2</span></div>
+        <div class="scard"><div class="stop"><span class="sname">사이드바 셸 + 주제별 레이아웃</span><span class="sq">Q6·Q8</span></div><div class="simpl"><span class="m">AppShell·Sidebar·TopicView</span>, 레이아웃 v1→v2 마이그레이션</div><span class="pill ok">P4.5 · #45</span></div>
+        <div class="scard"><div class="stop"><span class="sname">라이트 비주얼 시스템</span><span class="sq">Q8</span></div><div class="simpl">팔레트 다크→라이트, hex→<span class="m">var(--*)</span> 치환(10파일)</div><span class="pill ok">P3</span></div>
+        <div class="scard"><div class="stop"><span class="sname">공통 컴포넌트</span><span class="sq">Q8</span></div><div class="simpl"><span class="m">StatTile·DotProgress·Chip</span></div><span class="pill ok">P4 · #42</span></div>
+        <div class="scard"><div class="stop"><span class="sname">단일 캐시 + 칸반 뷰</span><span class="sq">Q3</span></div><div class="simpl"><span class="m">byId/order</span> 정본, 리스트/보드 토글</div><span class="pill ok">P5 · #47</span></div>
+        <div class="scard"><div class="stop"><span class="sname">할일 자동 분류</span><span class="sq">Q4</span></div><div class="simpl"><span class="m">task_tags</span>(<span class="m">source</span> 구분, 에이전트 불가침) · <b>서사 §2</b></div><span class="pill ok">P6 · #52</span></div>
+        <div class="scard"><div class="stop"><span class="sname">에이전트 활동 위젯</span><span class="sq">Q5</span></div><div class="simpl">"지금 실행" 트리거, <span class="m">.triggers/run-now</span></div><span class="pill ok">P7 · #55</span></div>
+        <div class="scard"><div class="stop"><span class="sname">OKR + 주간 플래너</span><span class="sq">Q4</span></div><div class="simpl"><span class="m">objectives/key_results/kr_snapshots</span>, 인라인 SVG 차트</div><span class="pill ok">P8 · #58</span></div>
+        <div class="scard"><div class="stop"><span class="sname">진행 현황 · 파일 탐색</span><span class="sq">Q7</span></div><div class="simpl">안전 토크나이저, <span class="m">.md</span>만 · <b>방어 §4-5</b></div><span class="pill ok">P9 · #59</span></div>
+        <div class="scard"><div class="stop"><span class="sname">Daily Brief 에이전트</span><span class="sq">Q1·Q2</span></div><div class="simpl">Claude 요약 → <span class="m">briefs</span> → Notion 저장</div><span class="pill ok">D3</span></div>
+        <div class="scard"><div class="stop"><span class="sname">Gmail·Calendar 실 수집</span><span class="sq">Q1</span></div><div class="simpl">OAuth → 캐시 upsert, Fernet 암호화</div><span class="pill ok">D2-b</span></div>
+        <div class="scard"><div class="stop"><span class="sname">Notion 브리핑 저장</span><span class="sq">Q1</span></div><div class="simpl"><span class="m">notion.py</span> REST 직접, 미설정 시 스킵</div><span class="pill ok">D3</span></div>
+        <div class="scard"><div class="stop"><span class="sname">웹 데모 모드</span><span class="sq">C-5</span></div><div class="simpl">인메모리 목 어댑터 · <b>패리티 §4-5 D1</b></div><span class="pill ok">ADR-0026</span></div>
+        <div class="scard"><div class="stop"><span class="sname">개발 파이프라인</span><span class="sq">C-1</span></div><div class="simpl"><span class="m">/feature · /build-next</span>, 훅 3종</div><span class="pill ok">Phase A</span></div>
       </div>
 
       <h3>도구 · 플러그인 총목록</h3>
