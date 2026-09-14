@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="왜 만들었고, 어떻게 지었고, 무엇을 썼는가 — my-setup-proj 회고 기획서.">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.1/mermaid.min.js"></script>
 <title>역 계획서 · my-setup-proj</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,8 +78,8 @@
     background: var(--ground);
     color: var(--ink);
     font-family: var(--serif);
-    font-size: 19px;
-    line-height: 1.72;
+    font-size: 17px;
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -202,23 +201,22 @@
   h2 {
     font-family: var(--sans);
     font-weight: 600;
-    font-size: 1.86rem;
+    font-size: 1.62rem;
     letter-spacing: -0.015em;
-    line-height: 1.22;
+    line-height: 1.2;
     text-wrap: balance;
     margin: 0;
   }
   .sec-sub {
     font-family: var(--sans);
-    font-size: 15.5px;
+    font-size: 14px;
     color: var(--muted);
-    margin: 4px 0 32px 0;
-    line-height: 1.55;
+    margin: 2px 0 30px 0;
   }
   h3 {
     font-family: var(--sans);
     font-weight: 600;
-    font-size: 1.22rem;
+    font-size: 1.06rem;
     letter-spacing: -0.01em;
     margin: 36px 0 12px;
   }
@@ -298,7 +296,7 @@
 
   /* ---- tables ---- */
   .tbl-scroll { overflow-x: auto; margin: 4px 0 28px; border: 1px solid var(--border); border-radius: 8px; }
-  table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 15px; }
+  table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 13.5px; }
   thead th {
     text-align: left;
     font-weight: 600;
@@ -390,6 +388,23 @@
   .gap dd { margin: 0; line-height: 1.5; }
 
   /* ---- diagram ---- */
+  /* ---- 카드형 흐름도 (mermaid 대신 — 항상 그려짐) ---- */
+  .flow-row { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; font-family: var(--sans); }
+  .flow-row .fbox { flex: 1; min-width: 130px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; }
+  .flow-row .fbox b { display: block; font-size: 12.5px; color: var(--ink); margin-bottom: 3px; }
+  .flow-row .fbox span { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+  .flow-row .farrow { flex: none; display: flex; align-items: center; color: var(--accent); font-size: 16px; padding: 0 2px; }
+  @media (max-width: 700px) { .flow-row { flex-direction: column; } .flow-row .farrow { transform: rotate(90deg); align-self: center; } }
+
+  .tree-diagram { font-family: var(--sans); }
+  .tree-diagram .troot { background: var(--ink); color: var(--ground); border-radius: 8px; padding: 12px 16px; font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 4px; }
+  .tree-diagram .tbranches { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+  @media (max-width: 700px) { .tree-diagram .tbranches { grid-template-columns: 1fr; } }
+  .tree-diagram .tgroup { border-top: 2px solid var(--accent); padding-top: 10px; }
+  .tree-diagram .tgroup h5 { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .03em; }
+  .tree-diagram .tleaf { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 11px; font-size: 12px; color: var(--ink); margin-bottom: 6px; line-height: 1.4; }
+  .tree-diagram .tfoot { margin-top: 10px; font-size: 11.5px; color: var(--muted); border-top: 1px dashed var(--border); padding-top: 8px; }
+
   .diagram {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -507,14 +522,19 @@
 
     <div class="diagram" style="margin:30px 0 8px">
       <p style="font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 14px">이 문서의 흐름 — 한눈에 보기</p>
-      <pre class="mermaid">
-flowchart LR
-  A["01 원초적 고민<br/>진척이 아니라 지식"] --> B["01b 고객과 니즈<br/>사용자 · 평가자 · 열람자"]
-  B --> C["02 의사결정<br/>ADR 35건"]
-  C --> D["04 설계<br/>구조 + 약점 9건"]
-  D --> E["05 서비스<br/>실제 기능 목록"]
-  E --> F["06b 성과 · 결과<br/>수치 8개 + 얻는 것 5가지"]
-      </pre>
+      <div class="flow-row">
+        <div class="fbox"><b>01 원초적 고민</b><span>진척이 아니라 지식</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>01b 고객과 니즈</b><span>사용자 · 평가자 · 열람자</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>02 의사결정</b><span>ADR 35건</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>04 설계</b><span>구조 + 약점 9건</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>05 서비스</b><span>실제 기능 목록</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>06b 성과 · 결과</b><span>수치 8개 + 얻는 것 5가지</span></div>
+      </div>
     </div>
 
     <!-- 1 -->
@@ -786,19 +806,23 @@ flowchart LR
       <p class="sec-sub">컨테이너 3개 + 로컬 SQLite. 레이어드, 프로세스 분리, 로컬 우선. 4-5는 같은 구조의 약점을 원인까지 되짚는다.</p>
 
       <div class="diagram">
-        <pre class="mermaid">
-flowchart TB
-  U([사용자 · Win/mac/Linux])
-  U --> EL["Electron + React 셸<br/>위젯 셸 · 사이드바"]
-  EL -->|"HTTP REST :3000/api"| API["Node.js + Express<br/>routes → services → db"]
-  API --> SQLITE[("로컬 SQLite (WAL)<br/>진실의 원천")]
-  API -. 연결 배선만 .-> SUPA[("Supabase · Week 10+")]
-  AGENT["Python 에이전트<br/>sync · classify · daily_brief"] --> SQLITE
-  AGENT -. "OAuth · 읽기전용" .-> EXT["Gmail · Google Calendar"]
-  AGENT -. "Token" .-> NO["Notion REST"]
-  AGENT -. "API Key" .-> CL["Claude API"]
-  LAUNCHD["launchd · 07:30 · WatchPaths"] -. 트리거 .-> AGENT
-        </pre>
+        <div class="flow-row" style="margin-bottom:8px">
+          <div class="fbox"><b>사용자</b><span>Win / mac / Linux</span></div>
+          <div class="farrow">→</div>
+          <div class="fbox"><b>Electron + React 셸</b><span>위젯 셸 · 사이드바</span></div>
+          <div class="farrow">→</div>
+          <div class="fbox"><b>Node.js + Express</b><span>HTTP REST :3000/api<br>routes → services → db</span></div>
+          <div class="farrow">→</div>
+          <div class="fbox" style="background:var(--accent-soft);border-color:var(--accent)"><b>로컬 SQLite (WAL)</b><span>진실의 원천</span></div>
+        </div>
+        <div class="flow-row">
+          <div class="fbox"><b>launchd · 07:30</b><span>WatchPaths 트리거</span></div>
+          <div class="farrow">→</div>
+          <div class="fbox"><b>Python 에이전트</b><span>sync · classify · daily_brief → 위 SQLite에 씀</span></div>
+          <div class="farrow">→</div>
+          <div class="fbox"><b>외부 API (읽기 전용)</b><span>Gmail·Calendar(OAuth) · Notion(Token) · Claude API(Key)</span></div>
+        </div>
+        <p style="font-size:11.5px;color:var(--faint);margin:10px 0 0">Supabase 연결은 배선만 되어 있고 아직 사용하지 않음 (Week 10+ 예정).</p>
       </div>
 
       <h4>레이어</h4>
@@ -926,26 +950,28 @@ flowchart TB
       <div class="sec-head"><span class="icon">🔍</span><div><span class="num">04b</span><h2>문제 한눈에 보기 — 원인부터 도식화</h2></div></div>
       <p class="sec-sub">§4-5의 9개 항목을 텍스트로 훑으면 개별 사실처럼 보이지만, 실제로는 대부분 같은 두 원인에서 갈라져 나온다.</p>
       <div class="diagram">
-        <pre class="mermaid">
-flowchart TB
-  ROOT["공통 원인<br/>로컬 단일 사용자 · 1인 개발 · 마감(C-1·C-2)"]
-  ROOT --> SEC["보안 · 안전성"]
-  ROOT --> QUAL["기술 부채 · 품질"]
-
-  SEC --> S1["S1 로컬 네트워크 노출<br/>같은 Wi-Fi 기기가 CRUD 가능"]
-  SEC --> S2["S2 CORS null 전 빌드 허용"]
-  SEC --> S3["S3 태그 비침범 = 코드 가드뿐<br/>(PO-3 서사, §2-3)"]
-  SEC --> S4["S4 OAuth 키 회전 절차 없음"]
-  SEC --> S5["S5 시크릿 스캔이 .gitignore 한 겹"]
-
-  QUAL --> D1["D1 데모↔실서버 스키마 드리프트 미검사"]
-  QUAL --> D2["D2 REST 오류 단일 봉투"]
-  QUAL --> D3["D3 레이어 경계 자동 검사 없음"]
-  QUAL --> D4["D4 수동 검증 백로그 미실행"]
-
-  S1 -.해소 전제.-> FIX1["다중 사용자 전환(Phase E) 또는<br/>패키징 배포 확정 시점"]
-  QUAL -.해소 전제.-> FIX2["1인 개발 속도 제약이 풀리는 시점<br/>(팀 합류 또는 마감 이후)"]
-        </pre>
+        <div class="tree-diagram">
+          <div class="troot">공통 원인 — 로컬 단일 사용자 · 1인 개발 · 마감(C-1·C-2)</div>
+          <div class="tbranches">
+            <div class="tgroup">
+              <h5>보안 · 안전성</h5>
+              <div class="tleaf"><b>S1</b> 로컬 네트워크 노출 — 같은 Wi-Fi 기기가 CRUD 가능</div>
+              <div class="tleaf"><b>S2</b> CORS null 전 빌드 허용</div>
+              <div class="tleaf"><b>S3</b> 태그 비침범 = 코드 가드뿐 (PO-3 서사, §2-3)</div>
+              <div class="tleaf"><b>S4</b> OAuth 키 회전 절차 없음</div>
+              <div class="tleaf"><b>S5</b> 시크릿 스캔이 .gitignore 한 겹</div>
+              <div class="tfoot">해소 전제 — 다중 사용자 전환(Phase E) 또는 패키징 배포 확정 시점</div>
+            </div>
+            <div class="tgroup">
+              <h5>기술 부채 · 품질</h5>
+              <div class="tleaf"><b>D1</b> 데모↔실서버 스키마 드리프트 미검사</div>
+              <div class="tleaf"><b>D2</b> REST 오류 단일 봉투</div>
+              <div class="tleaf"><b>D3</b> 레이어 경계 자동 검사 없음</div>
+              <div class="tleaf"><b>D4</b> 수동 검증 백로그 미실행</div>
+              <div class="tfoot">해소 전제 — 1인 개발 속도 제약이 풀리는 시점(팀 합류 또는 마감 이후)</div>
+            </div>
+          </div>
+        </div>
       </div>
       <p>즉 9개 약점은 무작위 버그 목록이 아니라, <b>"지금은 안 해도 되는 것으로 미룬 것"</b>이라는 하나의 판단이 여러 갈래로 나타난 결과다 — 다중 사용자 전환이나 마감 이후 시점이 오면 왼쪽 가지(보안)부터 되짚어야 한다.</p>
     </section>
@@ -1149,22 +1175,5 @@ flowchart TB
     document.querySelectorAll('main section[id]').forEach(function (s) { obs.observe(s); });
   })();
 </script>
-<script>
-  (function () {
-    if (!window.mermaid) return;
-    // startOnLoad 는 DOMContentLoaded 리스너에 의존하는데, 이 스크립트는
-    // </body> 직전이라 그 이벤트가 이미 지난 뒤다 — 그래서 다이어그램이
-    // 렌더링 안 되고 원본 텍스트(코드)로만 보였다. run() 을 직접 호출해 고친다.
-    var stamp = document.documentElement.getAttribute('data-theme');
-    var dark = stamp === 'dark' || (stamp !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: dark ? 'dark' : 'neutral',
-      themeVariables: { fontFamily: 'IBM Plex Sans, system-ui, sans-serif' }
-    });
-    mermaid.run({ querySelector: '.mermaid' });
-  })();
-</script>
-
 </body>
 </html>
