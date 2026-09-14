@@ -200,6 +200,14 @@
   .weak-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
   .weak-foot p{color:var(--muted);font-size:13.5px;max-width:52ch}
 
+  /* ---- expectation alignment (기대정렬) ---- */
+  .qa-list{display:grid;gap:10px}
+  .qa{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 18px}
+  @media (max-width:640px){ .qa{grid-template-columns:1fr} }
+  .qa .q{font-weight:700;font-size:13.5px;color:var(--ink)}
+  .qa .a{font-size:13px;color:var(--muted);line-height:1.6}
+  .qa .a b{color:var(--ink);font-weight:600}
+
   /* ---- build strip ---- */
   .buildstrip{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted)}
   .buildstrip span{background:var(--paper);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
@@ -234,6 +242,7 @@
   <div class="shell row">
     <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>대시보드 OS</a>
     <nav class="links">
+      <a href="#alignment">기대정렬</a>
       <a href="#product">기능</a>
       <a href="#build">만든 방식</a>
       <a href="#honesty">약점 공개</a>
@@ -312,6 +321,23 @@
           <div class="domain"><span class="mk m2"></span><div><b>공부·강의 진도</b><span>3개 강의에서 쌓이는 지식이 어디로 가는지</span></div></div>
           <div class="domain"><span class="mk m3"></span><div><b>프로젝트 개발 진도</b><span>P0~P9 를 지나며 쌓인 결정·경험이 무엇을 남겼는지</span></div></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPECTATION ALIGNMENT -->
+  <section id="alignment">
+    <div class="shell">
+      <div class="sec-kicker"><span class="eyebrow">기대정렬</span><h2 class="h">기능 하나하나에 "왜"를 붙이는 7질문</h2></div>
+      <p class="sec-note">프로젝트를 향한 방법론이 ADR이라면, 만든 사람 자신을 향한 방법론이 <b style="color:var(--ink)">기대정렬</b>이다. 이 7질문을 프로젝트 전체에 적용하면, 아래 위젯들이 왜 이 모양으로 있는지가 한 번에 보인다.</p>
+      <div class="qa-list">
+        <div class="qa"><span class="q">뭘 하고 있지?</span><span class="a">할일·프로젝트·OKR·에이전트 활동·기대정렬 체크인을 하나의 위젯 셸에 모으는 로컬 우선 대시보드를 만들고 있다.</span></div>
+        <div class="qa"><span class="q">왜 하지?</span><span class="a">결과물이 아닌 경험(PC방 알바·영상 편집·3년 방송부)을 기록하기 어려웠고, Notion은 파일이 많아지자 정리가 무너졌다. <b>혼자서 생각→행동→기록→정리를 전부 해내는 과정</b>이 너무 어려웠다.</span></div>
+        <div class="qa"><span class="q">언제까지?</span><span class="a">고정 마감은 있지만, 진짜 종료 조건은 날짜가 아니라 상태다 — <b>"작업하는 모든 내용이 정리될 때까지."</b></span></div>
+        <div class="qa"><span class="q">어떤 목표?</span><span class="a">진척률이 아니라 <b>지식</b> — 경험에서 나온 지식을 시각화해 가치를 올리고, 그 지식이 역량으로 이어지는 방향을 한눈에 보이게 하는 것.</span></div>
+        <div class="qa"><span class="q">어떤 전략?</span><span class="a">로컬 우선 + 위젯 셸 · 결정 1건 = ADR 1건 · 4역할 에이전트 파이프라인 · OKR·기대정렬 체크인으로 자기 진단을 구조화.</span></div>
+        <div class="qa"><span class="q">구체적으로 뭘?</span><span class="a">아래 <a href="#product">7개 위젯</a> 각각이 원초적 고민(Q1~Q8) 중 하나에 대한 답이다 — 할일 CRUD, 위젯 셸, 자동 분류, 에이전트 활동, OKR 등급, 진행 현황 뷰, 기대정렬 체크인.</span></div>
+        <div class="qa"><span class="q">어떤 상태?</span><span class="a">1주차 프로토타입 → 2주차 역량 피드백 수용 → 3주차(지금) 기획서·보고서·이 페이지로 소개하는 중.</span></div>
       </div>
     </div>
   </section>
