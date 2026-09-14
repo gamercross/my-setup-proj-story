@@ -413,6 +413,44 @@
   footer.doc a { color: var(--muted); }
   footer.doc .links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; }
 
+  nav.rail a.new .n { color: var(--ok); }
+
+  /* ---- 최근 업데이트 배너 (가시성) ---- */
+  .updated-banner { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 10px; padding: 18px 22px; margin: 28px 0 8px; font-family: var(--sans); }
+  .updated-banner .ub-head { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .updated-banner .ub-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
+  .updated-list { display: grid; gap: 10px; }
+  @media (min-width: 760px) { .updated-list { grid-template-columns: repeat(3,1fr); } }
+  .updated-list a { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-decoration: none; color: var(--ink); font-size: 13.5px; line-height: 1.45; transition: border-color .12s, transform .12s; }
+  .updated-list a:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .updated-list a b { display: block; font-size: 14px; margin-bottom: 3px; color: var(--ink); }
+  .updated-list a span { color: var(--muted); font-size: 12.5px; }
+
+  /* ---- 고객/니즈 페르소나 ---- */
+  .persona-list { display: grid; gap: 14px; margin: 6px 0 26px; }
+  @media (min-width: 760px) { .persona-list { grid-template-columns: 1fr 1fr 1fr; } }
+  .persona { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; font-family: var(--sans); }
+  .persona .who { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .persona h4 { margin: 0 0 8px; font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--ink); }
+  .persona dl { display: grid; gap: 4px 0; margin: 0; max-width: none; font-size: 13px; }
+  .persona dt { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-top: 8px; }
+  .persona dt:first-child { margin-top: 0; }
+  .persona dd { margin: 2px 0 0; color: var(--ink); line-height: 1.5; }
+
+  /* ---- 성과 수치 ---- */
+  .stat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 6px 0 26px; }
+  @media (min-width: 760px) { .stat-grid { grid-template-columns: repeat(4,1fr); } }
+  .stat-grid .cell { background: var(--surface); padding: 18px 16px; font-family: var(--sans); }
+  .stat-grid .cell .n { font-size: 1.7rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.01em; color: var(--ink); }
+  .stat-grid .cell .l { font-size: 11.5px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+  /* ---- 결과/경험 ---- */
+  .outcome-list { display: grid; gap: 12px; margin: 6px 0 26px; }
+  .outcome { display: flex; gap: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 15px 18px; font-family: var(--sans); }
+  .outcome .oi { flex: none; width: 26px; height: 26px; border-radius: 7px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .outcome b { display: block; font-size: 14px; margin-bottom: 3px; }
+  .outcome span { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 </style>
 </head>
@@ -422,11 +460,14 @@
   <nav class="rail" aria-label="문서 차례">
     <ol>
       <li><a href="#s1"><span class="n">01</span><span>원초적 고민</span></a></li>
+      <li><a href="#s1b" class="new"><span class="n">01b</span><span>고객과 니즈</span></a></li>
       <li><a href="#s2"><span class="n">02</span><span>의사결정 문제</span></a></li>
       <li><a href="#s3"><span class="n">03</span><span>문제해결방법</span></a></li>
       <li><a href="#s4"><span class="n">04</span><span>설계 · 약점</span></a></li>
+      <li><a href="#s4b" class="new"><span class="n">04b</span><span>문제 한눈에 (도식)</span></a></li>
       <li><a href="#s5"><span class="n">05</span><span>서비스</span></a></li>
       <li><a href="#s6"><span class="n">06</span><span>타임라인 · 다음</span></a></li>
+      <li><a href="#s6b" class="new"><span class="n">06b</span><span>성과 · 얻는 것</span></a></li>
     </ol>
   </nav>
 
@@ -437,12 +478,21 @@
       <p class="lede">이미 만들어진 <b>my-setup-proj</b>(개인 생산성 OS)를 거꾸로 되짚어 기반을 세운다. 원초적 고민에서 출발해 의사결정·방법·설계를 지나 실제 서비스까지, 순서대로 읽는 문서.</p>
       <div class="meta">
         <span>작성 <b>2026-09-09</b></span>
-        <span>개정 <b>2026-09-10</b> · §4-5 약점 추가</span>
-        <span>범위 <b>P0–P9 완료</b> · 전부 병합</span>
+        <span>개정 <b>2026-09-15</b> · 고객·니즈, 문제 도식, 성과 수치, 결과·경험 추가</span>
+        <span>범위 <b>P0–P10 완료</b> · OKR·기대정렬 프로젝트 내장</span>
         <span>배경 <b>우송대 2026-2 · 3개 강의 공통 산출물</b></span>
         <span>단일 원천 <b>PROGRESS.md · TRACEABILITY.md · git log · ADR</b></span>
       </div>
     </header>
+
+    <div class="updated-banner">
+      <div class="ub-head"><span class="ub-dot"></span>2026-09-15 업데이트 — 3곳 새로 추가됨</div>
+      <div class="updated-list">
+        <a href="#s1b"><b>01b · 고객과 니즈</b><span>이 문서를 읽는 세 종류의 사람과 각자의 니즈</span></a>
+        <a href="#s4b"><b>04b · 문제 한눈에 보기</b><span>§4-5 약점 9건을 원인 기준으로 도식화</span></a>
+        <a href="#s6b"><b>06b · 성과 · 끝나면 남는 것</b><span>수치화된 완성도 + 프로젝트를 마치면 얻는 5가지</span></a>
+      </div>
+    </div>
 
     <!-- 1 -->
     <section id="s1">
@@ -503,6 +553,45 @@
 
       <h4>제약 조건 (CONSTRAINTS.md)</h4>
       <p>개발자 1인(C-1), 마감 2026-11-30(C-2), 강의 A 진도 종속(C-3), 비용 0 목표(C-4), 학습·발표 산출물(C-5), GitHub 공개라 시크릿·개인정보 커밋 금지(C-6). 개발 머신 macOS(Apple Silicon), 배포 목표 Win/mac/Linux 3-OS, 오프라인 조회 필수. 이 제약들이 아래 모든 결정의 배경이며, §4-5 약점의 공통 원인이기도 하다.</p>
+    </section>
+
+    <!-- 1b NEW -->
+    <section id="s1b">
+      <div class="sec-head"><span class="num">01b</span><h2>고객과 니즈</h2></div>
+      <p class="sec-sub">이 프로젝트를 "보는" 사람은 한 명이 아니다 — 쓰는 사람과 평가하는 사람의 니즈가 다르고, 두 니즈가 같은 산출물 안에서 동시에 풀려야 한다.</p>
+      <div class="persona-list">
+        <div class="persona">
+          <div class="who">고객 1 · 실사용자</div>
+          <h4>나 자신 (1인 개발자 겸 사용자)</h4>
+          <dl>
+            <dt>상황</dt><dd>고교 PC방 알바·영상 편집·3년 방송부를 거치며 경험은 쌓였지만 기록·정리가 계속 무너졌다. Notion도 파일이 늘자 구조가 무너졌다.</dd>
+            <dt>니즈</dt><dd>혼자서 생각→행동→기록→정리를 전부 감당할 도구, 완료율이 아니라 "무엇을 배웠는지"가 쌓여 보이는 자리.</dd>
+            <dt>이 프로젝트의 답</dt><dd>기대정렬 체크인 + OKR + 지식 가시화가 목적인 위젯 셸(§1)</dd>
+          </dl>
+        </div>
+        <div class="persona">
+          <div class="who">고객 2 · 강의 평가자</div>
+          <h4>3개 강의 담당 교수·심사</h4>
+          <dl>
+            <dt>상황</dt><dd>발표·서면으로 짧은 시간 안에 산출물의 완성도와 개발 과정의 깊이를 판단해야 한다.</dd>
+            <dt>니즈</dt><dd>결정 과정의 근거(왜 이렇게 지었나), 검증 가능한 완성도(테스트·문서 정합), 실습 주제와의 정합.</dd>
+            <dt>이 프로젝트의 답</dt><dd>ADR 35건·검증 게이트(§3)·이 문서 자체(고객 2가 지금 읽는 문서)</dd>
+          </dl>
+        </div>
+        <div class="persona">
+          <div class="who">고객 3 · 향후 열람자</div>
+          <h4>포트폴리오·채용 담당자</h4>
+          <dl>
+            <dt>상황</dt><dd>완성된 결과물만으로는 실제 역량과 의사결정 과정을 알기 어렵다.</dd>
+            <dt>니즈</dt><dd>코드 + 결정 근거 + 실패·약점까지 정직하게 드러난 기록.</dd>
+            <dt>이 프로젝트의 답</dt><dd>§4-5 약점 공개, §5-2 재검토 노트 — 잘한 것만이 아니라 다시 봐야 할 것도 남긴다</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="note">
+        <span class="tag">세 니즈가 부딪히지 않는 이유</span>
+        <p>세 고객 모두 같은 한 문장으로 만족된다: <b>"경험이 어떻게 지식이 되고, 그 지식이 어느 방향으로 역량을 키우는지 정직하게 보여라."</b> 사용자는 그걸 매일 쓰는 도구로, 평가자는 그걸 증명하는 산출물로, 향후 열람자는 그걸 증언하는 기록으로 읽는다 — 그래서 별도 "발표용" 버전을 따로 안 만들고, 같은 문서·같은 코드를 그대로 공개한다(§6b 개인정보 처리 참고).</p>
+      </div>
     </section>
 
     <!-- 2 -->
@@ -809,6 +898,35 @@ flowchart TB
       </div>
     </section>
 
+    <!-- 4b NEW -->
+    <section id="s4b">
+      <div class="sec-head"><span class="num">04b</span><h2>문제 한눈에 보기 — 원인부터 도식화</h2></div>
+      <p class="sec-sub">§4-5의 9개 항목을 텍스트로 훑으면 개별 사실처럼 보이지만, 실제로는 대부분 같은 두 원인에서 갈라져 나온다.</p>
+      <div class="diagram">
+        <pre class="mermaid">
+flowchart TB
+  ROOT["공통 원인<br/>로컬 단일 사용자 · 1인 개발 · 마감(C-1·C-2)"]
+  ROOT --> SEC["보안 · 안전성"]
+  ROOT --> QUAL["기술 부채 · 품질"]
+
+  SEC --> S1["S1 로컬 네트워크 노출<br/>같은 Wi-Fi 기기가 CRUD 가능"]
+  SEC --> S2["S2 CORS null 전 빌드 허용"]
+  SEC --> S3["S3 태그 비침범 = 코드 가드뿐<br/>(PO-3 서사, §2-3)"]
+  SEC --> S4["S4 OAuth 키 회전 절차 없음"]
+  SEC --> S5["S5 시크릿 스캔이 .gitignore 한 겹"]
+
+  QUAL --> D1["D1 데모↔실서버 스키마 드리프트 미검사"]
+  QUAL --> D2["D2 REST 오류 단일 봉투"]
+  QUAL --> D3["D3 레이어 경계 자동 검사 없음"]
+  QUAL --> D4["D4 수동 검증 백로그 미실행"]
+
+  S1 -.해소 전제.-> FIX1["다중 사용자 전환(Phase E) 또는<br/>패키징 배포 확정 시점"]
+  QUAL -.해소 전제.-> FIX2["1인 개발 속도 제약이 풀리는 시점<br/>(팀 합류 또는 마감 이후)"]
+        </pre>
+      </div>
+      <p>즉 9개 약점은 무작위 버그 목록이 아니라, <b>"지금은 안 해도 되는 것으로 미룬 것"</b>이라는 하나의 판단이 여러 갈래로 나타난 결과다 — 다중 사용자 전환이나 마감 이후 시점이 오면 왼쪽 가지(보안)부터 되짚어야 한다.</p>
+    </section>
+
     <!-- 5 -->
     <section id="s5">
       <div class="sec-head"><span class="num">05</span><h2>서비스 — 무엇을 만들었나</h2></div>
@@ -950,6 +1068,30 @@ flowchart TB
       <p><b>프로젝트 자체의 성공 지표</b> — 검증 게이트 통과율(§3) · 결정의 추적 가능성(ADR 35건) · 약점의 정직한 기록률(§4-5·4-6) · <b>목적 정합성</b>(새 기능이 §1 목적에 답하는지, 추가 전에 확인).</p>
       <p><b>향후 활용</b> — 코드·문서·쇼케이스는 포트폴리오 자료로, ADR·요구사항·C4 문서 체계는 후속 프로젝트의 방법론 템플릿으로 의도했다.</p>
       <p><b>개인정보 처리</b> — 이 문서와 공개 사본엔 작성자 실명·개인 경험이 원문 그대로 있다. 실수 노출이 아니라 강의 제출·발표 목적에 맞춰 작성자가 명시적으로 공개를 확인한 상태다(2026-09-14). 이메일 등 추가 식별 정보는 마스킹해 게시했다.</p>
+    </section>
+
+    <!-- 6b NEW -->
+    <section id="s6b">
+      <div class="sec-head"><span class="num">06b</span><h2>수치로 보는 성과, 그리고 끝나면 남는 것</h2></div>
+      <p class="sec-sub">진척률 자체를 목적으로 삼지는 않지만(§1), 발표·평가를 위해 "어느 정도 해냈는지"는 숫자로 확인할 수 있어야 한다.</p>
+      <div class="stat-grid">
+        <div class="cell"><div class="n">35</div><div class="l">채택된 ADR — 결정 1개 = 파일 1개</div></div>
+        <div class="cell"><div class="n">351</div><div class="l">자동 테스트 — backend 157·frontend 115·agent 79</div></div>
+        <div class="cell"><div class="n">49/0/0</div><div class="l">verify.sh 통과/경고/실패</div></div>
+        <div class="cell"><div class="n">10</div><div class="l">실제 위젯 종류 — 전부 전용 화면</div></div>
+        <div class="cell"><div class="n">11/0/0</div><div class="l">check-docs.sh 문서 정합</div></div>
+        <div class="cell"><div class="n">10<small style="font-size:.6em">/10</small></div><div class="l">완료된 빌드 페이즈(P0–P9) + P10 확장</div></div>
+        <div class="cell"><div class="n">3</div><div class="l">강의 공통 산출물로 동시 제출</div></div>
+        <div class="cell"><div class="n">0<small style="font-size:.6em">원</small></div><div class="l">인프라 비용 — 로컬 우선 + 무료 계층만</div></div>
+      </div>
+      <h3>이 프로젝트를 마치면 얻는 것</h3>
+      <div class="outcome-list">
+        <div class="outcome"><span class="oi">1</span><div><b>실사용 가능한 개인 도구</b><span>다음 학기·다음 프로젝트에서도 계속 쓸 수 있는, 내 경험을 지식으로 쌓는 실제 앱 — "만들고 끝"이 아니라 졸업 이후로 이어지는 습관의 도구.</span></div></div>
+        <div class="outcome"><span class="oi">2</span><div><b>1인으로 설계~빌드~운영을 끝낸 경험</b><span>요구사항 분해부터 ADR 결정, 에이전트 파이프라인 설계, 검증 게이트 구축까지 — 팀 없이 혼자 전체 소프트웨어 생애주기를 완주한 경험치.</span></div></div>
+        <div class="outcome"><span class="oi">3</span><div><b>재사용 가능한 방법론 템플릿</b><span>ADR·C4/arc42 문서 체계, 4역할 에이전트 파이프라인, 기대정렬 7질문 — 다음 프로젝트에 그대로 옮겨 쓸 수 있는 틀.</span></div></div>
+        <div class="outcome"><span class="oi">4</span><div><b>포트폴리오로 바로 쓸 수 있는 증거</b><span>코드·문서·쇼케이스가 한 세트로 공개돼 있어, "무엇을 만들었나"뿐 아니라 "왜 그렇게 결정했나"까지 채용·심사 담당자에게 보여줄 수 있다.</span></div></div>
+        <div class="outcome"><span class="oi">5</span><div><b>정직하게 약점을 진단하는 습관</b><span>§4-5·5-2처럼 "잘한 것"만이 아니라 "아직 감당 못 하는 지점"을 스스로 찾아 기록하는 연습 — 이 습관 자체가 기대정렬이 노린 역량이다.</span></div></div>
+      </div>
     </section>
 
     <footer class="doc">
