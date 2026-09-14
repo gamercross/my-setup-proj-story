@@ -15,6 +15,7 @@
 | [REPORT.md](REPORT.md) | 정식 보고서 형식 — 목차·평가 기준·외부 문헌 포함 |
 | [RAW_STORIES.md](RAW_STORIES.md) | 원료 수집함 — 채팅으로 받은 이야기를 태그·상태와 함께 보관 |
 | [DRAFTING_GUIDE.md](DRAFTING_GUIDE.md) | 원료를 사이트 문구로 옮길 때 따르는 규칙 |
+| [story/](story/README.md) | 우리 스토리 — 계획 대비 뭐가 바뀌었고([changes/](story/changes/README.md)), 계획보다 더 나아간 기능이 왜 생겼고([beyond-plan/](story/beyond-plan/README.md)), 뭘 배웠는지([lessons/](story/lessons/README.md)) |
 
 ## 원본
 
