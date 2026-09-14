@@ -182,12 +182,22 @@
   main { min-width: 0; }
   section { padding: 52px 0; border-bottom: 1px solid var(--border); }
   section:last-of-type { border-bottom: 0; }
-  .sec-head { display: flex; align-items: baseline; gap: 14px; margin: 0 0 8px; }
+  .sec-head { display: flex; align-items: center; gap: 14px; margin: 0 0 8px; }
+  .sec-head .icon {
+    flex: none;
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    line-height: 1;
+  }
   .sec-head .num {
+    display: block;
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: 12px;
     color: var(--accent);
-    padding-top: 4px;
+    margin-bottom: 2px;
   }
   h2 {
     font-family: var(--sans);
@@ -509,7 +519,7 @@ flowchart LR
 
     <!-- 1 -->
     <section id="s1">
-      <div class="sec-head"><span class="num">01</span><h2>원초적 고민 — 무엇이 문제였나</h2></div>
+      <div class="sec-head"><span class="icon">💭</span><div><span class="num">01</span><h2>원초적 고민 — 무엇이 문제였나</h2></div></div>
       <p class="sec-sub">문서를 역추론하면 "도구가 흩어져 있다"가 먼저지만, 사용자에게 직접 물으니 발단은 달랐다.</p>
 
       <h3>중심 줄기: 경험을 지식으로, 지식을 역량으로</h3>
@@ -570,7 +580,7 @@ flowchart LR
 
     <!-- 1b NEW -->
     <section id="s1b">
-      <div class="sec-head"><span class="num">01b</span><h2>고객과 니즈</h2></div>
+      <div class="sec-head"><span class="icon">👥</span><div><span class="num">01b</span><h2>고객과 니즈</h2></div></div>
       <p class="sec-sub">이 프로젝트를 "보는" 사람은 한 명이 아니다 — 쓰는 사람과 평가하는 사람의 니즈가 다르고, 두 니즈가 같은 산출물 안에서 동시에 풀려야 한다.</p>
       <div class="persona-list">
         <div class="persona">
@@ -609,7 +619,7 @@ flowchart LR
 
     <!-- 2 -->
     <section id="s2">
-      <div class="sec-head"><span class="num">02</span><h2>의사결정 문제 — 어떤 갈림길을 어떻게 골랐나</h2></div>
+      <div class="sec-head"><span class="icon">🧭</span><div><span class="num">02</span><h2>의사결정 문제 — 어떤 갈림길을 어떻게 골랐나</h2></div></div>
       <p class="sec-sub">모든 아키텍처 결정 = 하나의 ADR 파일 (현재 33건). 각 ADR은 맥락 / 결정 / 근거 / 대안 / 결과·트레이드오프 5필드.</p>
 
       <h3>2-1. 기반 스택 — "무엇으로 짓나" <span class="id">ADR-0001–0009 · 0011 · 0012 · 0018</span></h3>
@@ -730,7 +740,7 @@ flowchart LR
 
     <!-- 3 -->
     <section id="s3">
-      <div class="sec-head"><span class="num">03</span><h2>문제해결방법 — 어떤 절차로 일했나</h2></div>
+      <div class="sec-head"><span class="icon">⚙️</span><div><span class="num">03</span><h2>문제해결방법 — 어떤 절차로 일했나</h2></div></div>
       <p class="sec-sub">문서 우선, 에이전트 파이프라인, 가드레일, 검증 게이트, 브랜치 모델.</p>
 
       <h3>문서 우선 순서</h3>
@@ -772,7 +782,7 @@ flowchart LR
 
     <!-- 4 -->
     <section id="s4">
-      <div class="sec-head"><span class="num">04</span><h2>설계 — 결과 구조, 그리고 그 구조가 아직 감당 못 하는 지점</h2></div>
+      <div class="sec-head"><span class="icon">🏗️</span><div><span class="num">04</span><h2>설계 — 결과 구조, 그리고 그 구조가 아직 감당 못 하는 지점</h2></div></div>
       <p class="sec-sub">컨테이너 3개 + 로컬 SQLite. 레이어드, 프로세스 분리, 로컬 우선. 4-5는 같은 구조의 약점을 원인까지 되짚는다.</p>
 
       <div class="diagram">
@@ -913,7 +923,7 @@ flowchart TB
 
     <!-- 4b NEW -->
     <section id="s4b">
-      <div class="sec-head"><span class="num">04b</span><h2>문제 한눈에 보기 — 원인부터 도식화</h2></div>
+      <div class="sec-head"><span class="icon">🔍</span><div><span class="num">04b</span><h2>문제 한눈에 보기 — 원인부터 도식화</h2></div></div>
       <p class="sec-sub">§4-5의 9개 항목을 텍스트로 훑으면 개별 사실처럼 보이지만, 실제로는 대부분 같은 두 원인에서 갈라져 나온다.</p>
       <div class="diagram">
         <pre class="mermaid">
@@ -942,7 +952,7 @@ flowchart TB
 
     <!-- 5 -->
     <section id="s5">
-      <div class="sec-head"><span class="num">05</span><h2>서비스 — 무엇을 만들었나</h2></div>
+      <div class="sec-head"><span class="icon">📦</span><div><span class="num">05</span><h2>서비스 — 무엇을 만들었나</h2></div></div>
       <p class="sec-sub">각 기능을 왜(원초 고민) / 어떻게(핵심 구현) / 툴 / 상태로. 단계: B·C = 대시보드 OS, D = 에이전트, P = 개인 생산성 OS.</p>
 
       <div class="tbl-scroll">
@@ -1026,7 +1036,7 @@ flowchart TB
 
     <!-- 6 -->
     <section id="s6">
-      <div class="sec-head"><span class="num">06</span><h2>타임라인 · 다음 단계</h2></div>
+      <div class="sec-head"><span class="icon">🗓️</span><div><span class="num">06</span><h2>타임라인 · 다음 단계</h2></div></div>
       <p class="sec-sub">진행 순서와 남은 일. §4-5 약점의 실행 항목은 여기서 추적한다.</p>
 
       <h3>기대정렬로 보는 이 프로젝트 <span class="id">2026-09-14</span></h3>
@@ -1085,7 +1095,7 @@ flowchart TB
 
     <!-- 6b NEW -->
     <section id="s6b">
-      <div class="sec-head"><span class="num">06b</span><h2>수치로 보는 성과, 그리고 끝나면 남는 것</h2></div>
+      <div class="sec-head"><span class="icon">📊</span><div><span class="num">06b</span><h2>수치로 보는 성과, 그리고 끝나면 남는 것</h2></div></div>
       <p class="sec-sub">진척률 자체를 목적으로 삼지는 않지만(§1), 발표·평가를 위해 "어느 정도 해냈는지"는 숫자로 확인할 수 있어야 한다.</p>
       <div class="stat-grid">
         <div class="cell"><div class="n">35</div><div class="l">채택된 ADR — 결정 1개 = 파일 1개</div></div>
@@ -1142,13 +1152,17 @@ flowchart TB
 <script>
   (function () {
     if (!window.mermaid) return;
+    // startOnLoad 는 DOMContentLoaded 리스너에 의존하는데, 이 스크립트는
+    // </body> 직전이라 그 이벤트가 이미 지난 뒤다 — 그래서 다이어그램이
+    // 렌더링 안 되고 원본 텍스트(코드)로만 보였다. run() 을 직접 호출해 고친다.
     var stamp = document.documentElement.getAttribute('data-theme');
     var dark = stamp === 'dark' || (stamp !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
     mermaid.initialize({
-      startOnLoad: true,
+      startOnLoad: false,
       theme: dark ? 'dark' : 'neutral',
       themeVariables: { fontFamily: 'IBM Plex Sans, system-ui, sans-serif' }
     });
+    mermaid.run({ querySelector: '.mermaid' });
   })();
 </script>
 
