@@ -871,6 +871,26 @@ flowchart TB
         </table>
       </div>
       <p style="color:var(--faint); font-family:var(--sans); font-size:13px">이 노트가 커지면 별도 <span class="m">RETROSPECTIVE.md</span>로 분리한다.</p>
+
+      <h3>5-3. 정합성 감사 — 기능이 목적(§1)에 맞는가 <span class="id">2026-09-14</span></h3>
+      <p>§1 재정의 이후, 지금까지 만든 기능을 하나씩 다시 세운 목적("완료율이 아니라 지식. 지식이 쌓여 역량이 느는 방향을 한눈에")기준으로 대조했다.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>기능</th><th>정합도</th><th>이유</th></tr></thead>
+          <tbody>
+            <tr><td>진행 현황·파일 탐색(P9)</td><td><span class="pill ok">강함</span></td><td>프로젝트가 쌓은 지식(ADR·결정)을 그대로 노출 — 목적의 대표 사례</td></tr>
+            <tr><td>기대정렬 체크인(P10)</td><td><span class="pill ok">강함</span></td><td>7질문 자체가 "경험→지식→역량 방향" 서사</td></tr>
+            <tr><td>OKR + 구글 등급</td><td><span class="pill wait">보통</span></td><td>방향성을 담지만, 숫자 달성률 중심이라 여전히 "완료율"처럼 보이기 쉽다</td></tr>
+            <tr><td>할일 자동 분류(태그)</td><td><span class="pill wait">보통</span></td><td>가벼운 지식 분류이지만 "무엇을 배웠는지"까지는 안 간다</td></tr>
+            <tr><td>위젯 셸·단일 캐시·칸반</td><td>인프라</td><td>목적을 담는 그릇 — 그 자체가 목적에 답하진 않음, 정상</td></tr>
+            <tr><td>에이전트 활동 위젯</td><td><span class="pill open">약함</span></td><td>"언제 돌았는지"만 보여줌, 지식 추출 없음</td></tr>
+            <tr><td>Daily Brief 에이전트</td><td><span class="pill open">약함</span></td><td>메일·일정 요약이지 "오늘 무엇을 배웠나"가 아니다</td></tr>
+            <tr><td><b>레퍼런스 요약 절차</b></td><td><span class="pill open">공백</span></td><td>카테고리 정리는 있지만 요약이 어떻게 됐는지 추적이 없다</td></tr>
+            <tr><td><b>지식 축적 추세·역량 지도</b></td><td><span class="pill open">공백</span></td><td>개별 위젯은 있지만 "역량이 어느 방향으로 크는지"를 종합한 뷰가 없다</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="color:var(--faint); font-family:var(--sans); font-size:13px">강함 2·보통 2·인프라 3(정상)·약함 2·<b>공백 2</b> — 공백 2개는 §1 목적에 아직 아무도 답하지 않은 자리라, §6 다음 세션 후보로 옮긴다.</p>
     </section>
 
     <!-- 6 -->
