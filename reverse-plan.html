@@ -539,10 +539,11 @@
     </header>
 
     <div class="updated-banner">
-      <div class="ub-head"><span class="ub-dot"></span>2026-09-15 업데이트 — 3곳 새로 추가됨</div>
+      <div class="ub-head"><span class="ub-dot"></span>2026-09-15 업데이트 — 4곳 새로 추가·갱신됨</div>
       <div class="updated-list">
         <a href="#s1b"><b>01b · 고객과 니즈</b><span>이 문서를 읽는 세 종류의 사람과 각자의 니즈</span></a>
-        <a href="#s4b"><b>04b · 문제 한눈에 보기</b><span>§4-5 약점 9건을 원인 기준으로 도식화</span></a>
+        <a href="#s3"><b>03 · 파이프라인 · GitHub</b><span>에이전트 4역할이 굴러가는 순서 + 브랜치부터 데모 배포까지</span></a>
+        <a href="#s4b"><b>04b · 문제 한눈에 보기</b><span>§4-5 약점 7건을 원인 기준으로 도식화 — S1·S2는 09-15에 해소돼 빠졌다</span></a>
         <a href="#s6b"><b>06b · 성과 · 끝나면 남는 것</b><span>수치화된 완성도 + 프로젝트를 마치면 얻는 5가지</span></a>
       </div>
     </div>
@@ -556,7 +557,7 @@
         <div class="farrow">→</div>
         <div class="fbox"><b>02 의사결정</b><span>ADR 35건</span></div>
         <div class="farrow">→</div>
-        <div class="fbox"><b>04 설계</b><span>구조 + 약점 9건</span></div>
+        <div class="fbox"><b>04 설계</b><span>구조 + 약점 7건</span></div>
         <div class="farrow">→</div>
         <div class="fbox"><b>05 서비스</b><span>실제 기능 목록</span></div>
         <div class="farrow">→</div>
@@ -783,24 +784,34 @@
     <!-- 3 -->
     <section id="s3">
       <div class="sec-head"><span class="icon">⚙️</span><div><span class="num">03</span><h2>문제해결방법 — 어떤 절차로 일했나</h2></div></div>
-      <p class="sec-sub">문서 우선, 에이전트 파이프라인, 가드레일, 검증 게이트, 브랜치 모델.</p>
+      <p class="sec-sub">문서 우선, 에이전트 파이프라인이 굴러가는 순서, 가드레일, 검증 게이트, GitHub 브랜치부터 데모 배포까지.</p>
 
       <h3>문서 우선 순서</h3>
       <p>각 역량 테마(개인 OS의 T1–T6)는 순서대로 진행했다:</p>
       <pre class="block">P0 문서  →  P1 ADR·요구사항  →  P2 디자인 캔버스  →  P3–P9 빌드
 "왜·무엇"    "어떻게"              목표 화면 (6 아트보드)   /feature 1회 · 개별 PR</pre>
 
-      <h3>에이전트 파이프라인 <span class="id">/feature</span></h3>
+      <h3>에이전트 파이프라인 — 어떻게 굴러가는가 <span class="id">/feature</span></h3>
       <div class="note">
         <span class="tag">의도 · 사용자 진술</span>
         <p>개발자가 1인(C-1)이라 <b>혼자서 내지 못하는 속도를 보완</b>하려고 파이프라인을 세웠다. 부수 효과로 강의 B(AI 지원 개발 프로세스) 실습과 품질 게이트(자기검열 강제)를 겸한다.</p>
       </div>
-      <pre class="block">planner  →  developer  →  supervisor (최대 2회)  →  finisher
- 계획        구현          리뷰 + 테스트 PASS/FAIL     검증 · 커밋 · 푸시</pre>
+      <p><b>시작 방법</b> — 사람이 <span class="m">/feature &lt;작업 설명&gt;</span>을 치면(또는 <span class="m">/build-next</span>가 로드맵에서 다음 스텝을 스스로 골라) 오케스트레이터가 열린다. 오케스트레이터는 <b>직접 코드를 쓰지 않고</b> 4개 역할에게 순서대로 위임만 한다 — 한 번에 한 역할만 활성.</p>
+      <div class="flow-row">
+        <div class="fbox"><b>1. planner</b><span>요구사항 조사 · 구현 계획 수립 (코드 안 씀)</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>2. developer</b><span>계획대로 구현. 커밋은 안 함</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>3. supervisor</b><span>diff 리뷰 + 테스트 실행 → PASS / CHANGES_NEEDED</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>4. finisher</b><span>검증 게이트 · 커밋 · 푸시 · PR 오픈</span></div>
+      </div>
+      <p style="margin-top:8px;font-size:12.5px;color:var(--muted)">CHANGES_NEEDED면 developer → supervisor 로 최대 2회 되돌아간다. 2회를 넘기면 <b>커밋하지 않고</b> 사람에게 보고한 뒤 멈춘다.</p>
       <ul>
-        <li>명시적 <b>상태 그래프</b>로 정의: <span class="m">SELECT→GATE→PLAN→BUILD→REVIEW→FINISH→REPORT</span> + 정지 상태 6종.</li>
-        <li>불변 규칙: 한 번에 한 에이전트만 활성 · REVISE 최대 2회 · <b>커밋은 finisher만</b> · 실행돼 FAIL 난 검사가 있으면 커밋 금지 · 정지 상태에서 임의 진행 금지 · 각 전이마다 Slack 한 줄.</li>
-        <li><span class="m">/build-next</span>는 이 파이프라인을 로드맵 위에서 반복 실행(다음 스텝 자동 선택).</li>
+        <li>명시적 <b>상태 그래프</b>로 정의: <span class="m">SELECT→GATE→PLAN→BUILD→REVIEW→FINISH→REPORT</span> + 정지 상태 6종. 사람 결정이 필요한 지점에서만 멈춘다.</li>
+        <li>불변 규칙: 한 번에 한 에이전트만 활성 · REVISE 최대 2회 · <b>커밋은 finisher만</b> · 실행돼 FAIL 난 검사가 있으면 커밋 금지 · 각 전이마다 Slack 한 줄 알림.</li>
+        <li><b>finisher는 PR을 여는 데까지만 한다 — 병합은 항상 사람.</b> 이 경계는 문서 규칙일 뿐 아니라 Claude Code 자체의 실행 권한으로도 막혀 있다(에이전트가 병합을 시도하면 도구 단계에서 거부된다).</li>
+        <li><span class="m">/build-next</span>는 이 파이프라인을 로드맵 위에서 반복 실행한다. 사람이 자는 동안 여러 <span class="m">/feature</span>를 순차로 돌리고 PR만 열어 둔 채 멈추는 방식으로도 쓴다 — 실제 선례: 2026-09-15 새벽, PR 3개(지식 추세 뷰 · 레퍼런스 요약 추적 · 보안 보완)를 이 방식으로 열었다.</li>
       </ul>
 
       <h3>가드레일 — Claude Code 훅 <span class="id">.claude/settings.json</span></h3>
@@ -818,8 +829,40 @@
       <h3>검증 게이트</h3>
       <p><span class="m">verify.sh</span> (49/0/0) · <span class="m">verify.sh --code-only</span> (41/0/0) · <span class="m">check-docs.sh</span> (문서 정합 11/0/0) · backend <span class="m">npm test</span> (142) · frontend <span class="m">node --test</span> (106) · agent <span class="m">pytest -m "not network"</span> (80) · <span class="m">npm run build</span> / <span class="m">build:demo</span>. FAIL 하나라도 있으면 커밋하지 않고, SKIP은 커밋 메시지에 명시.</p>
 
-      <h3>브랜치 · PR · 설계 문서 방법론</h3>
-      <p><span class="m">feature/&lt;주제&gt; → PR → main</span>. Git Flow·<span class="m">develop</span> 미채택(0023, 1인 프로젝트라 오버헤드 대비 이득 없음). <span class="m">main</span> 직접 커밋·force push 금지. <b>PR 병합은 사람이</b> 한다. 설계 문서는 C4/arc42 방식으로 뷰를 나눈다 — 드라이버 / 컨테이너 / 컴포넌트 / 런타임 / 데이터 / 횡단 / 배포 / 진화 / 결정 이력.</p>
+      <h3>GitHub 사용 방식 — 브랜치부터 데모 배포까지</h3>
+      <p>Git Flow·<span class="m">develop</span> 브랜치는 채택하지 않았다(<span class="id">ADR-0023</span>, 1인 프로젝트라 오버헤드 대비 이득이 없다는 판단). <span class="m">main</span> 직접 커밋·force push는 금지.</p>
+      <div class="flow-row">
+        <div class="fbox"><b>1. 브랜치 생성</b><span><span class="m">feature/&lt;주제&gt;</span> — main 위 직접 커밋 금지</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>2. 커밋 · 푸시</b><span>finisher가 검증 게이트 통과 후</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>3. PR 오픈</b><span>finisher가 연다 — 병합은 아님</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>4. CI 자동 실행</b><span>"Test &amp; Build" 워크플로 4개 잡</span></div>
+      </div>
+      <div class="tbl-scroll" style="margin-top:10px">
+        <table>
+          <thead><tr><th>CI 잡</th><th>확인하는 것</th></tr></thead>
+          <tbody>
+            <tr><td class="id">docs</td><td>문서 · 오케스트레이션 정합 (<span class="m">check_docs.py</span>)</td></tr>
+            <tr><td class="id">backend</td><td>문법 검사 + <span class="m">npm test</span> + 서비스 스모크</td></tr>
+            <tr><td class="id">frontend</td><td>문법 검사 + <span class="m">npm test</span> + Vite 빌드 + 데모 빌드</td></tr>
+            <tr><td class="id">agent</td><td>문법 검사 + <span class="m">pytest</span> (네트워크 제외)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flow-row" style="margin-top:14px">
+        <div class="fbox"><b>5. 사람이 병합</b><span>PR 리뷰 후 <b>사람이</b> main에 병합 — 파이프라인이 자동으로 하지 않는 유일한 단계</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>6. 데모 자동 배포</b><span>frontend/ 변경이 main에 들어가면 "Deploy Web Demo" 발동</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>GitHub Pages</b><span><span class="m">VITE_DEMO=1</span> 빌드(백엔드·Electron 없이 인메모리 목 데이터) 자동 배포</span></div>
+      </div>
+      <div class="note" style="margin-top:12px">
+        <span class="tag">데모↔실서버 패리티</span>
+        <p>데모 목 데이터(<span class="m">demoClient.js</span>/<span class="m">demoData.js</span>)가 실제 API 경로와 어긋나지 않는지 <span class="m">scripts/check-demo-parity.mjs</span>가 커밋마다 자동 비교한다(<span class="id">ADR-0026</span> 후속 보완). 새 엔드포인트를 추가하고 데모 목을 안 고치면 이 단계에서 걸린다.</p>
+      </div>
+      <p style="margin-top:10px">병합된 로컬 브랜치는 다음 세션 시작 시 자동 정리된다(<span class="m">prune-merged-branches.sh</span>, SessionStart 훅). 설계 문서는 C4/arc42 방식으로 뷰를 나눈다 — 드라이버 / 컨테이너 / 컴포넌트 / 런타임 / 데이터 / 횡단 / 배포 / 진화 / 결정 이력.</p>
     </section>
 
     <!-- 4 -->
@@ -970,15 +1013,17 @@
     <!-- 4b NEW -->
     <section id="s4b">
       <div class="sec-head"><span class="icon">🔍</span><div><span class="num">04b</span><h2>문제 한눈에 보기 — 원인부터 도식화</h2></div></div>
-      <p class="sec-sub">§4-5의 9개 항목을 텍스트로 훑으면 개별 사실처럼 보이지만, 실제로는 대부분 같은 두 원인에서 갈라져 나온다.</p>
+      <p class="sec-sub">§4-5의 항목을 텍스트로 훑으면 개별 사실처럼 보이지만, 실제로는 대부분 같은 두 원인에서 갈라져 나온다. S1·S2는 2026-09-15 파이프라인으로 해소돼 아래 도식에서 빠졌다.</p>
+      <div class="note good" style="margin-bottom:16px">
+        <span class="tag">해소됨 · 2026-09-15</span>
+        <p><b>S1</b>(로컬 네트워크 노출)은 백엔드를 <span class="m">127.0.0.1</span>에만 바인딩, <b>S2</b>(CORS null 전 빌드 허용)는 <span class="m">APP_ENV=packaged</span>일 때만 허용하도록 고쳐 닫았다. 남은 약점은 7건.</p>
+      </div>
       <div class="diagram">
         <div class="tree-diagram">
           <div class="troot">공통 원인 — 로컬 단일 사용자 · 1인 개발 · 마감(C-1·C-2)</div>
           <div class="tbranches">
             <div class="tgroup">
               <h5>보안 · 안전성</h5>
-              <div class="tleaf"><b>S1</b> 로컬 네트워크 노출 — 같은 Wi-Fi 기기가 CRUD 가능</div>
-              <div class="tleaf"><b>S2</b> CORS null 전 빌드 허용</div>
               <div class="tleaf"><b>S3</b> 태그 비침범 = 코드 가드뿐 (PO-3 서사, §2-3)</div>
               <div class="tleaf"><b>S4</b> OAuth 키 회전 절차 없음</div>
               <div class="tleaf"><b>S5</b> 시크릿 스캔이 .gitignore 한 겹</div>
@@ -986,7 +1031,7 @@
             </div>
             <div class="tgroup">
               <h5>기술 부채 · 품질</h5>
-              <div class="tleaf"><b>D1</b> 데모↔실서버 스키마 드리프트 미검사</div>
+              <div class="tleaf"><b>D1</b> 데모↔실서버 경로 집합만 검사, 응답 스키마는 미검사</div>
               <div class="tleaf"><b>D2</b> REST 오류 단일 봉투</div>
               <div class="tleaf"><b>D3</b> 레이어 경계 자동 검사 없음</div>
               <div class="tleaf"><b>D4</b> 수동 검증 백로그 미실행</div>
@@ -995,7 +1040,7 @@
           </div>
         </div>
       </div>
-      <p>즉 9개 약점은 무작위 버그 목록이 아니라, <b>"지금은 안 해도 되는 것으로 미룬 것"</b>이라는 하나의 판단이 여러 갈래로 나타난 결과다 — 다중 사용자 전환이나 마감 이후 시점이 오면 왼쪽 가지(보안)부터 되짚어야 한다.</p>
+      <p>즉 남은 7개 약점은 무작위 버그 목록이 아니라, <b>"지금은 안 해도 되는 것으로 미룬 것"</b>이라는 하나의 판단이 여러 갈래로 나타난 결과다 — 다중 사용자 전환이나 마감 이후 시점이 오면 왼쪽 가지(보안)부터 되짚어야 한다.</p>
     </section>
 
     <!-- 5 -->
